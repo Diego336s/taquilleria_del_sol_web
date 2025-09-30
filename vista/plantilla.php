@@ -2,17 +2,19 @@
 
 include_once "vista/modulos/1cabesera.php";
 
-if (isset($_GET["ruta"])) {
+$rutasValidas = [
+    "login" => "vista/modulos/login.php",
+    "registro" => "vista/modulos/registro.php",
+    "fogout_contraseña" => "vista/modulos/Auth/olvidarContraseña.php"
+];
 
-    $listaRutas = array("");
-    if (isset($_GET["ruta"]) && in_array($_GET["ruta"], $listaRutas)) {
-        include_once "vista/modulos/" . $_GET["ruta"] . ".php";
-    }else{
+$ruta = $_GET["ruta"] ?? "login";
 
-    }
-
+if (array_key_exists($ruta, $rutasValidas)) {
+    include_once $rutasValidas[$ruta];
 } else {
-    include_once "vista/modulos/gestor_de_codigos/inicio.php";
+
+    include_once $rutasValidas["login"];
 }
 
 include_once "vista/modulos/zpie.php";
