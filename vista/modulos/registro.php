@@ -6,7 +6,7 @@
 
             <h1 class="card-title mb-4 text-center">Taquillería del Sol</h1>
             
-            <?php include_once "vista/modulos/Auth/registrarse/registrarUsuario.php"; ?>
+            <?php include_once "vista/modulos/Auth/registrarUsuario.php"; ?>
 
         </div>
     </div>

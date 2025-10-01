@@ -10,5 +10,6 @@
         <input type="password" class="form-control" id="passEmpresa" name="passEmpresa" required>
     </div>
     
-    <button type="submit" class="btn btn-secondary btn_empresa w-100 py-2">Iniciar como Empresa</button>
+    <!-- Se cambia el botón por un enlace que redirige directamente al dashboard de empresa -->
+    <a href="index.php?ruta=dashboard-empresa" class="btn btn-secondary btn_empresa w-100 py-2">Iniciar como Empresa</a>
 </form>

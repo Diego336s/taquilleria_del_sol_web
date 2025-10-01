@@ -15,7 +15,9 @@
 
     </div>
 
-    <button type="submit" class="btn btn-secondary btn_usuario w-100 py-2">Iniciar como Usuario</button>
+    <!-- Se cambia el botón por un enlace (<a>) que luce como un botón y redirige directamente -->
+    <a href="index.php?ruta=dashboard-usuario" class="btn btn-secondary btn_usuario w-100 py-2">Iniciar como Usuario</a>
+    
     <p class="mt-3 text-center small">
         ¿No tienes cuenta? <a href="registro">Regístrate aquí</a>
     </p>

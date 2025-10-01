@@ -1,7 +1,7 @@
 /* Fondo general */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/c5/Sc%C3%A8ne_de_l%27op%C3%A9ra_Garnier.jpg'); /* Puedes cambiar esta URL por la imagen que prefieras */
+    background-image: url('img/fondo.png'); /* Nueva imagen de fondo */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -50,13 +50,13 @@ body::before {
 .login-card h1 {
     font-weight: 600;
     font-size: 2rem;
-    color: #fff; /* Texto blanco */
+    color: #fff; 
 }
 
 /* Texto debajo del título */
 .login-card p {
     font-size: 0.95rem;
-    color: #e9ecef !important; /* Usamos un blanco suave y !important para sobreescribir Bootstrap */
+    color: #e9ecef !important; 
 }
 
 /* Pestañas */
@@ -81,26 +81,26 @@ body::before {
 /* --- Inputs Estilo Profesional --- */
 
 .login-card .form-control {
-    background: transparent !important; /* Fondo totalmente transparente */
-    border: none; /* Quitamos todos los bordes */
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3); /* Línea inferior sutil */
-    border-radius: 0; /* Sin bordes redondeados para un look limpio */
-    color: #fff !important; /* Texto del input en blanco */
-    transition: border-color 0.3s ease; /* Transición suave para el foco */
-    padding-left: 0; /* Alineamos texto con la etiqueta */
+    background: transparent !important;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3); 
+    border-radius: 0; 
+    color: #fff !important; 
+    transition: border-color 0.3s ease; 
+    padding-left: 0; 
     padding-right: 0;
 }
 
 /* Estilo del input cuando está en foco */
 .login-card .form-control:focus {
-    border-bottom-color: #fff; /* La línea se vuelve blanca y sólida */
-    box-shadow: none; /* Quitamos la sombra azul de Bootstrap */
+    border-bottom-color: #fff; 
+    box-shadow: none; 
 }
 
 /* Estilo de las etiquetas */
 .login-card .form-label {
-    color: #fff; /* Color blanco para las etiquetas */
-    opacity: 0.85; /* La hacemos ligeramente transparente para un look más suave */
+    color: #fff; 
+    opacity: 0.85;
 }
 
 /* Botón */
@@ -121,7 +121,7 @@ body::before {
 .btn-secondary:hover,
 .btn-success:hover,
 .btn-danger:hover {
-    background: #ea580c !important; /* tono más fuerte */
+    background: #ea580c !important;
 }
 
 /* Colores específicos si se quiere diferenciar sutilmente */
@@ -130,7 +130,6 @@ body::before {
 .btn-success { background: #198754 !important; }
 .btn-success:hover { background: #157347 !important; }
 
-/* Estilos específicos para botones de login */
 
 /* Botón Usuario*/
 .btn_usuario { background: #ec9c63 !important; }
