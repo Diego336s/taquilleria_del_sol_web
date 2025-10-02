@@ -108,13 +108,123 @@
     font-weight: bold;
 }
 
+.centrar{
+    text-align: center;
+}
+
 .header-actions {
     display: flex;
     gap: 15px;
     align-items: center;
 }
 
+/* --- Estilos para la Tarjeta de Reservas Recientes (new card) --- */
+
+/* Estilo para el contenedor de la tarjeta, forzando un fondo blanco si es necesario */
+.recent-reservations-card {
+    background-color: #ffffff; /* Fondo blanco */
+    color: #333; /* Texto oscuro */
+    padding: 20px;
+    /* Remover estilos de glassmorphism si se heredan */
+    backdrop-filter: none;
+    border: none; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Encabezado de la tarjeta (ícono + título) */
+.widget-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedor del listado de reservas */
+.reservation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre cada reserva */
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Estilo para cada elemento de la reserva */
+.reservation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    /* Aplicamos el estilo de cristal */
+    background: var(--card-background);
+    backdrop-filter: var(--card-blur);
+    border: var(--card-border);
+    border-radius: var(--border-radius);
+}
+
+/* Estilo específico para los detalles (título y fecha/hora) */
+.item-details {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.item-title {
+    font-weight: 600;
+    font-size: 1em;
+    color: var(--text-color);
+    line-height: 1.2;
+}
+
+.item-date-time {
+    font-size: 0.85em;
+    color: var(--secondary-text);
+}
+
+/* Estilos de las insignias de estado */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Color para estado Confirmado (verde claro) */
+.status-confirmed {
+    background-color: #e6f7e9; 
+    color: #38a169; /* Verde oscuro */
+}
+
+/* Color para estado Pendiente (amarillo claro) */
+.status-pending {
+    background-color: #fffbe6;
+    color: #d69e2e; /* Amarillo oscuro */
+}
+
+/* Color para insignias de conteo (naranja) */
+.status-count {
+    background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Estilo para el botón de ancho completo al final */
+.btn-full-width {
+    width: 100%;
+    margin-top: 0; /* Asegurarse de que no herede un margen grande */
+    padding: 12px 18px; /* Hacerlo un poco más alto */
+    font-size: 1em;
+}
+
 /* === Estilos para botones del Header === */
+/* Cuando .header-actions está en un widget, se comporta como una lista vertical */
+.widget .header-actions {
+    flex-direction: column;
+}
+
+/* Asegura que los botones dentro de las acciones rápidas del widget tengan el mismo ancho */
+.widget .header-actions .btn {
+    width: 100%;
+}
 .header-actions .btn-explore {
     background-color: #602000; /* Naranja vibrante */
     color: white;
@@ -125,6 +235,29 @@
     background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* === Rejilla de Estadísticas (Fila de Widgets) === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.stats-grid .widget-number {
+    font-size: 2em; /* Un poco más pequeño para que quepa bien */
+}
+
+/* Ajustes para los widgets dentro de la rejilla de estadísticas */
+.stats-grid .widget {
+    flex-direction: row; /* Icono y contenido en fila */
+    align-items: center;
+    gap: 15px;
+}
+
+.stats-grid .widget-icon {
+    margin-bottom: 0; /* Quitar margen inferior al icono */
 }
 
 
@@ -473,6 +606,10 @@
         justify-content: space-between;
     }
 
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
+    }
+
     .featured-function .btn-white-border {
         position: static;
         margin-top: 15px;
@@ -480,5 +617,11 @@
 
     .featured-function {
         min-height: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-grid {
+        grid-template-columns: 1fr; /* 1 columna en móvil */
     }
 }

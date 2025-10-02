@@ -8,7 +8,8 @@ $rutasValidas = [
     "registro" => "vista/modulos/registro.php",
     "fogout_contraseña" => "vista/modulos/Auth/olvidarContraseña.php",
     "dashboard-usuario" => "vista/Dashboards/Usuario/Dashboard_Usuario.php",
-    "dashboard-empresa" => "vista/Dashboards/Empresa/Dashboard_Empresa.php"
+    "dashboard-empresa" => "vista/Dashboards/Empresa/Dashboard_Empresa.php",
+    "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php"
 ];
 
 $ruta = $_GET["ruta"] ?? "login";

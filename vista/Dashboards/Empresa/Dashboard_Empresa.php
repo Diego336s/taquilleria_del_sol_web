@@ -6,14 +6,17 @@
   <header class="dashboard-header">
     <div class="user-greeting">
       <span class="icon-circle">🏢</span>
-      <span class="welcome-text">¡Bienvenido, <strong>Gerente de Teatro XYZ</strong>! 👋</span>
+      <span class="welcome-text">¡Bienvenido, <strong>Empresa</strong>! 👋</span>
     </div>
     <div class="header-actions">
       <button class="btn btn-explore">
-        <span class="icon-inline">📈</span> Analíticas
+        <span class="icon-inline">📝</span> Nueva Reserva
       </button>
       <button class="btn btn-profile">
-        <span class="icon-inline">⚙️</span> Configuración
+        <span class="icon-inline">📈</span> Reportes
+      </button>
+      <button class="btn btn-profile">
+        <span class="icon-inline">⚙️</span> Mi Equipo
       </button>
       <span class="icon-circle">📤</span>
     </div>
@@ -26,8 +29,8 @@
       <div class="widget">
         <div class="widget-icon">💰</div>
         <div class="widget-content">
-          <span class="widget-number">$85M</span>
-          <span class="widget-title">Ingresos del Mes</span>
+          <span class="widget-number">85</span>
+          <span class="widget-title">Reservas Activas</span>
           <div class="progress-bar-container">
             <div class="progress-bar-fill orange-bg" style="width: 80%;"></div>
           </div>
@@ -37,19 +40,19 @@
       <div class="widget">
         <div class="widget-icon">🎭</div>
         <div class="widget-content">
-          <span class="widget-number">4</span>
-          <span class="widget-title">Funciones Activas</span>
-          <button class="btn btn-confirm">Gestionar Funciones</button>
+          <span class="widget-number">25</span>
+          <span class="widget-title">Empleados Registrados</span>
+          <button class="btn btn-confirm">Gestionar</button>
         </div>
       </div>
 
       <div class="widget">
-        <div class="widget-icon">📊</div>
         <div class="widget-content">
-          <span class="widget-number">72%</span>
-          <span class="widget-title">Ocupación Promedio</span>
-           <div class="progress-bar-container">
-            <div class="progress-bar-fill orange-bg" style="width: 72%;"></div>
+          <span class="widget-title h3 centrar">Acciones Rápidas</span>
+          <div class="header-actions">
+            <button class="btn btn-confirm">Reservar función</button>
+            <button class="btn btn-profile"><span class="icon-inline">🧾</span> Ver Calendario</button>
+            <button class="btn btn-profile"><span class="icon-inline">⚙️</span> Facturación</button>
           </div>
         </div>
       </div>
@@ -57,8 +60,39 @@
 
     <!-- ======= Columna Derecha (Contenido de Empresa) ======= -->
     <section class="content-area">
+      <div class="stats-grid">
+        <div class="widget">
+          <div class="widget-icon">💸</div>
+          <div class="widget-content">
+            <span class="widget-number">$156k</span>
+            <span class="widget-title">Gastado este año</span>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-icon">🗓️</div>
+          <div class="widget-content">
+            <span class="widget-number">23</span>
+            <span class="widget-title">Eventos Asistidos</span>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-icon">🪑</div>
+          <div class="widget-content">
+            <span class="widget-number">456</span>
+            <span class="widget-title">Asientos Totales</span>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-icon">📈</div>
+          <div class="widget-content">
+            <span class="widget-number">+28%</span>
+            <span class="widget-title">Crecimiento</span>
+          </div>
+        </div>
+      </div>
+
       <div class="featured-function orange-bg">
-        <span class="featured-label">Función más Vendida</span>
+        <span class="featured-label">Proximo Evento</span>
         <h2 class="featured-title">El Fantasma de la Ópera</h2>
         <div class="featured-details">
           <span class="detail-item">📈 95% Ocupación</span>
@@ -69,68 +103,64 @@
       </div>
 
       <div class="billboard-header">
-        <h3 class="section-title">Gestión de Cartelera</h3>
-        <a href="#" class="view-all-link">Añadir Nueva Función +</a>
       </div>
 
-      <div class="billboard-list">
+      <div class="billboard-list br">
 
-        <!-- === Tarjeta de Función === -->
-        <div class="billboard-card">
-          <div class="card-image-container">
-            <img src="https://wp.es.aleteia.org/wp-content/uploads/sites/7/2017/04/web-paint-romeo-juliet-dicksee-public-domain.jpg?resize=620,350&q=75" alt="Romeo y Julieta" class="card-image">
-            <span class="genre-tag tag-drama">Drama Clásico</span>
+        <div class="widget recent-reservations-card">
+          <div class="widget-header">
+            <h3 class="section-title" style="margin: 0; color: #fff;">Reservas Recientes</h3>
           </div>
-          <div class="card-content">
-            <h4 class="card-title">Romeo y Julieta</h4>
-            <p class="card-description">La historia de amor más famosa de todos los tiempos</p>
-            <div class="card-meta">
-              <span>🗓️ 15 Enero</span>
-              <span>🕒 8:00 PM</span>
+
+          <div class="reservation-list">
+            <div class="reservation-item">
+              <div class="item-details">
+                <span class="item-title">Romeo y Julieta</span>
+                <span class="item-date-time">15 Enero - 8:00 PM</span>
+              </div>
+              <span class="status-badge status-confirmed">Confirmada</span>
             </div>
-            <div class="card-booking">
-              <span class="price">Estado: Activa</span>
-              <button class="btn btn-confirm">Editar</button>
+
+            <div class="reservation-item">
+              <div class="item-details">
+                <span class="item-title">El Fantasma de la Ópera</span>
+                <span class="item-date-time">20 Enero - 7:30 PM</span>
+              </div>
+              <span class="status-badge status-pending">Pendiente</span>
             </div>
           </div>
+
+          <button class="btn btn-confirm btn-full-width orange-bg">
+            <span class="icon-inline"></span> Ver Todas las Reservas
+          </button>
+
+
         </div>
 
-        <div class="billboard-card">
-          <div class="card-image-container">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY7KuPBLCW9gVC1mVdfeAp9KjzMrBf-Tme1w&s" alt="El Fantasma de la Ópera" class="card-image">
-            <span class="genre-tag tag-drama">Musical</span>
+         <div class="widget recent-reservations-card">
+          <div class="widget-header">
+            <h3 class="section-title" style="margin: 0; color: #fff;">Análisis Corporativo</h3>
           </div>
-          <div class="card-content">
-            <h4 class="card-title">El fantasma de la opera</h4>
-            <p class="card-description">Un romance de terror ambientado en la Ópera de París.</p>
-            <div class="card-meta">
-              <span>🗓️ 5 Octubre</span>
-              <span>🕒 8:00 PM</span>
-            </div>
-            <div class="card-booking">
-              <span class="price">Estado: Activa</span>
-              <button class="btn btn-confirm">Editar</button>
-            </div>
-          </div>
-        </div>
 
-        <div class="billboard-card">
-          <div class="card-image-container">
-            <img src="https://kritilo.com/wp-content/uploads/2022/05/la-casa-de-bernarda-alba-foto-de-marcosgpunto.jpg" alt="La Casa de Bernarda Alba" class="card-image">
-            <span class="genre-tag tag-drama">Drama</span>
-          </div>
-          <div class="card-content">
-            <h4 class="card-title">La casa de Bernarda Alba</h4>
-            <p class="card-description">Obra teatral en tres actos escrita en 1936 por Federico García Lorca.</p>
-            <div class="card-meta">
-              <span>🗓️ 5 Octubre</span>
-              <span>🕒 8:00 PM</span>
+          <div class="reservation-list">
+            <div class="reservation-item">
+              <div class="item-details">
+                <span class="item-title">Costo promedio por evento</span>
+              </div>
+              <span class="status-badge status-count">$35.000</span>
             </div>
-            <div class="card-booking">
-              <span class="price">Estado: Finalizada</span>
-              <button class="btn btn-confirm">Ver Reporte</button>
+
+            <div class="reservation-item">
+              <div class="item-details">
+                <span class="item-title">Tasa de Asistencia</span>
+              </div>
+              <span class="status-badge status-count">92%</span>
             </div>
           </div>
+
+          <button class="btn btn-confirm btn-full-width orange-bg">
+            <span class="icon-inline"></span> Ver Reporte Completo
+          </button>
         </div>
 
       </div>
