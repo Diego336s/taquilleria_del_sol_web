@@ -37,14 +37,6 @@
         </div>
       </div>
 
-      <div class="widget">
-        <div class="widget-icon">🎭</div>
-        <div class="widget-content">
-          <span class="widget-number">25</span>
-          <span class="widget-title">Empleados Registrados</span>
-          <button class="btn btn-confirm">Gestionar</button>
-        </div>
-      </div>
 
       <div class="widget">
         <div class="widget-content">
