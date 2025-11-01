@@ -3,6 +3,7 @@
 include_once "vista/modulos/1cabesera.php";
 include_once "controlador/usuarioControlador.php"; 
 
+
 $rutasValidas = [
     "login" => "vista/modulos/login.php",
     "registro" => "vista/modulos/registro.php",

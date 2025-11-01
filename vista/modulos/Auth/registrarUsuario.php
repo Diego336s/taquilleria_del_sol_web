@@ -1,4 +1,4 @@
-<form method="post">
+<form id="formulario-registro">
     
     <h2 class="h4 mb-4 text-center">Registro de Usuario</h2>
     
@@ -6,49 +6,61 @@
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_Nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="id_Nombre" name="regNombre" required>
+                <input type="text" class="form-control" id="id_Nombre" name="reg_Nombre" required >
             </div>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_Apellido" class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="id_Apellido" name="regApellido" required>
+                <input type="text" class="form-control" id="id_Apellido" name="reg_Apellido" required>
             </div>
         </div>
         <div class="col-12">
             <div class="mb-3">
                 <label for="id_Documento" class="form-label">Documento</label>
-                <input type="number" class="form-control" id="id_Documento" name="Documento" required>
+                <input type="number" class="form-control" id="id_Documento" name="reg_Documento" required>
             </div>
         </div>
+        <div class="row g-3">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="id_Sexo" class="form-label">Genero</label>
+                <select class="form-control" id="id_Sexo" name="regSexo" required>
+                    <option value="">Seleccionar</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                </select>
+            </div>
+        </div>
+    </div>
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_fecha_Nacimiento" class="form-label">Fecha de nacimiento</label>
-                <input type="date" class="form-control" id="id_fecha_Nacimiento" name="fecha_Nacimiento" required>
+                <input type="date" class="form-control" id="id_fecha_Nacimiento" name="reg_fecha_Nacimiento" required>
             </div>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_Telefono" class="form-label">Teléfono</label>
-                <input type="number" class="form-control" id="id_Telefono" name="Telefono" required>
+                <input type="number" class="form-control" id="id_Telefono" name="reg_Telefono" required>
             </div>
         </div>
         <div class="col-12">
             <div class="mb-3">
-                <label for="regEmail" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="regEmail" name="regEmail" required>
+                <label for="id_Email" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" id="id_Email" name="reg_Email" required>
             </div>
         </div>
         <div class="col-12">
             <div class="mb-3">
-                <label for="regPassword" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="regPassword" name="regPassword" required>
+                <label for="id_Clave" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="id_Clave" name="reg_Clave" required>
             </div>
         </div>
         <div class="col-12">
             <div class="mb-3">
-                <label for="regPasswordConfirm" class="form-label">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="regPasswordConfirm" name="regPasswordConfirm" required>
+                <label for="id_ClaveConfirm" class="form-label">Confirmar contraseña</label>
+                <input type="password" class="form-control" id="id_ClaveConfirm" name="reg_ClaveConfirm" required>
             </div>
         </div>
     </div>
