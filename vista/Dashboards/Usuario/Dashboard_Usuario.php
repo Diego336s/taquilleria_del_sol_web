@@ -5,16 +5,19 @@
   <header class="dashboard-header">
     <div class="user-greeting">
       <span class="icon-circle">👤</span>
-      <span class="welcome-text">¡Bienvenido, <strong>María</strong>! 👋</span>
+      <span class="welcome-text">¡Bienvenido, <strong id="nombre-usuario">Usuario</strong>! 👋</span>
     </div>
     <div class="header-actions">
       <button class="btn btn-explore">
         <span class="icon-inline">✨</span> Explorar Teatro
       </button>
       <button class="btn btn-profile">
-        <span class="icon-inline"></span> Mi Perfil
+        <span class="icon-inline">👤</span> Mi Perfil
       </button>
-      <span class="icon-circle">📤</span>
+      <button class="btn btn-profile" id="btnLogout" onclick="confirmLogout()">
+        <span class="icon-inline">🚪</span> Cerrar Sesión
+      </button>
+
     </div>
   </header>
 

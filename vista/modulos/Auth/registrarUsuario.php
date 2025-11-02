@@ -1,12 +1,12 @@
-<form id="formulario-registro">
-    
+<form id="formulario-registro" novalidate>
+
     <h2 class="h4 mb-4 text-center">Registro de Usuario</h2>
-    
+
     <div class="row g-3">
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_Nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="id_Nombre" name="reg_Nombre" required >
+                <input type="text" class="form-control" id="id_Nombre" name="reg_Nombre" required>
             </div>
         </div>
         <div class="col-md-6">
@@ -21,18 +21,16 @@
                 <input type="number" class="form-control" id="id_Documento" name="reg_Documento" required>
             </div>
         </div>
-        <div class="row g-3">
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_Sexo" class="form-label">Genero</label>
-                <select class="form-control" id="id_Sexo" name="regSexo" required>
+                <select class="form-select" id="id_Sexo" name="regSexo" required>
                     <option value="">Seleccionar</option>
                     <option value="M">Masculino</option>
                     <option value="F">Femenino</option>
                 </select>
             </div>
         </div>
-    </div>
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_fecha_Nacimiento" class="form-label">Fecha de nacimiento</label>
@@ -54,17 +52,27 @@
         <div class="col-12">
             <div class="mb-3">
                 <label for="id_Clave" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="id_Clave" name="reg_Clave" required>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="id_Clave" name="reg_Clave" required>
+                    <button class="btn btn-outline-secondary" type="button" id="toggleBtn_Clave">
+                        <i class="fas fa-eye" id="toggleIcon_Clave"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="col-12">
             <div class="mb-3">
                 <label for="id_ClaveConfirm" class="form-label">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="id_ClaveConfirm" name="reg_ClaveConfirm" required>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="id_ClaveConfirm" name="reg_ClaveConfirm" required>
+                    <button class="btn btn-outline-secondary" type="button" id="toggleBtn_ClaveConfirm">
+                        <i class="fas fa-eye" id="toggleIcon_ClaveConfirm"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    
+
     <button type="submit" class="btn btn-success w-100 py-2 mt-4">Registrarme</button>
 
     <p class="mt-3 text-center small">
