@@ -6,7 +6,7 @@
   <header class="dashboard-header">
     <div class="user-greeting">
       <span class="icon-circle">🏢</span>
-      <span class="welcome-text">¡Bienvenido, <strong>Empresa</strong>! 👋</span>
+      <span class="welcome-text">¡Bienvenido,<strong id="nombreEmpresa"></strong></span>
     </div>
     <div class="header-actions">
       <button class="btn btn-explore">

@@ -16,8 +16,7 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="index.php?ruta=fogout_contraseña">¿Olvidaste tu contraseña?</a>
-
+        <a href="index.php?ruta=recibir_correo">¿Olvidaste tu contraseña?</a>
     </div>
     <button type="submit" class="btn btn-secondary btn_usuario w-100 py-2">Iniciar como Usuario</button>
     <p class="mt-3 text-center small">
