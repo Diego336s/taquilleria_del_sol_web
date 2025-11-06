@@ -5,15 +5,12 @@
   <header class="dashboard-header">
     <div class="user-greeting">
       <span class="icon-circle">👤</span>
-      <span class="welcome-text">¡Bienvenido, <strong id="nombre-usuario">Usuario</strong>! 👋</span>
+      <span class="welcome-text">¡Bienvenido,<strong id="nombreUsuario"></strong></span>
     </div>
     <div class="header-actions">
-      <button class="btn btn-explore">
-        <span class="icon-inline">✨</span> Explorar Teatro
-      </button>
-      <button class="btn btn-profile">
+      <a href="index.php?ruta=mi_perfil" class="btn btn-explore">
         <span class="icon-inline">👤</span> Mi Perfil
-      </button>
+      </a>
       <button class="btn btn-profile" id="btnLogout" onclick="confirmLogout()">
         <span class="icon-inline">🚪</span> Cerrar Sesión
       </button>

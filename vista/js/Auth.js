@@ -46,35 +46,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //Event Listener para enviar codigo de restablecimiento de contraseña
-    const codigoVerificacion = document.getElementById('form_codigo_verificacion');
-    if (codigoVerificacion) {
-        codigoVerificacion.addEventListener('submit', async function (event) {
+    const recibir_Correo = document.getElementById('form_correo');
+    if (recibir_Correo) {
+        recibir_Correo.addEventListener('submit', async function (event) {
             event.preventDefault();
-            await ctrCodigoVerificacion();
+            await ctrRecibirCorreo();
         });
     }
 
-    //Event Listener para restablecimiento de contraseña
+    //Event Listener para verificar el codigo de restablecimiento de contraseña
+    const codigoVerificacion = document.getElementById('form_verificar_codigo');
+    if (codigoVerificacion) {
+        codigoVerificacion.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            await ctrVerificarCodigo();
+        });
+    }
+
     const restablecerClave = document.getElementById('form_restablecer_clave');
     if (restablecerClave) {
         restablecerClave.addEventListener('submit', async function (event) {
             event.preventDefault();
-            await ctrRestablecerClave();
+            await ctrRestablecerClaveGeneral();
         });
     }
 
 
-
-
     //Event Listener para LOGOUT MANUAL
-    const logoutBtn = document.getElementById('logout-button');
+    const logoutBtn = document.getElementById('logout-button') || document.getElementById('btnLogout');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', confirmLogout);
     }
-
-
-
-
 
 
     // Configurar la funcionalidad de "Ver/Ocultar Contraseña" para cada formulario de login
@@ -106,7 +108,8 @@ function checkAuthAndRedirect() {
     const ruta = params.get('ruta') || '';
 
     const protectedRoutes = ["dashboard-usuario", "dashboard-empresa", "dashboard-admin"];
-    const publicRoutes = ["login", "registro", "forgot_contraseña", "restablecer_contraseña"];
+    // Acepta ambas variantes: "forgot_contraseña" y el typo "fogout_contraseña"
+    const publicRoutes = ["login", "registro", "forgot_contraseña", "fogout_contraseña", "restablecer_contraseña"];
 
     const isProtectedRoute = protectedRoutes.includes(ruta);
     const isPublicRoute = publicRoutes.includes(ruta) || ruta === "";
@@ -125,13 +128,13 @@ function checkAuthAndRedirect() {
 }
 
 //==========================================================================
-// FUNCION: CODIGO DE VERIFICACIÓN (RESTABLECER CONTRASEÑA)
+// FUNCION: RECIBIR CODIGO DE VERIFICACIÓN (RESTABLECER CONTRASEÑA)
 //==========================================================================
 
-async function ctrCodigoVerificacion() {
-    const correo = document.getElementById('id_correo_verificacion')?.value.trim();
+async function ctrRecibirCorreo() { 
+    const email = document.getElementById('id_correo_verificacion')?.value.trim();
 
-    if (!correo) {
+    if (!email) {
         mostrarAlerta('error', 'Campo requerido', 'Por favor ingresa tu correo.');
         return;
     }
@@ -143,26 +146,32 @@ async function ctrCodigoVerificacion() {
         didOpen: () => { Swal.showLoading(); }
     });
 
-    const urlAPI = ApiConexion + "codigo/verificacion";
+    const urlAPI = ApiConexion + "envio/codigo/verificacion";
 
     try {
         const respuesta = await fetch(urlAPI, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ correo })
+            body: JSON.stringify({ email })
         });
 
         const data = await respuesta.json();
         Swal.close();
 
         // Verificar si el estado HTTP fue exitoso (200)
-        if (respuesta.ok && (data.success || data.mensaje || data.message)) {
+        if (respuesta.ok && data.success === true) {
+
             Swal.fire({
                 icon: "success",
                 title: "Código enviado",
                 text: data.mensaje || data.message,
                 showConfirmButton: true,
             });
+
+            //Redirigir a la pestaña de verificar codigo
+            setTimeout(() => {
+                window.location.replace("index.php?ruta=verificar_codigo&email=" + email);
+            }, 1000)
         } else {
             // Manejar errores del backend
             mostrarAlerta(
@@ -180,73 +189,159 @@ async function ctrCodigoVerificacion() {
 
 }
 
+//==========================================================================
+//FUNCION: VERIFICACIÓN DE CODIGO (RESTABLECER CONTRASEÑA)
+//==========================================================================
 
-//Restablecer contraseña
-async function ctrRestablecerClave() {
-    const datos = {
-        codigo_recuperacion: document.getElementById('id_codigo')?.value || '',
-        clave: document.getElementById('id_nueva_clave')?.value || '',
-        confirmar_clave: document.getElementById('id_confirmar_nueva_clave')?.value || '',
-    };
+async function ctrVerificarCodigo() {
 
-    if (datos.clave !== datos.confirmar_clave) {
-        mostrarAlerta("error", "Error", "Las contraseñas no coinciden.");
+    //Trae correo como parametro
+    const params = new URLSearchParams(window.location.search);
+    const correo = params.get('email');
+
+    const codigo = document.getElementById('id_codigo_verificacion')?.value.trim();
+
+    if (!correo | !codigo) {
+        mostrarAlerta('error', 'Campo requerido', 'Por favor ingresa tu código.');
         return;
-    };
-
-
-    if (datos.clave.length < 6) {
-        mostrarAlerta("errror", "Error", "Las contraseñas deben tener al menos 6 caracteres.");
-        return;
-    };
+    }
 
     Swal.fire({
-        title: 'Validando Datos...',
-        text: 'Por favor, espere un momento.',
+        title: 'Verificando código...',
+        text: 'Por favor, espera mientras verificamos el código.',
         allowOutsideClick: false,
         didOpen: () => { Swal.showLoading(); }
+
     });
 
-    const urlAPI = ApiConexion + "restablecer/clave";
+    const urlAPI = ApiConexion + "verificar/codigo";
 
     try {
         const respuesta = await fetch(urlAPI, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datos)
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ correo, codigo })
         });
 
         const data = await respuesta.json();
         Swal.close();
 
-        if (data.success === true) {
+        // Verificar si el estado HTTP fue exitoso (200)
+        if (respuesta.ok && (data.success || data.mensaje || data.message)) {
             Swal.fire({
                 icon: "success",
-                title: 'Restablecimiento Exitoso!',
-                text: data.message || 'Ahora puedes Iniciar Sesión.',
-                showConfirmButton: false,
-                timer: 1000
+                title: "Código Verificado",
+                text: data.mensaje || data.message,
+                showConfirmButton: true,
             });
 
+            //Redirigir a la pestaña de restablecer contraseña
             setTimeout(() => {
-                window.location.replace("index.php?ruta=login");
-            }, 1000);
-
-        } else if (data.success === false) {
-            let mensajeDetallado = data.message;
-            mostrarAlerta('error', 'Error al restablecer contraseña:', mensajeDetallado);
+                window.location.replace("index.php?ruta=restablecer_contraseña&correo=" + correo);
+            }, 1000)
         } else {
-            mostrarAlerta('error', 'Error al registrar', `Ocurrió un error inesperado del servidor. (Código: ${respuesta.status})`);
+            // Manejar errores del backend
+            mostrarAlerta(
+                'error',
+                'Error',
+                data.message || data.mensaje || data.errors?.correo?.[0] || "No se pudo enviar el código."
+            );
         }
 
     } catch (error) {
         Swal.close();
-        mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor API.');
+        console.error("Error:", error);
+        mostrarAlerta('error', 'Error de conexión', 'No se pudo conectar con el servidor.');
     }
-
 
 }
 
+//==========================================================================
+//FUNCION: RESTABLECER CONTRASEÑA CLIENTE
+//==========================================================================
+
+async function ctrRestablecerClaveGeneral() {
+    const params = new URLSearchParams(window.location.search);
+    const correo = params.get('correo') || params.get('email');
+    const clave = document.getElementById('id_nueva_clave')?.value.trim();
+    const confirmar_nueva_clave = document.getElementById('id_confirmar_nueva_clave')?.value.trim();
+
+    if (!clave || !confirmar_nueva_clave) {
+        mostrarAlerta("error", "Error", "Todos los campos son obligatorios.");
+        return;
+    }
+
+    if (clave !== confirmar_nueva_clave) {
+        mostrarAlerta("error", "Error", "Las contraseñas no coinciden.");
+        return;
+    }
+
+    if (clave.length < 6) {
+        mostrarAlerta("error", "Error", "Las contraseñas deben tener al menos 6 caracteres.");
+        return;
+    }
+
+    Swal.fire({
+        title: 'Restableciendo...',
+        text: 'Por favor espera un momento.',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    const endpoints = [
+        ApiConexion + "olvide/clave/admin",
+        ApiConexion + "olvide/clave/empresa",
+        ApiConexion + "olvide/clave/cliente"
+    ];
+
+    let exito = false;
+    let mensajeError = "";
+
+    // 🔹 Función auxiliar para evitar [object Object]
+    const obtenerMensaje = (data) => {
+        if (!data) return "Error desconocido.";
+        if (typeof data.message === "string") return data.message;
+        if (typeof data.mensaje === "string") return data.mensaje;
+        if (typeof data.message === "object") return JSON.stringify(data.message);
+        return "Error inesperado del servidor.";
+    };
+    for (const url of endpoints) {
+        try {
+            const respuesta = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ correo, clave })
+            });
+
+            const data = await respuesta.json();
+
+            if (data.success === true) {
+                exito = true;
+                Swal.fire({
+                    icon: "success",
+                    title: "Restablecimiento Exitoso",
+                    text: obtenerMensaje(data) || "Contraseña actualizada correctamente",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+
+                setTimeout(() => window.location.replace("index.php?ruta=login"), 1500);
+                break;
+            } else {
+                // Guardamos el mensaje de error si la respuesta no es de éxito.
+                mensajeError = obtenerMensaje(data);
+            }
+        } catch (error) {
+            console.error("Error al intentar en:", url, error);
+            mensajeError = "No se pudo conectar con el servidor. Revisa tu conexión a internet.";
+        }
+    }
+
+    if (!exito) {
+        Swal.close(); // Cerramos el 'loading' solo si no hubo éxito.
+        mostrarAlerta("error", "Error", mensajeError || "No se encontró ninguna cuenta con este correo.");
+    }
+}
 
 
 // =========================================================================
@@ -348,11 +443,24 @@ async function ctrLoginUsuario() {
 
         const data = await respuesta.json();
 
-        if (data.success === true) {
-            if (data.token) {
-                sessionStorage.setItem('userToken', data.token);
-                if (data.user) {
-                    sessionStorage.setItem('userData', JSON.stringify(data.user));
+        console.log("🔹 Respuesta completa del backend:", data);
+        console.log("🔹 Estado HTTP:", respuesta.status);
+
+        // Normalizar estructura de respuesta desde el backend
+        const success = data?.success === true || data?.status === true || data?.status === 'success';
+        const token = data?.token || data?.access_token || data?.data?.token;
+        const user = data?.user || data?.data?.user || data?.cliente;
+
+        console.log("🔹 Success:", success);
+        console.log("🔹 Token recibido:", token);
+        console.log("🔹 Usuario recibido:", user);
+
+        if (success) {
+            if (token) {
+                sessionStorage.setItem('userToken', token);
+                console.log("Token", data);
+                if (user) {
+                    sessionStorage.setItem('userData', JSON.stringify(user));
                 }
             } else {
                 Swal.close();
@@ -372,15 +480,10 @@ async function ctrLoginUsuario() {
                 window.location.replace("index.php?ruta=dashboard-usuario");
             }, 1000);
 
-        } else if (data.success === false) {
-            Swal.close();
-            let mensajeDetallado = data.message;
-
-            mostrarAlerta('error', 'Error al iniciar sesión', mensajeDetallado);
-
         } else {
             Swal.close();
-            mostrarAlerta('error', 'Error al iniciar sesión', `Ocurrió un error inesperado del servidor. (Código: ${respuesta.status})`);
+            const mensajeDetallado = data?.message || 'Credenciales incorrectas o solicitud inválida.';
+            mostrarAlerta('error', 'Error al iniciar sesión', mensajeDetallado);
         }
     } catch (error) {
         Swal.close();
@@ -416,11 +519,16 @@ async function ctrLoginEmpresa() {
 
         const data = await respuesta.json();
 
-        if (data.success === true) {
-            if (data.token) {
-                sessionStorage.setItem('userToken', data.token);
-                if (data.user) {
-                    sessionStorage.setItem('userData', JSON.stringify(data.user));
+        // Normalizar estructura de respuesta desde el backend
+        const success = data?.success === true || data?.status === true || data?.status === 'success';
+        const token = data?.token || data?.access_token || data?.data?.token;
+        const user = data?.user || data?.data?.user || data?.empresa;
+
+        if (success) {
+            if (token) {
+                sessionStorage.setItem('userToken', token);
+                if (user) {
+                    sessionStorage.setItem('userData', JSON.stringify(user));
                 }
             } else {
                 Swal.close();
@@ -440,15 +548,10 @@ async function ctrLoginEmpresa() {
                 window.location.replace("index.php?ruta=dashboard-empresa");
             }, 1000);
 
-        } else if (data.success === false) {
-            Swal.close();
-            let mensajeDetallado = data.message;
-
-            mostrarAlerta('error', 'Error al iniciar sesión', mensajeDetallado);
-
         } else {
             Swal.close();
-            mostrarAlerta('error', 'Error al iniciar sesión', `Ocurrió un error inesperado del servidor. (Código: ${respuesta.status})`);
+            const mensajeDetallado = data?.message || 'Credenciales incorrectas o solicitud inválida.';
+            mostrarAlerta('error', 'Error al iniciar sesión', mensajeDetallado);
         }
     } catch (error) {
         Swal.close();
@@ -485,11 +588,16 @@ async function ctrLoginAdmin() {
 
         const data = await respuesta.json();
 
-        if (data.success === true) {
-            if (data.token) {
-                sessionStorage.setItem('userToken', data.token);
-                if (data.user) {
-                    sessionStorage.setItem('userData', JSON.stringify(data.user));
+        // Normalizar estructura de respuesta desde el backend
+        const success = data?.success === true || data?.status === true || data?.status === 'success';
+        const token = data?.token || data?.access_token || data?.data?.token;
+        const user = data?.user || data?.data?.user || data?.admin;
+
+        if (success) {
+            if (token) {
+                sessionStorage.setItem('userToken', token);
+                if (user) {
+                    sessionStorage.setItem('userData', JSON.stringify(user));
                 }
             } else {
                 Swal.close();
@@ -509,15 +617,10 @@ async function ctrLoginAdmin() {
                 window.location.replace("index.php?ruta=dashboard-admin");
             }, 1000);
 
-        } else if (data.success === false) {
-            Swal.close();
-            let mensajeDetallado = data.message;
-
-            mostrarAlerta('error', 'Error al iniciar sesión', mensajeDetallado);
-
         } else {
             Swal.close();
-            mostrarAlerta('error', 'Error al iniciar sesión', `Ocurrió un error inesperado del servidor. (Código: ${respuesta.status})`);
+            const mensajeDetallado = data?.message || 'Credenciales incorrectas o solicitud inválida.';
+            mostrarAlerta('error', 'Error al iniciar sesión', mensajeDetallado);
         }
     } catch (error) {
         Swal.close();
@@ -556,6 +659,13 @@ async function ctrLogoutUsuario() {
         return;
     }
 
+    Swal.fire({
+        title: 'Cerrando Sesión...',
+        text: 'Espere un momento.',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
+
     const urlAPI = ApiConexion + "logout/cliente";
 
     try {
@@ -573,7 +683,13 @@ async function ctrLogoutUsuario() {
             // Logout exitoso
             sessionStorage.removeItem('userToken');
             sessionStorage.removeItem('userData');
-            mostrarAlerta('success', 'Sesión cerrada', 'Has cerrado sesión correctamente.');
+            Swal.fire({
+                icon: "success",
+                title: '¡Cerrar Sesión Exitoso!',
+                text: data.message || 'Has cerrado sesión correctamente.',
+                showConfirmButton: false,
+                timer: 1000
+            });
 
             // Redirige después de un pequeño delay
             setTimeout(() => {
@@ -747,21 +863,58 @@ async function ctrLogoutAdmin() {
 
 function populateUserData() {
     const userDataString = sessionStorage.getItem('userData');
-    if (userDataString) {
-        try {
-            const userData = JSON.parse(userDataString);
-            const nombreUsuarioElement = document.getElementById('nombre-usuario');
 
-            if (nombreUsuarioElement && userData.nombre) {
-                // Capitalizamos la primera letra del nombre para un mejor formato
-                const nombreCapitalizado = userData.nombre.charAt(0).toUpperCase() + userData.nombre.slice(1).toLowerCase();
-                nombreUsuarioElement.textContent = nombreCapitalizado;
+    if (!userDataString) {
+        console.warn('⚠️ No hay datos de usuario en sessionStorage.');
+        return;
+    }
+
+    try {
+        const userData = JSON.parse(userDataString);
+        console.log("👤 Datos del usuario cargados desde sessionStorage:", userData);
+
+        // -----------------------------
+        // 🧍 Dashboard de Usuario
+        // -----------------------------
+        const nombreUsuarioEl = document.getElementById('nombreUsuario');
+        if (nombreUsuarioEl) {
+            const nombre = userData.nombre;
+            if (nombre) {
+                nombreUsuarioEl.textContent = " " + nombre;
             }
-        } catch (e) {
-            console.error('Error al parsear los datos del usuario desde sessionStorage:', e);
         }
+
+        // -----------------------------
+        // 🏢 Dashboard de Empresa
+        // -----------------------------
+        const nombreEmpresaEl = document.getElementById('nombreEmpresa');
+        if (nombreEmpresaEl) {
+            const nombreEmpresa = userData.nombre_empresa;
+            if (nombreEmpresa) {
+                nombreEmpresaEl.textContent = " " + nombreEmpresa;
+            }
+        }
+
+        // -----------------------------
+        // 👨‍💼 Dashboard de Administrador
+        // -----------------------------
+        const nombreAdminEl = document.getElementById('nombreAdmin');
+        if (nombreAdminEl) {
+            const nombreAdmin = userData.nombres || userData.apellidos;
+            if (nombreAdmin) {
+                nombreAdminEl.textContent = " " + nombreAdmin;
+            }
+        }
+
+    } catch (e) {
+        console.error('❌ Error al parsear los datos del usuario desde sessionStorage:', e);
     }
 }
+
+// ✅ Ejecutar al cargar la página
+document.addEventListener("DOMContentLoaded", populateUserData);
+
+
 
 
 // =========================================================================

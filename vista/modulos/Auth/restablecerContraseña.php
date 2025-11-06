@@ -5,13 +5,8 @@
 
                 <h1 class="h4 mb-3 text-center">Restablecer Contraseña</h1>
                 <p class="text-center text-white-50 small mb-4">
-                    Ingresa el código que recibiste en tu correo y tu nueva contraseña.
+                    Ingresa tu nueva contraseña.
                 </p>
-
-                <div class="mb-3">
-                    <label for="id_codigo" class="form-label">Código de Verificación</label>
-                    <input type="number" class="form-control" id="id_codigo" name="codigo_verificacion" required>
-                </div>
 
                 <div class="mb-3">
                     <label for="id_nueva_clave" class="form-label">Nueva Contraseña</label>

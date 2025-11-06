@@ -14,6 +14,10 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-secondary btn_admin w-100 py-2">Iniciar como Usuario</button>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="index.php?ruta=recibir_correo">¿Olvidaste tu contraseña?</a>
+    </div>
+
+    <button type="submit" class="btn btn-secondary btn_admin w-100 py-2">Iniciar como Administrador</button>
 
 </form>
