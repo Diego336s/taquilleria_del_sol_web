@@ -11,6 +11,7 @@ $rutasValidas = [
     "verificar_codigo" => "vista/modulos/Auth/verificar_codigo.php",
     "restablecer_contraseña" => "vista/modulos/Auth/restablecerContraseña.php",
     "recibir_correo" => "vista/modulos/Auth/recibir_correo.php",
+    "mi_perfil" => "vista\Dashboards\Usuario\Mi_Perfil.php",
     "dashboard-usuario" => "vista/Dashboards/Usuario/Dashboard_Usuario.php",
     "dashboard-empresa" => "vista/Dashboards/Empresa/Dashboard_Empresa.php",
     "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php"
