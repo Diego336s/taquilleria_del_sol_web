@@ -12,9 +12,10 @@
       <button class="btn btn-explore">
         <span class="icon-inline">⚙️</span> configuración
       </button>
-      <button class="btn btn-profile">
+      <button class="btn btn-profile" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Reportes.php'">
         <span class="icon-inline">📊</span> Reportes
       </button>
+
       <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutAdmin()">
         <span class="icon-inline">🚪</span> Cerrar Sesión
       </button>
@@ -41,7 +42,8 @@
         <div class="widget-content">
           <span class="widget-number">42</span>
           <span class="widget-title">Empresas Registradas</span>
-          <button class="btn btn-confirm">Gestionar</button>
+          <button class="btn btn-confirm" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Empresas/Ver_Empresas.php'">Gestionar</button>
+
         </div>
       </div>
 
@@ -120,11 +122,10 @@
             </div>
           </div>
 
-          <button class="btn btn-confirm btn-full-width orange-bg">
-            <span class="icon-inline"></span> 👥    Ver Todos los Usuarios
+          <button class="btn btn-confirm btn-full-width orange-bg"
+                  onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php'">
+            👥 Ver Todos los Usuarios
           </button>
-
-
         </div>
 
          <div class="widget recent-reservations-card">
@@ -151,7 +152,7 @@
             </div>
           </div>
 
-          <button class="btn btn-confirm btn-full-width orange-bg">
+          <button class="btn btn-confirm btn-full-width orange-bg"   onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/PanelConfiguración.php'">
             <span class="icon-inline"></span>⚙️ Panel de Configuración
           </button>
          </div>
@@ -190,9 +191,7 @@
             </div>
           </div>
           
-          
 
-        
          </div>
     </section>
   </main>
