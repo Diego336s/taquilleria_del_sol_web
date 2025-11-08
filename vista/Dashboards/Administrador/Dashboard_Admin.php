@@ -9,8 +9,11 @@
       <span class="welcome-text">¡Bienvenido,<strong id="nombreAdmin"></strong></span>
     </div>
     <div class="header-actions">
-      <button class="btn btn-explore">
+      <button class="btn btn-explore" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Configuracion.php'">
         <span class="icon-inline">⚙️</span> configuración
+      </button>
+            <button class="btn btn-explore" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Mi_Perfil.php'">
+        <span class="icon-inline">⚙️</span> Mi perfil
       </button>
       <button class="btn btn-profile" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Reportes.php'">
         <span class="icon-inline">📊</span> Reportes
@@ -152,7 +155,7 @@
             </div>
           </div>
 
-          <button class="btn btn-confirm btn-full-width orange-bg"   onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/PanelConfiguración.php'">
+          <button class="btn btn-confirm btn-full-width orange-bg" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/PanelConfiguración.php'">
             <span class="icon-inline"></span>⚙️ Panel de Configuración
           </button>
          </div>
