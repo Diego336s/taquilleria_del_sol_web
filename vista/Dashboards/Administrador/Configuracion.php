@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Configuración del Sistema</title>
+  <title>Configuración del Administrador</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <style>
+    /* === ESTILOS BASE === */
     body {
       background-image: url('../../css/img/fondo.png');
       background-size: cover;
@@ -19,60 +20,25 @@
 
     .dashboard-container {
       backdrop-filter: blur(12px);
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: rgba(255, 255, 255, 0.12);
       border-radius: 20px;
-      padding: 30px;
-      margin: 40px auto;
+      padding: 40px;
+      margin: 60px auto;
       width: 90%;
-      max-width: 950px;
-      box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
+      max-width: 1000px;
+      box-shadow: 0 10px 30px rgba(255, 107, 31, 0.6);
       animation: fadeIn 1s ease;
     }
 
     h1 {
       text-align: center;
       color: #fff;
-      margin-bottom: 30px;
-      font-size: 2rem;
+      margin-bottom: 40px;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
     }
 
-    .config-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 20px rgba(255, 107, 31, 0.4);
-      transition: 0.3s;
-      text-align: center;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .card h3 {
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-    }
-
-    .card input, .card select {
-      width: 90%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      font-size: 15px;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.25);
-      color: #fff;
-    }
-
+    /* === BOTONES === */
     .btn {
       padding: 12px 18px;
       border: none;
@@ -93,6 +59,12 @@
       transform: scale(1.05);
     }
 
+    .btn-danger {
+      background-color: #d63031;
+      color: white;
+      box-shadow: 0 5px 15px rgba(214, 48, 49, 0.5);
+    }
+
     .btn-back {
       position: fixed;
       top: 25px;
@@ -101,6 +73,45 @@
       color: white;
       z-index: 999;
       box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+    }
+
+    /* === TARJETAS DE CONFIGURACIÓN === */
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(255, 107, 31, 0.3);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .card input,
+    .card select {
+      width: 90%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
     }
 
     .switch {
@@ -152,126 +163,116 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* === FORMULARIO CONTRASEÑA === */
+    .password-section input {
+      margin-bottom: 10px;
+    }
+
+    .footer-buttons {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    /* === ALERTAS PERSONALIZADAS === */
+    .alerta {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 107, 31, 0.95);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(255, 107, 31, 0.6);
+      animation: fadeIn 0.5s ease;
+      display: none;
+    }
   </style>
 </head>
+
 <body>
 
   <button class="btn btn-back" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Dashboard_Admin.php'">⬅️ Volver</button>
 
   <div class="dashboard-container">
-    <h1>⚙️ Panel de Configuración Avanzada</h1>
+    <h1>⚙️ Configuración del Administrador</h1>
 
-    <div class="config-grid">
-
-      <!-- Tema -->
-      <div class="card">
-        <h3>🎨 Tema de la Interfaz</h3>
-        <select id="tema">
-          <option value="claro">🌞 Claro</option>
-          <option value="oscuro">🌙 Oscuro</option>
-          <option value="naranja">🔥 Naranja</option>
-        </select>
+      <div class="card password-section">
+        <h3>🔒 Cambiar Contraseña</h3>
+        <input type="password" id="passActual" placeholder="Contraseña actual">
+        <input type="password" id="passNueva" placeholder="Nueva contraseña">
+        <input type="password" id="passConfirm" placeholder="Confirmar nueva contraseña">
+        <button class="btn btn-primary" onclick="cambiarContrasena()">Actualizar</button>
       </div>
 
-      <!-- Idioma -->
       <div class="card">
-        <h3>🌍 Idioma</h3>
-        <select id="idioma">
-          <option value="es">Español</option>
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-        </select>
+        <h3>🚪 Cerrar Sesión</h3>
+        <p>Finaliza tu sesión de administrador.</p>
+        <button class="btn btn-danger" onclick="cerrarSesion()">Cerrar Sesión</button>
       </div>
-
-      <!-- Notificaciones -->
-      <div class="card">
-        <h3>🔔 Notificaciones</h3>
-        <label class="switch">
-          <input type="checkbox" id="notificaciones">
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <!-- Sonido -->
-      <div class="card">
-        <h3>🔊 Sonido del Sistema</h3>
-        <label class="switch">
-          <input type="checkbox" id="sonido">
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <!-- Fondo dinámico -->
-      <div class="card">
-        <h3>🖼 Fondo de Pantalla</h3>
-        <select id="fondo">
-          <option value="fondo1">✨ Brillante</option>
-          <option value="fondo2">🌌 Nocturno</option>
-          <option value="fondo3">🌄 Amanecer</option>
-        </select>
-      </div>
-
-      <!-- Modo Mantenimiento -->
-      <div class="card">
-        <h3>🛠 Modo Mantenimiento</h3>
-        <label class="switch">
-          <input type="checkbox" id="mantenimiento">
-          <span class="slider"></span>
-        </label>
-      </div>
-
     </div>
 
-    <div style="text-align:center; margin-top:30px;">
-      <button class="btn btn-primary" onclick="guardarConfiguracion()">💾 Guardar Configuración</button>
-    </div>
-  </div>
+  <div id="alerta" class="alerta"></div>
 
   <script>
-    // Cargar configuración previa (localStorage)
-    document.addEventListener("DOMContentLoaded", () => {
-      const config = JSON.parse(localStorage.getItem("configSistema")) || {};
-      document.getElementById("tema").value = config.tema || "claro";
-      document.getElementById("idioma").value = config.idioma || "es";
-      document.getElementById("notificaciones").checked = config.notificaciones || false;
-      document.getElementById("sonido").checked = config.sonido || false;
-      document.getElementById("fondo").value = config.fondo || "fondo1";
-      document.getElementById("mantenimiento").checked = config.mantenimiento || false;
-      aplicarTema(config.tema);
-    });
+   
+    // === Cambiar contraseña ===
+    function cambiarContrasena() {
+      const actual = document.getElementById("passActual").value;
+      const nueva = document.getElementById("passNueva").value;
+      const confirm = document.getElementById("passConfirm").value;
 
-    // Guardar configuración
-    function guardarConfiguracion() {
-      const config = {
-        tema: document.getElementById("tema").value,
-        idioma: document.getElementById("idioma").value,
-        notificaciones: document.getElementById("notificaciones").checked,
-        sonido: document.getElementById("sonido").checked,
-        fondo: document.getElementById("fondo").value,
-        mantenimiento: document.getElementById("mantenimiento").checked,
-      };
+      if (!actual || !nueva || !confirm) {
+        mostrarAlerta("⚠️ Completa todos los campos");
+        return;
+      }
 
-      localStorage.setItem("configSistema", JSON.stringify(config));
-      aplicarTema(config.tema);
+      if (nueva !== confirm) {
+        mostrarAlerta("❌ Las contraseñas no coinciden");
+        return;
+      }
 
-      alert("✅ Configuración guardada exitosamente");
+      if (nueva.length < 6) {
+        mostrarAlerta("🔑 La nueva contraseña debe tener al menos 6 caracteres");
+        return;
+      }
+
+      // Simulación de cambio (sin backend)
+      mostrarAlerta("✅ Contraseña actualizada correctamente");
+      document.getElementById("passActual").value = "";
+      document.getElementById("passNueva").value = "";
+      document.getElementById("passConfirm").value = "";
     }
 
-    // Aplicar tema visual
+    // === Cerrar sesión ===
+    function cerrarSesion() {
+      mostrarAlerta("🚪 Cerrando sesión...");
+      setTimeout(() => {
+        window.location.href = "/taquilleria_del_sol_web/vista/modulos/login.php";
+      }, 1500);
+    }
+
+    // === Aplicar tema visual ===
     function aplicarTema(tema) {
       switch (tema) {
         case "oscuro":
           document.body.style.backgroundColor = "#1a1a1a";
-          document.body.style.color = "#fff";
           break;
         case "naranja":
           document.body.style.backgroundColor = "#ff6b1f";
-          document.body.style.color = "#fff";
           break;
         default:
           document.body.style.backgroundColor = "";
-          document.body.style.color = "#fff";
       }
+    }
+
+    // === Mostrar alerta temporal ===
+    function mostrarAlerta(mensaje) {
+      const alerta = document.getElementById("alerta");
+      alerta.textContent = mensaje;
+      alerta.style.display = "block";
+      setTimeout(() => alerta.style.display = "none", 2500);
     }
   </script>
 

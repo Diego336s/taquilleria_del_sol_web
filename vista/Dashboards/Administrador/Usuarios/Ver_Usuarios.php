@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Usuarios Registrados</title>
+  <title>👥 Usuarios Registrados</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
-    <style>
+  <style>
     body {
       background-image: url('../../../css/img/fondo.png');
       background-size: cover;
@@ -13,224 +13,190 @@
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
+      color: #fff;
     }
 
+    /* 📦 Contenedor principal */
     .dashboard-container {
       backdrop-filter: blur(10px);
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       padding: 30px;
       margin: 40px auto;
-      width: 90%;
+      width: 95%;
       max-width: 1200px;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+      box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
     }
 
     h1 {
       text-align: center;
       color: #fff;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* 📋 Tabla */
+    .table-container {
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
+      text-align: center;
+      border-radius: 15px;
       overflow: hidden;
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
+
+    thead {
+      background: linear-gradient(90deg, #ff6b1f, #ffcc00);
+      color: #000;
+      font-weight: bold;
+      text-transform: uppercase;
     }
 
     th, td {
-      padding: 12px;
-      text-align: center;
-      color: #fff;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    th {
-      background-color: #9c4012e6;
-      color: white;
-      font-weight: bold;
-    }
-
-    tr:hover {
+    tbody tr:hover {
       background-color: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .btn {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-
-    .btn-edit {
+    /* 🟢 Estado visual */
+    .estado-activo {
       background-color: #28a745;
       color: #fff;
-      box-shadow: 0 10px 20px rgba(0, 255, 100, 0.5);
-      margin-right: 5px;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
     }
 
-    .btn-edit:hover {
-      background-color: #218838;
-      transform: scale(1.05);
-    }
-
-    .btn-delete {
+    .estado-inactivo {
       background-color: #dc3545;
       color: #fff;
-      box-shadow: 0 10px 20px rgba(255, 50, 50, 0.5);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
     }
 
-    .btn-delete:hover {
-      background-color: #c82333;
-      transform: scale(1.05);
-    }
-
-    /* ✅ Botón fijo en la esquina */
+    /* 🔙 Botón volver */
     .btn-back {
       position: fixed;
       top: 25px;
       left: 25px;
       background-color: #9c4012e6;
-      color: #fff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: bold;
       box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+      transition: 0.3s;
       z-index: 999;
     }
 
     .btn-back:hover {
-      background-color: #9c4012e6;
       transform: scale(1.05);
     }
 
-    .loading {
-      text-align: center;
-      color: #fff;
-      font-style: italic;
+    /* 📱 Responsivo */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+      th, td {
+        padding: 8px;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
+
 <body>
+  <!-- 🔙 Botón de volver -->
+  <button class="btn-back" onclick="volverDashboard()">⬅️ Volver al Dashboard</button>
 
-<!-- Incluir el archivo de configuración de API -->
-<script src="../../../vista/js/ApiConexion.js"></script>
+  <!-- 📦 Contenedor principal -->
+  <div class="dashboard-container">
+    <h1>👥 Usuarios Registrados</h1>
 
-  <!-- Botón fijo arriba -->
-  <button class="btn btn-back" onclick="volverDashboard()">
-    ⬅️ Volver a Inicio
-  </button>
-
-<div class="dashboard-container">
-    <h1> Usuarios Registrados</h1>
-    
-
-          <table id="tabla-usuarios" class="table table-striped table-hover">
-            <thead class="table-dark">
-              <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Documento</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-usuarios">
-              <tr><td colspan="7" class="loading text-center">Cargando usuarios...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
-</div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Documento</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tablaUsuarios">
+          <tr><td colspan="8">Cargando usuarios...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <script>
-  // 🔗 Conexión a tu API Laravel (ngrok)
-  const ApiConexion = "https://uncoachable-rosaline-lasciviously.ngrok-free.dev/api/";
+    // URL de la API para listar los usuarios
+    const API_URL = "http://127.0.0.1:8000/api/listarClientes";
 
-  // 🔙 Volver al dashboard administrador
-  function volverDashboard() {
-    window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
-  }
+    // Función para volver al Dashboard
+    function volverDashboard() {
+      window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
+    }
 
-  // 👥 Cargar lista de usuarios desde Laravel
-  async function cargarUsuarios() {
-    const tbody = document.getElementById('tbody-usuarios');
-    tbody.innerHTML = '<tr><td colspan="7" class="loading text-center">Cargando usuarios...</td></tr>';
+    // Cargar los usuarios al iniciar la página
+    document.addEventListener("DOMContentLoaded", async () => {
+      const tbody = document.getElementById("tablaUsuarios");
 
-    try {
-      // ✅ Usar la variable ApiConexion
-      const response = await fetch(`${ApiConexion}listarClientes`);
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Error al obtener usuarios");
 
-      if (!response.ok) throw new Error("Error al obtener los usuarios");
+        const data = await response.json();
+        const usuarios = Array.isArray(data) ? data : data.data || [];
 
-      const result = await response.json();
-      const data = result.data || result;
-      tbody.innerHTML = "";
+        if (usuarios.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8">No hay usuarios registrados.</td></tr>`;
+          return;
+        }
 
-      // ⚠️ Si no hay usuarios
-      if (!data || data.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='7' class='loading text-center'>No hay usuarios registrados</td></tr>";
-        return;
-      }
-
-      // 🧩 Mostrar usuarios
-      data.forEach(user => {
-        const row = `
-          <tr id="usuario-${user.id}">
-            <td>${user.nombre ?? '—'}</td>
-            <td>${user.apellido ?? '—'}</td>
-            <td>${user.documento ?? '—'}</td>
-            <td>${user.telefono ?? '—'}</td>
-            <td>${user.correo ?? '—'}</td>
-            <td>${user.fecha_nacimiento ?? '—'}</td>
+        tbody.innerHTML = usuarios.map(u => `
+          <tr>
+            <td>${u.id || ""}</td>
+            <td>${u.nombre || ""}</td>
+            <td>${u.apellido || ""}</td>
+            <td>${u.documento || ""}</td>
+            <td>${u.telefono || ""}</td>
+            <td>${u.correo || ""}</td>
+            <td>${u.rol || "Cliente"}</td>
             <td>
-              <button class="btn btn-edit" onclick="editarUsuario(${user.id})">✏️ Editar</button>
-              <button class="btn btn-delete" onclick="eliminarUsuario(${user.id})">🗑️ Eliminar</button>
+              <span class="${u.estado === "Activo" ? "estado-activo" : "estado-inactivo"}">
+                ${u.estado || "Activo"}
+              </span>
             </td>
           </tr>
-        `;
-        tbody.insertAdjacentHTML("beforeend", row);
-      });
-    } catch (error) {
-      console.error("❌ Error cargando usuarios:", error);
-      tbody.innerHTML = "<tr><td colspan='7' class='loading text-center'>Error al cargar usuarios</td></tr>";
-    }
-  }
+        `).join("");
 
-  // ✏️ Redirigir a la vista de edición
-  function editarUsuario(id) {
-    window.location.href = `Editar_Usuario.php?id=${id}`;
-  }
-
-  // 🗑️ Eliminar usuario
-  async function eliminarUsuario(id) {
-    if (confirm("¿Estás segura de que deseas eliminar este usuario?")) {
-      try {
-        const response = await fetch(`${ApiConexion}eliminarCliente/${id}`, {
-          method: 'DELETE',
-        });
-
-        if (!response.ok) throw new Error("Error al eliminar el usuario");
-
-        alert("✅ Usuario eliminado correctamente");
-        cargarUsuarios(); // Recargar la lista
       } catch (error) {
-        console.error("❌ Error al eliminar:", error);
-        alert("❌ Error al eliminar el usuario");
+        console.error(error);
+        tbody.innerHTML = `<tr><td colspan="8">Error al cargar los usuarios.</td></tr>`;
       }
-    }
-  }
-
-  // 🚀 Ejecutar al cargar
-  document.addEventListener("DOMContentLoaded", cargarUsuarios);
-</script>
-
+    });
+  </script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Reportes de Ventas y Eventos</title>
+  <link rel="stylesheet" href="../../../css/main.css?v=1.0">
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
 
   <style>
@@ -180,88 +181,18 @@
     </table>
   </div>
 
-  <script>
-    const ApiConexion = "https://uncoachable-rosaline-lasciviously.ngrok-free.dev/api/";
+  <script src="../../../js/ApiConexion.js"></script>
+  <script src="../../../js/Admin/Reportes.js"></script>
 
+  <script>
     function volverDashboard() {
       window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
     }
 
-    // 📊 Datos simulados
-    const ticketsSimulados = [
-      { id: 1, evento: "Concierto Rock", cliente: "Juan Pérez", tipo: "VIP", precio: 85000, estado: "Pagado", fecha_compra: "2025-10-15" },
-      { id: 2, evento: "Obra de Teatro", cliente: "María López", tipo: "General", precio: 50000, estado: "Pendiente", fecha_compra: "2025-10-20" },
-      { id: 3, evento: "Feria Cultural", cliente: "Carlos Gómez", tipo: "VIP", precio: 90000, estado: "Pagado", fecha_compra: "2025-11-01" }
-    ];
-
-    const eventosSimulados = [
-      { id: 1, titulo: "Concierto Rock", descripcion: "Banda en vivo toda la noche", fecha_inicio: "2025-11-20", fecha_fin: "2025-11-21", lugar: "Auditorio Central", estado: "Activo" },
-      { id: 2, titulo: "Obra de Teatro", descripcion: "Clásico colombiano", fecha_inicio: "2025-11-25", fecha_fin: "2025-11-25", lugar: "Teatro del Sol", estado: "Activo" },
-      { id: 3, titulo: "Feria Cultural", descripcion: "Evento de arte y música", fecha_inicio: "2025-12-01", fecha_fin: "2025-12-03", lugar: "Plaza Mayor", estado: "Pendiente" }
-    ];
-
-    // 🧾 Cargar reportes
-    function cargarReportes() {
-      const tbody = document.getElementById('tbody-reportes');
-      tbody.innerHTML = "";
-
-      ticketsSimulados.forEach(ticket => {
-        const row = `
-          <tr>
-            <td>${ticket.evento}</td>
-            <td>${ticket.cliente}</td>
-            <td>${ticket.tipo}</td>
-            <td><input type="number" class="input-precio" value="${ticket.precio}" onchange="editarPrecio(${ticket.id}, this.value)"></td>
-            <td>${ticket.estado}</td>
-            <td>${ticket.fecha_compra}</td>
-            <td><button class="btn btn-edit" onclick="editarTicket(${ticket.id})">✏️ Editar</button></td>
-          </tr>
-        `;
-        tbody.insertAdjacentHTML("beforeend", row);
-      });
-    }
-
-    // 🕒 Cargar eventos
-    function cargarEventos() {
-      const tbody = document.getElementById('tbody-eventos');
-      tbody.innerHTML = "";
-
-      eventosSimulados.forEach(evento => {
-        const row = `
-          <tr>
-            <td>${evento.titulo}</td>
-            <td>${evento.descripcion}</td>
-            <td><input type="date" class="input-fecha" value="${evento.fecha_inicio}" onchange="editarHorario(${evento.id}, 'inicio', this.value)"></td>
-            <td><input type="date" class="input-fecha" value="${evento.fecha_fin}" onchange="editarHorario(${evento.id}, 'fin', this.value)"></td>
-            <td>${evento.lugar}</td>
-            <td>${evento.estado}</td>
-            <td><button class="btn btn-edit" onclick="editarEvento(${evento.id})">✏️ Editar</button></td>
-          </tr>
-        `;
-        tbody.insertAdjacentHTML("beforeend", row);
-      });
-    }
-
-    // ✏️ Funciones de edición simuladas
-    function editarPrecio(id, nuevoPrecio) {
-      alert(`💰 Precio del ticket ${id} actualizado a ${nuevoPrecio}`);
-    }
-
-    function editarHorario(id, tipo, nuevaFecha) {
-      alert(`🕒 Fecha de ${tipo} del evento ${id} actualizada a ${nuevaFecha}`);
-    }
-
-    function editarTicket(id) {
-      alert(`✏️ Editar información completa del ticket ${id}`);
-    }
-
-    function editarEvento(id) {
-      alert(`✏️ Editar información completa del evento ${id}`);
-    }
-
-    // 🚀 Ejecutar al cargar
-    cargarReportes();
-    cargarEventos();
+    // Cargar reportes al iniciar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      ctrGenerarReportes();
+    });
   </script>
 
 </body>

@@ -2,9 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Empresas Registradas</title>
+  <title>🏢 Empresas Registradas</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
-
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -14,239 +13,145 @@
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
+      color: #fff;
     }
 
     .dashboard-container {
       backdrop-filter: blur(10px);
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       padding: 30px;
       margin: 40px auto;
-      width: 90%;
+      width: 95%;
       max-width: 1200px;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+      box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
     }
 
     h1 {
       text-align: center;
       color: #fff;
-      margin-bottom: 25px;
-      font-size: 2rem;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .table-container {
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
+      text-align: center;
+      border-radius: 15px;
       overflow: hidden;
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
+
+    thead {
+      background: linear-gradient(90deg, #ff6b1f, #ffcc00);
+      color: #000;
+      font-weight: bold;
+      text-transform: uppercase;
     }
 
     th, td {
-      padding: 12px;
-      text-align: center;
-      color: #fff;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    th {
-      background-color: #9c4012e6;
-      color: white;
-      font-weight: bold;
-    }
-
-    tr:hover {
+    tbody tr:hover {
       background-color: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .btn {
-      display: inline-block;
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-
-    .btn-edit {
-      background-color: #28a745;
-      color: #fff;
-      box-shadow: 0 5px 10px rgba(0, 255, 100, 0.5);
-      margin-right: 5px;
-    }
-
-    .btn-edit:hover {
-      background-color: #218838;
-      transform: scale(1.05);
-    }
-
-    .btn-delete {
-      background-color: #dc3545;
-      color: #fff;
-      box-shadow: 0 5px 10px rgba(255, 50, 50, 0.5);
-    }
-
-    .btn-delete:hover {
-      background-color: #c82333;
-      transform: scale(1.05);
-    }
-
-    .btn-back {
+    /* Botones */
+    .btn-back, .btn-add {
       position: fixed;
       top: 25px;
-      left: 25px;
       background-color: #9c4012e6;
-      color: #fff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: bold;
       box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+      transition: 0.3s;
       z-index: 999;
     }
 
-    .btn-back:hover {
+    .btn-back { left: 25px; }
+    .btn-add { right: 25px; background-color: #ff8c1a; }
+
+    .btn-back:hover, .btn-add:hover {
       transform: scale(1.05);
     }
 
-    /* ✅ Botón Crear Empresa */
-    .btn-create {
-      display: inline-block;
-      background-color: #ff6b1f;
-      color: white;
-      font-weight: bold;
+    .btn-action {
       border: none;
-      border-radius: 10px;
-      padding: 12px 22px;
-      margin-bottom: 20px;
-      float: right;
+      background: none;
       cursor: pointer;
-      transition: 0.3s ease;
-      box-shadow: 0 5px 15px rgba(255, 107, 31, 0.5);
+      font-size: 1rem;
+      margin: 0 4px;
     }
 
-    .btn-create:hover {
-      background-color: #ff853d;
-      transform: scale(1.05);
-    }
-
-    .loading {
-      text-align: center;
-      color: #fff;
-      font-style: italic;
+    @media (max-width: 768px) {
+      h1 { font-size: 1.4rem; }
+      th, td { padding: 8px; font-size: 0.9rem; }
     }
   </style>
 </head>
+
 <body>
+  <!-- 🔙 Botón volver -->
+  <button class="btn-back" onclick="volverDashboard()">⬅️ Volver</button>
+  <!-- ➕ Botón crear nueva empresa -->
+ <button class="btn-add" onclick="window.location.href='Crear_Empresa.php'">➕ Nueva Empresa</button>
 
-  <script src="../../../vista/js/ApiConexion.js"></script>
-
-  <button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver a Inicio</button>
-
+  <!-- 📦 Contenedor principal -->
   <div class="dashboard-container">
-    <h1>Empresas Registradas</h1>
+    <h1>🏢 Empresas Registradas</h1>
 
-    <!-- ✅ Botón Crear Empresa -->
-    <button class="btn-create" onclick="crearEmpresa()">➕ Crear Empresa</button>
-
-    <table id="tabla-empresas">
-      <thead>
-        <tr>
-          <th>Nombre Empresa</th>
-          <th>NIT</th>
-          <th>Representante Legal</th>
-          <th>Documento</th>
-          <th>Nombre Contacto</th>
-          <th>Teléfono</th>
-          <th>Correo</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="tbody-empresas">
-        <tr><td colspan="8" class="loading">Cargando empresas...</td></tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre Empresa</th>
+            <th>NIT</th>
+            <th>Representante Legal</th>
+            <th>Documento</th>
+            <th>Nombre Contacto</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaEmpresas">
+          <tr><td colspan="9">Cargando empresas...</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
+  <script src="../../../js/ApiConexion.js"></script>
+  <script src="../../../js/Admin/VerEmpresas.js"></script>
   <script>
+    // 🔙 Volver al Dashboard
     function volverDashboard() {
       window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
     }
 
-    function crearEmpresa() {
-      window.location.href = 'Crear_Empresa.php';
-    }
-
-    async function cargarEmpresas() {
-      const tbody = document.getElementById('tbody-empresas');
-      tbody.innerHTML = '<tr><td colspan="8" class="loading">Cargando empresas...</td></tr>';
-
-      try {
-        // 🔸 Datos simulados (hasta tener la API)
-        const data = [
-          {
-            id: 1,
-            nombre_empresa: "Teatro del Sol",
-            nit: "900123456-7",
-            representante_legal: "Carlos Pérez",
-            documento_representante: "12345678",
-            nombre_contacto: "Ana López",
-            telefono: "3201234567",
-            correo: "contacto@teatrodelsol.com"
-          },
-          {
-            id: 2,
-            nombre_empresa: "Eventos Boyacá",
-            nit: "800987654-3",
-            representante_legal: "Laura Gómez",
-            documento_representante: "98765432",
-            nombre_contacto: "Andrés Rojas",
-            telefono: "3119876543",
-            correo: "info@eventosboyaca.com"
-          }
-        ];
-
-        tbody.innerHTML = "";
-
-        if (data.length === 0) {
-          tbody.innerHTML = "<tr><td colspan='8' class='loading'>No hay empresas registradas</td></tr>";
-          return;
-        }
-
-        data.forEach(empresa => {
-          const row = `
-            <tr id="empresa-${empresa.id}">
-              <td>${empresa.nombre_empresa}</td>
-              <td>${empresa.nit}</td>
-              <td>${empresa.representante_legal}</td>
-              <td>${empresa.documento_representante}</td>
-              <td>${empresa.nombre_contacto}</td>
-              <td>${empresa.telefono}</td>
-              <td>${empresa.correo}</td>
-              <td>
-                <button class="btn btn-edit" onclick="editarEmpresa(${empresa.id})">✏️ Editar</button>
-                <button class="btn btn-delete" onclick="eliminarEmpresa(${empresa.id})">🗑️ Eliminar</button>
-              </td>
-            </tr>
-          `;
-          tbody.insertAdjacentHTML("beforeend", row);
-        });
-      } catch (error) {
-        console.error(error);
-        tbody.innerHTML = "<tr><td colspan='8' class='loading'>Error al cargar empresas</td></tr>";
+    // Inicializar la tabla con el ID correcto
+    document.addEventListener("DOMContentLoaded", () => {
+      const tbody = document.getElementById("tablaEmpresas");
+      if (tbody) {
+        tbody.id = "tbody-empresas"; // Cambiar ID para coincidir con VerEmpresas.js
+        ctrListarEmpresas();
       }
-    }
-
-    function editarEmpresa(id) {
-      window.location.href = `Editar_Empresa.php?id=${id}`;
-    }
-
-    function eliminarEmpresa(id) {
-      if (confirm("¿Estás segura de que deseas eliminar esta empresa?")) {
-        alert("✅ Empresa eliminada correctamente (modo simulación)");
-        cargarEmpresas();
-      }
-    }
-
-    cargarEmpresas();
+    });
   </script>
 </body>
 </html>

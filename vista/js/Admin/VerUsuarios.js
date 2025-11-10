@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Verificar Autenticación y Redirigir (Protección de Rutas)
     checkAuthAndRedirect();
 
-    // Poblar datos del administrador en la UI
     populateAdminData();
 
-    // Cargar lista de usuarios
     ctrListarUsuarios();
 });
 
@@ -26,7 +23,8 @@ function checkAuthAndRedirect() {
     try {
         const userData = JSON.parse(userDataString);
         const userRole = userData.rol || userData.role || userData.tipo || 'user';
-        if (userRole.toLowerCase() !== 'admin' && userRole.toLowerCase() !== 'administrator') {
+        const adminRoles = ['admin', 'administrator', 'administrador'];
+        if (!adminRoles.includes(userRole.toLowerCase())) {
             console.warn('Usuario no es admin, rol actual:', userRole);
             window.location.replace("../../../index.php?ruta=dashboard-usuario");
             return;
@@ -98,29 +96,34 @@ async function ctrListarUsuarios() {
             }
 
             usuarios.forEach(user => {
-                const estadoIcono = user.estado === 'Activo' || user.estado === 'activo' ? '🟢' : '🔴';
-                const estadoTexto = user.estado || 'Inactivo';
-                const row = `
-                    <tr id="usuario-${user.id}">
-                        <td>${user.id ?? '—'}</td>
-                        <td>${user.nombre ?? user.nombres ?? '—'}</td>
-                        <td>${user.apellido ?? user.apellidos ?? '—'}</td>
-                        <td>${user.correo ?? '—'}</td>
-                        <td>${user.telefono ?? '—'}</td>
-                        <td>${user.rol ?? 'Cliente'}</td>
-                        <td>${estadoIcono} ${estadoTexto}</td>
-                        <td>
-                            <button class="btn btn-edit" onclick="ctrCambiarEstadoUsuario(${user.id}, '${user.estado}')">
-                                🔄 Cambiar Estado
-                            </button>
-                            <button class="btn btn-delete" onclick="ctrEliminarUsuario(${user.id})">
-                                🗑️ Eliminar
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML("beforeend", row);
-            });
+                 const estadoIcono = user.estado === 'Activo' || user.estado === 'activo' ? '🟢' : '🔴';
+                 const estadoTexto = user.estado || 'Inactivo';
+                 const row = `
+                     <tr id="usuario-${user.id}">
+                         <td>${user.id ?? '—'}</td>
+                         <td>${user.nombre ?? user.nombres ?? '—'}</td>
+                         <td>${user.apellido ?? user.apellidos ?? '—'}</td>
+                         <td>${user.documento ?? user.numero_documento ?? '—'}</td>
+                         <td>${user.telefono ?? user.celular ?? '—'}</td>
+                         <td>${user.correo ?? user.email ?? '—'}</td>
+                         <td>${user.fecha_nacimiento ?? user.fechaNacimiento ?? '—'}</td>
+                         <td>${user.rol ?? user.tipo ?? 'Cliente'}</td>
+                         <td>${estadoIcono} ${estadoTexto}</td>
+                         <td>
+                             <button class="btn btn-edit" onclick="ctrEditarUsuario(${user.id})">
+                                 ✏️ Editar
+                             </button>
+                             <button class="btn btn-edit" onclick="ctrCambiarEstadoUsuario(${user.id}, '${user.estado}')">
+                                 🔄 Cambiar Estado
+                             </button>
+                             <button class="btn btn-delete" onclick="ctrEliminarUsuario(${user.id})">
+                                 🗑️ Eliminar
+                             </button>
+                         </td>
+                     </tr>
+                 `;
+                 tbody.insertAdjacentHTML("beforeend", row);
+             });
 
         } else {
             console.warn("Error en la respuesta del backend:", data.message);
@@ -303,6 +306,15 @@ async function ctrEliminarUsuario(id) {
         console.error("Error al eliminar usuario:", error);
         mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor.');
     }
+}
+
+// =========================================================================
+// ✏️ FUNCIÓN: EDITAR USUARIO
+// =========================================================================
+
+function ctrEditarUsuario(id) {
+    // Redirigir a la página de edición
+    window.location.href = `Editar_Usuario.php?id=${id}`;
 }
 
 // =========================================================================
