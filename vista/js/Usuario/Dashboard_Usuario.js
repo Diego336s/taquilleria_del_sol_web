@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
             mostrarDetallesEvento();
         });
     }
+
+    // Inicializar navegación de cartelera (flechas y estados)
+    setupBillboardNav();
 });
 
 
@@ -143,7 +146,7 @@ async function ctrupdatePerfil() {
 
 async function ctrCambiarClaveConfigCliente() {
 
-    console.log("➡️ ctrCambiarClaveConfigCliente ejecutado"); 
+    console.log("➡️ ctrCambiarClaveConfigCliente ejecutado");
     // 1. Recolectar datos del formulario
     const clave = document.getElementById('id_nueva_clave_config')?.value;
     const confirmar_clave_nueva = document.getElementById('id_confirm_nueva_clave_config')?.value;
@@ -230,7 +233,7 @@ async function ctrCambiarClaveConfigCliente() {
 }
 
 // =========================================================================
-// FUNCION: CAMBIAR CLAVE CLIENTE/CONFIG
+// FUNCION: CAMBIAR CORREO CLIENTE/CONFIG
 // =========================================================================
 
 async function ctrCambiarCorreoConfigCliente() {
@@ -321,12 +324,9 @@ async function ctrCambiarCorreoConfigCliente() {
 }
 
 
-//funcion para listar los datos del evento 
-
-
 
 // =========================================================================
-// FUNCION: LISTAR EVENTOS EN EL DASHBOARD
+// FUNCION: LISTAR EVENTOS EN EL DASHBOARD (MEJORADA)
 // =========================================================================
 
 async function ctrListarEventos() {
@@ -336,56 +336,101 @@ async function ctrListarEventos() {
         return;
     }
 
-    // Mostrar estado de carga
     billboardContainer.innerHTML = `<p class="text-white text-center">Cargando eventos...</p>`;
 
-    const urlAPI = ApiConexion + "listarEventos";
+    const urlAPI = ApiConexion + "eventos/disponibles";
 
     try {
         const respuesta = await fetch(urlAPI);
+        console.log("Estado HTTP:", respuesta.status);
+
         if (!respuesta.ok) {
             throw new Error(`Error HTTP ${respuesta.status} - ${respuesta.statusText}`);
         }
 
-        const eventos = await respuesta.json();
+        const data = await respuesta.json();
+        console.log("Respuesta JSON:", data);
 
-        // Limpiar el contenedor antes de añadir los nuevos eventos
         billboardContainer.innerHTML = '';
 
-        if (eventos && eventos.length > 0) {
-            eventos.forEach(evento => {
-                // Construir la URL completa de la imagen
-                // La URL base de la API sin la parte "/api/"
-                const baseUrl = ApiConexion.replace('/api/', '');
-                const imageUrl = evento.imagen ? `${evento.imagen}` : 'https://via.placeholder.com/320x200?text=Sin+Imagen';
+        if (data.success && Array.isArray(data.eventos) && data.eventos.length > 0) {
+            data.eventos.forEach(evento => {
+                const imageUrl = evento.imagen
+                    ? `${evento.imagen}`
+                    : 'https://via.placeholder.com/320x200?text=Sin+Imagen';
+
+                // ✅ Limpieza y formato de descripción
+                const descripcionCompleta = (evento.descripcion_corta || evento.descripcion || 'Sin descripción')
+                    .trim()
+                    .replace(/\n+/g, '<br>')
+                    .replace(/\s{2,}/g, ' ');
+
+                // ✅ Recorte si es muy larga (máx. 180 caracteres)
+                const descripcionCorta =
+                    descripcionCompleta.length > 100
+                        ? descripcionCompleta.substring(0, 100) + '...'
+                        : descripcionCompleta;
+
+                const precio = evento.precio_entrada && !isNaN(parseFloat(evento.precio_entrada))
+                    ? `$${parseFloat(evento.precio_entrada).toLocaleString('es-CO')}`
+                    : 'Gratis';
 
                 const eventoCardHTML = `
                 <div class="billboard-card">
-                  <div class="card-image-container">
-                    <img src="${imageUrl}" alt="${evento.titulo}" class="card-image">
-                    <span class="genre-tag tag-drama">Categoría: ${evento.categoria || 'General'}</span>
-                    <span class="popularity-badge">⭐ 95%</span>
-                  </div>
-                  <div class="card-content">
-                    <h4 class="card-title">${evento.titulo}</h4>
-                    <p class="card-description">${evento.descripcion_corta || evento.descripcion.substring(0, 100) + '...'}</p>
-                    <div class="card-meta">
-                      <span>🗓️ ${new Date(evento.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</span>
-                      <span>🕒 ${new Date('1970-01-01T' + evento.hora_inicio).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                    <div class="card-image-container">
+                        <img src="${imageUrl}" alt="${evento.titulo}" class="card-image">
+                        <span class="genre-tag tag-drama">Categoría: ${evento.categoria?.nombre || 'General'}</span>
+                        <span class="popularity-badge">⭐ 95%</span>
                     </div>
-                    <div class="card-footer">
-                      <span class="popularity-text">Popularidad</span>
-                      <div class="progress-bar-container small"><div class="progress-bar-fill orange-bg" style="width: 95%;"></div></div>
+                    <div class="card-content">
+                        <h4 class="card-title">${evento.titulo}</h4>
+
+                        <p class="card-description text-justify">
+                            ${descripcionCorta}
+                            ${descripcionCompleta.length > 180 ? `<a href="#" class="ver-mas text-warning" data-desc="${encodeURIComponent(descripcionCompleta)}">Ver más</a>` : ''}
+                        </p>
+
+                        <div class="card-meta">
+                            <span>🗓️ ${new Date(evento.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</span>
+                            <span>🕒 ${new Date('1970-01-01T' + evento.hora_inicio).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                        </div>
+
+                        <div class="card-footer">
+                            <span class="popularity-text">Popularidad</span>
+                            <div class="progress-bar-container small">
+                                <div class="progress-bar-fill orange-bg" style="width: 95%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-booking">
+                            <span class="price">${precio}</span>
+                            <a href="index.php?ruta=seleccionar_asientos&eventoId=${evento.id}" class="btn btn-confirm">Reservar</a>
+                        </div>
                     </div>
-                    <div class="card-booking">
-                      <span class="price">$${parseFloat(evento.precio_entrada).toLocaleString('es-CO')}</span>
-                      <a href="index.php?ruta=seleccionar_asientos&eventoId=${evento.id}" class="btn btn-confirm">Reservar</a>
-                    </div>
-                  </div>
                 </div>
                 `;
+
                 billboardContainer.insertAdjacentHTML('beforeend', eventoCardHTML);
             });
+
+            // ✅ Escuchar clics en "Ver más"
+            document.querySelectorAll('.ver-mas').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const fullDesc = decodeURIComponent(btn.dataset.desc);
+                    Swal.fire({
+                        title: '<span style="color: #fff;">Descripción completa</span>',
+                        html: `<p style="text-align:justify; color: #fff;">${fullDesc}</p>`,
+                        background: 'rgba(10, 10, 10, 0.8)',
+                        backdrop: `rgba(0,0,0,0.7)`,
+                        confirmButtonText: 'Cerrar',
+                        confirmButtonColor: '#ff8c00'
+                    });
+                });
+            });
+            // Recalcula/Inicializa navegación de la cartelera tras renderizar tarjetas
+            setupBillboardNav();
+ 
         } else {
             billboardContainer.innerHTML = `<p class="text-white text-center">No hay eventos disponibles en este momento.</p>`;
         }
@@ -395,6 +440,7 @@ async function ctrListarEventos() {
         billboardContainer.innerHTML = `<p class="text-danger text-center">No se pudieron cargar los eventos. Inténtalo más tarde.</p>`;
     }
 }
+
 
 // =========================================================================
 // FUNCION: MOSTRAR MODAL CON DETALLES DEL EVENTO
@@ -468,4 +514,75 @@ function mostrarAlerta(icon, title, text) {
     } else {
         alert(`${title} (${icon}): ${text.replace(/<br>/g, '\n')}`);
     }
+}
+
+/* =========================================================================
+   UI: Navegación para la Cartelera (scroll interno con flechas y rueda)
+   ========================================================================= */
+function setupBillboardNav() {
+    const section = document.querySelector('.seccion-cartelera');
+    if (!section) return;
+
+    const list = section.querySelector('.billboard-list');
+    const btnLeft = section.querySelector('.nav-left');
+    const btnRight = section.querySelector('.nav-right');
+    if (!list || !btnLeft || !btnRight) return;
+
+    // Si ya está inicializado, fuerza un recalculo del estado de flechas
+    if (list.dataset.navInitialized === 'true') {
+        // Dispara un resize para que los listeners actualicen estado
+        window.dispatchEvent(new Event('resize'));
+        return;
+    }
+
+    const getGap = () => {
+        const styles = getComputedStyle(list);
+        const gapVal = styles.gap || styles.columnGap || '25px';
+        const n = parseFloat(gapVal);
+        return isNaN(n) ? 25 : n;
+    };
+
+    const getStep = () => {
+        const first = list.querySelector('.billboard-card');
+        if (first) {
+            const rect = first.getBoundingClientRect();
+            return Math.round(rect.width + getGap());
+        }
+        // Fallback si aún no hay tarjetas
+        return Math.round(list.clientWidth * 0.9);
+    };
+
+    const scrollLeftBy = () => list.scrollBy({ left: -getStep(), behavior: 'smooth' });
+    const scrollRightBy = () => list.scrollBy({ left: getStep(), behavior: 'smooth' });
+
+    btnLeft.addEventListener('click', scrollLeftBy);
+    btnRight.addEventListener('click', scrollRightBy);
+
+    // Convierte la rueda vertical en desplazamiento horizontal SOLO dentro de la lista
+    list.addEventListener('wheel', (e) => {
+        const { deltaX, deltaY } = e;
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+            list.scrollBy({ left: deltaY, behavior: 'auto' });
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    function updateArrows() {
+        const maxScrollLeft = list.scrollWidth - list.clientWidth - 1;
+        const isAtStart = list.scrollLeft <= 0;
+        const isAtEnd = list.scrollLeft >= maxScrollLeft;
+
+        btnLeft.classList.toggle('disabled', list.scrollLeft <= 0);
+        btnRight.classList.toggle('disabled', list.scrollLeft >= maxScrollLeft);
+        section.classList.toggle('at-start', isAtStart);
+        section.classList.toggle('at-end', isAtEnd);
+    }
+
+    list.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+
+    // Estado inicial en el siguiente frame (asegura medidas correctas)
+    requestAnimationFrame(updateArrows);
+
+    list.dataset.navInitialized = 'true';
 }
