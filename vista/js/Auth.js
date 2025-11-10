@@ -92,6 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setupPasswordToggle('toggleBtn_nueva_clave', 'id_nueva_clave', 'toggleIcon_nueva_clave');
     setupPasswordToggle('toggleBtn_confirmar_clave', 'id_confirmar_nueva_clave', 'toggleIcon_confirmar_clave');
 
+    // Configurar la funcionalidad de "Ver/Ocultar Contraseña" para el formulario de restablecer contraseña en configuracion cliente
+    setupPasswordToggle('toggleBtn_clave_actual_config', 'id_clave_actual_config', 'toggleIcon_clave_actual_config');
+    setupPasswordToggle('toggleBtn_nueva_clave_config', 'id_nueva_clave_config', 'toggleIcon_nueva_clave_config');
+    setupPasswordToggle('toggleBtn_confirm_nueva_clave_config', 'id_confirm_nueva_clave_config', 'toggleIcon_confirm_nueva_clave_config');
+
 
 });
 
@@ -131,7 +136,7 @@ function checkAuthAndRedirect() {
 // FUNCION: RECIBIR CODIGO DE VERIFICACIÓN (RESTABLECER CONTRASEÑA)
 //==========================================================================
 
-async function ctrRecibirCorreo() { 
+async function ctrRecibirCorreo() {
     const email = document.getElementById('id_correo_verificacion')?.value.trim();
 
     if (!email) {
