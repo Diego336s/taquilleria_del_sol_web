@@ -1,16 +1,9 @@
-<?php
-// vista/Dashboards/Administrador/Empresas/Editar_Empresa.php
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Editar Empresa</title>
-
-  <!-- Mantiene el mismo diseño del dashboard -->
-  <link rel="stylesheet" href="../../../css/Dashboards/Administrador.css?v=1.0">
-
+  <title>✏️ Editar Empresa</title>
+  <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -20,196 +13,200 @@
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
+      color: #fff;
     }
 
     .dashboard-container {
       backdrop-filter: blur(10px);
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      padding: 30px;
-      margin: 40px auto;
+      padding: 40px;
+      margin: 60px auto;
       width: 90%;
       max-width: 700px;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-      color: white;
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 25px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+      color: #fff;
+      margin-bottom: 30px;
+      letter-spacing: 0.5px;
     }
 
     label {
-      font-weight: bold;
-      color: #fff;
+      color: #ddd;
+      display: block;
+      font-weight: 500;
+      margin-top: 10px;
     }
 
-    input {
+    .form-control {
+      width: 100%;
       padding: 10px;
-      border: none;
       border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
       font-size: 15px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
+      margin-top: 4px;
     }
 
-    input:focus {
-      outline: 2px solid #ff6b1f;
-      background: rgba(255, 255, 255, 0.3);
+    .form-control:focus {
+      border-color: #cda664;
+      outline: none;
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .btn {
-      display: inline-block;
       padding: 10px 18px;
-      border-radius: 10px;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
+      transition: all 0.3s ease;
+      font-size: 15px;
+      margin-top: 20px;
     }
 
-    .btn-save {
-      background-color: #4CAF50;
+    .btn-success {
+      background-color: #3aa76d;
       color: #fff;
-      box-shadow: 0 10px 20px rgba(0, 255, 100, 0.5);
+      box-shadow: 0 4px 15px rgba(58, 167, 109, 0.3);
     }
 
-    .btn-save:hover {
+    .btn-success:hover {
+      background-color: #329764;
       transform: scale(1.05);
-      background-color: #43a047;
     }
 
     .btn-back {
       position: fixed;
       top: 25px;
       left: 25px;
-      background-color: #9c4012e6;
-      color: #fff;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-      z-index: 999;
+      background-color: #cda664;
+      color: white;
+      box-shadow: 0 10px 20px rgba(205, 166, 100, 0.4);
     }
 
     .btn-back:hover {
-      background-color: #9c4012e6;
       transform: scale(1.05);
+      background-color: #b89358;
+    }
+
+    .loading {
+      text-align: center;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
 
-  <!-- Botón fijo arriba -->
-  <button class="btn btn-back" onclick="volverDashboard()">
-    Volver a Inicio
-  </button>
+  <!-- 🔙 Botón de volver -->
+  <button class="btn btn-back" onclick="window.location.href='Empresas_Registradas.php'">⬅️ Volver</button>
 
   <div class="dashboard-container">
-    <h1>🏢 Editar Empresa</h1>
+    <h1>✏️ Editar Empresa</h1>
 
-    <form id="formEditarEmpresa">
-      <input type="hidden" id="idEmpresa">
-
-      <label for="nombre_empresa">Nombre de la Empresa</label>
-      <input type="text" id="nombre_empresa" required>
-
-      <label for="nit">NIT</label>
-      <input type="text" id="nit" required>
-
-      <label for="representante_legal">Representante Legal</label>
-      <input type="text" id="representante_legal" required>
-
-      <label for="documento_representante">Documento del Representante</label>
-      <input type="text" id="documento_representante" required>
-
-      <label for="nombre_contacto">Nombre del Contacto</label>
-      <input type="text" id="nombre_contacto" required>
-
-      <label for="telefono">Teléfono</label>
-      <input type="text" id="telefono" required>
-
-      <label for="correo">Correo Electrónico</label>
-      <input type="email" id="correo" required>
-
-      <label for="clave">Clave</label>
-      <input type="password" id="clave">
-
-      <button type="submit" class="btn btn-save">💾 Guardar Cambios</button>
+    <form id="formEditar">
+      <div id="contenidoFormulario" class="loading">Cargando datos...</div>
+      <button type="submit" class="btn btn-success" style="display:none;" id="btnGuardar">💾 Guardar Cambios</button>
     </form>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    // 🔙 Volver sin dañar el diseño
-    function volverDashboard() {
-      window.location.href = 'Ver_Empresas.php';
-    }
-
-    // Obtener ID de la empresa desde la URL (ej: Editar_Empresa.php?id=3)
+    const API_URL = "http://127.0.0.1:8000/api/";
     const params = new URLSearchParams(window.location.search);
-    const idEmpresa = params.get('id');
+    const idEmpresa = params.get("id");
 
-    // Cargar los datos de la empresa
-    async function cargarEmpresa() {
+    const form = document.getElementById("formEditar");
+    const contenido = document.getElementById("contenidoFormulario");
+    const btnGuardar = document.getElementById("btnGuardar");
+
+    // 🔹 Cargar datos de la empresa
+    document.addEventListener("DOMContentLoaded", async () => {
+      if (!idEmpresa) {
+        contenido.innerHTML = "<p>No se proporcionó un ID de empresa válido.</p>";
+        return;
+      }
+
       try {
-        const response = await fetch(`http://localhost:8000/api/empresas/${idEmpresa}`);
-        if (!response.ok) throw new Error("Error al cargar los datos de la empresa");
+        // 👇 Cambia 'obtenerEmpresa' por 'listarEmpresas' si tu backend no tiene endpoint individual
+        const res = await fetch(`${API_URL}listarEmpresas`);
+        const data = await res.json();
 
-        const empresa = await response.json();
+        if (!res.ok || !data.data) {
+          contenido.innerHTML = "<p>No se encontraron empresas registradas.</p>";
+          return;
+        }
 
-        document.getElementById("idEmpresa").value = empresa.id;
-        document.getElementById("nombre_empresa").value = empresa.nombre_empresa;
-        document.getElementById("nit").value = empresa.nit;
-        document.getElementById("representante_legal").value = empresa.representante_legal;
-        document.getElementById("documento_representante").value = empresa.documento_representante;
-        document.getElementById("nombre_contacto").value = empresa.nombre_contacto;
-        document.getElementById("telefono").value = empresa.telefono;
-        document.getElementById("correo").value = empresa.correo;
+        // Buscar empresa específica
+        const empresa = data.data.find(e => e.id == idEmpresa);
+        if (!empresa) {
+          contenido.innerHTML = "<p>No se encontraron datos de la empresa.</p>";
+          return;
+        }
+
+        // ✅ Mostrar datos en el formulario
+        contenido.innerHTML = `
+          <label>Nombre Empresa</label>
+          <input type="text" name="nombre_empresa" value="${empresa.nombre_empresa}" class="form-control" required>
+
+          <label>NIT</label>
+          <input type="text" name="nit" value="${empresa.nit}" class="form-control" required>
+
+          <label>Representante Legal</label>
+          <input type="text" name="representante_legal" value="${empresa.representante_legal}" class="form-control" required>
+
+          <label>Documento Representante</label>
+          <input type="text" name="documento_representante" value="${empresa.documento_representante}" class="form-control" required>
+
+          <label>Nombre Contacto</label>
+          <input type="text" name="nombre_contacto" value="${empresa.nombre_contacto || ""}" class="form-control">
+
+          <label>Teléfono</label>
+          <input type="text" name="telefono" value="${empresa.telefono || ""}" class="form-control">
+
+          <label>Correo Electrónico</label>
+          <input type="email" name="correo" value="${empresa.correo}" class="form-control" required>
+        `;
+
+        btnGuardar.style.display = "inline-block";
+
       } catch (error) {
         console.error(error);
-        alert("❌ Error al cargar la empresa.");
+        contenido.innerHTML = "<p>Error al cargar los datos de la empresa.</p>";
       }
-    }
+    });
 
-    // 📝 Guardar cambios
-    document.getElementById("formEditarEmpresa").addEventListener("submit", async (e) => {
+    // 💾 Guardar cambios
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const datos = {
-        nombre_empresa: document.getElementById("nombre_empresa").value,
-        nit: document.getElementById("nit").value,
-        representante_legal: document.getElementById("representante_legal").value,
-        documento_representante: document.getElementById("documento_representante").value,
-        nombre_contacto: document.getElementById("nombre_contacto").value,
-        telefono: document.getElementById("telefono").value,
-        correo: document.getElementById("correo").value,
-        clave: document.getElementById("clave").value,
-      };
+      const formData = new FormData(form);
+      const datos = Object.fromEntries(formData.entries());
 
       try {
-        const response = await fetch(`http://localhost:8000/api/empresas/${idEmpresa}`, {
+        const res = await fetch(`${API_URL}actualizarEmpresa/${idEmpresa}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(datos),
         });
 
-        if (!response.ok) throw new Error("Error al actualizar la empresa");
+        const data = await res.json();
 
-        alert("✅ Empresa actualizada correctamente");
-        volverDashboard();
+        if (res.ok && data.success) {
+          Swal.fire("✅ Actualizada", data.message || "Empresa actualizada correctamente", "success")
+            .then(() => window.location.href = "Empresas_Registradas.php");
+        } else {
+          Swal.fire("⚠️ Error", data.message || "No se pudo actualizar la empresa", "error");
+        }
+
       } catch (error) {
-        console.error(error);
-        alert("❌ Error al guardar los cambios");
+        Swal.fire("❌ Error", "No se pudo conectar con el servidor", "error");
       }
     });
-
-    // Ejecutar carga automática
-    if (idEmpresa) cargarEmpresa();
   </script>
-
 </body>
 </html>

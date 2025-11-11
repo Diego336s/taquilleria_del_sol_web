@@ -1,249 +1,185 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="UTF-8">
-   <title>Mi Perfil - Administrador</title>
-   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
-   <style>
-     body {
-       background-image: url('../../css/img/fondo.png');
-       background-size: cover;
-       background-attachment: fixed;
-       background-position: center;
-       font-family: 'Poppins', sans-serif;
-       margin: 0;
-       padding: 0;
-       min-height: 100vh;
-       display: flex;
-       align-items: center;
-       justify-content: center;
-     }
+  <meta charset="UTF-8">
+  <title>Perfil del Administrador</title>
+  <link rel="stylesheet" href="../../../css/main.css?v=1.1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2d9b6e73f.js" crossorigin="anonymous"></script>
 
-     .dashboard-container {
-       backdrop-filter: blur(10px);
-       background-color: rgba(255, 255, 255, 0.95);
-       border-radius: 20px;
-       padding: 40px;
-       width: 90%;
-       max-width: 900px;
-       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-       border: 1px solid rgba(255, 255, 255, 0.2);
-     }
+  <style>
+    body {
+      background: url('../../css/img/fondo.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      margin: 0;
+    }
 
-     h1 {
-       text-align: center;
-       color: #333;
-       margin-bottom: 30px;
-       font-weight: 600;
-     }
+    .login-card {
+      background: rgba(0, 0, 0, 0.65);
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+    }
 
-     .profile-header {
-       text-align: center;
-       margin-bottom: 30px;
-     }
+    .form-label {
+      color: #fff;
+      font-weight: 600;
+    }
 
-     .profile-avatar {
-       width: 100px;
-       height: 100px;
-       border-radius: 50%;
-       background: linear-gradient(135deg, #ff6b1f, #ff853d);
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       margin: 0 auto 15px;
-       font-size: 40px;
-       color: white;
-       box-shadow: 0 8px 20px rgba(255, 107, 31, 0.4);
-     }
+    .form-control, .form-select {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+    }
 
-     .form-row {
-       display: flex;
-       gap: 20px;
-       margin-bottom: 20px;
-     }
+    .form-control:focus, .form-select:focus {
+      background-color: rgba(255, 255, 255, 0.3);
+      box-shadow: none;
+    }
 
-     .form-group {
-       flex: 1;
-     }
+    .btn-success {
+      background-color: #ff6b1f;
+      border: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
 
-     label {
-       color: #555;
-       font-weight: 600;
-       display: block;
-       margin-bottom: 8px;
-       font-size: 14px;
-     }
+    .btn-success:hover {
+      background-color: #e95d15;
+      transform: scale(1.05);
+    }
 
-     .form-control {
-       width: 100%;
-       padding: 12px 15px;
-       border-radius: 10px;
-       border: 2px solid #e1e5e9;
-       outline: none;
-       font-size: 16px;
-       background: #fff;
-       color: #333;
-       transition: all 0.3s ease;
-     }
+    a {
+      color: #ff6b1f;
+      text-decoration: none;
+      font-weight: 500;
+    }
 
-     .form-control:focus {
-       border-color: #ff6b1f;
-       box-shadow: 0 0 0 3px rgba(255, 107, 31, 0.1);
-     }
+    a:hover {
+      text-decoration: underline;
+    }
 
-     .btn {
-       padding: 14px 30px;
-       border: none;
-       border-radius: 12px;
-       cursor: pointer;
-       font-weight: 600;
-       font-size: 16px;
-       transition: all 0.3s ease;
-       margin-right: 10px;
-       display: inline-block;
-     }
-
-     .btn-success {
-       background: linear-gradient(135deg, #28a745, #20c997);
-       color: #fff;
-       box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
-     }
-
-     .btn-success:hover {
-       transform: translateY(-2px);
-       box-shadow: 0 12px 25px rgba(40, 167, 69, 0.6);
-     }
-
-     .btn-back {
-       position: fixed;
-       top: 25px;
-       left: 25px;
-       background-color: #9c4012e6;
-       color: #fff;
-       box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-       z-index: 999;
-       padding: 12px 20px;
-       border-radius: 10px;
-       font-weight: 600;
-     }
-
-     .btn-back:hover {
-       transform: scale(1.05);
-     }
-
-     .profile-info {
-       background: #f8f9fa;
-       padding: 25px;
-       border-radius: 15px;
-       margin-bottom: 30px;
-       border: 1px solid #e9ecef;
-     }
-
-     .profile-info h3 {
-       color: #333;
-       margin-bottom: 20px;
-       text-align: center;
-     }
-
-     .info-grid {
-       display: grid;
-       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-       gap: 15px;
-     }
-
-     .profile-info p {
-       color: #666;
-       margin: 8px 0;
-       font-size: 15px;
-     }
-
-     .profile-info strong {
-       color: #ff6b1f;
-       font-weight: 600;
-     }
-
-     .form-actions {
-       text-align: center;
-       margin-top: 30px;
-     }
-   </style>
+    .login-logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card p-4 shadow login-card" style="max-width: 700px; width: 100%;">
+      <div class="card-body">
 
-   <!-- Botón fijo arriba -->
-   <button class="btn btn-back" onclick="window.location.href='Dashboard_Admin.php'">⬅️ Volver al Dashboard</button>
+        <div class="text-center mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" 
+               alt="Icono de Perfil" 
+               class="login-logo mb-3" 
+               id="profile_icon">
+          <h1 class="h3 text-white">Perfil del Administrador</h1>
+          <p class="text-white-50">Gestiona tu información personal y la configuración de tu cuenta.</p>
+        </div>
 
-   <div class="dashboard-container">
+        <form id="form_actualizar_perfil">
+          <div class="row">
+            <!-- Columna Izquierda -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="profile_nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="profile_nombre" name="nombre" placeholder="Tu nombre" required>
+              </div>
+              <div class="mb-3">
+                <label for="profile_apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="profile_apellido" name="apellido" placeholder="Tu apellido" required>
+              </div>
+              <div class="mb-3">
+                <label for="profile_documento" class="form-label">Documento</label>
+                <input type="text" class="form-control" id="profile_documento" name="documento" placeholder="Tu documento" readonly>
+                <small class="text-white-50">No se puede modificar.</small>
+              </div>
+            </div>
 
-     <h1>👤 Mi Perfil de Administrador</h1>
+            <!-- Columna Derecha -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="profile_correo" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="profile_correo" name="correo" placeholder="tu@correo.com" readonly>
+                <small class="text-white-50">No se puede modificar.</small>
+              </div>
+              <div class="mb-3">
+                <label for="profile_telefono" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="profile_telefono" name="telefono" placeholder="Tu teléfono">
+              </div>
+            </div>
+          </div>
 
-     <!-- Información del perfil -->
-     <div class="profile-info">
-       <h3>Información Actual</h3>
-       <div class="profile-header">
-         <div class="profile-avatar" id="profile-avatar">👨‍💼</div>
-       </div>
-       <div class="info-grid">
-         <p><strong>Nombre:</strong> <span id="profile_nombre_display">—</span></p>
-         <p><strong>Apellido:</strong> <span id="profile_apellido_display">—</span></p>
-         <p><strong>Documento:</strong> <span id="profile_documento_display">—</span></p>
-         <p><strong>Teléfono:</strong> <span id="profile_telefono_display">—</span></p>
-         <p><strong>Sexo:</strong> <span id="profile_sexo_display">—</span></p>
-         <p><strong>Correo:</strong> <span id="profile_correo_display">—</span></p>
-         <p><strong>Rol:</strong> <span id="profile_rol_display">—</span></p>
-       </div>
-     </div>
+          <div class="mt-4">
+            <button type="submit" class="btn btn-success w-100 py-2">
+              <i class="fas fa-save me-2"></i>Guardar Cambios
+            </button>
+          </div>
+        </form>
 
-     <!-- Formulario de actualización -->
-     <form id="form_actualizar_perfil">
-       <div class="form-row">
-         <div class="form-group">
-           <label for="profile_nombre">Nombre</label>
-           <input type="text" id="profile_nombre" class="form-control" required>
-         </div>
-         <div class="form-group">
-           <label for="profile_apellido">Apellido</label>
-           <input type="text" id="profile_apellido" class="form-control" required>
-         </div>
-       </div>
+        <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
 
-       <div class="form-row">
-         <div class="form-group">
-           <label for="profile_documento">Documento</label>
-           <input type="text" id="profile_documento" class="form-control" required readonly>
-         </div>
-         <div class="form-group">
-           <label for="profile_telefono">Teléfono</label>
-           <input type="tel" id="profile_telefono" class="form-control" required>
-         </div>
-       </div>
+        <div class="text-center">
+          <a href="../Administrador/Dashboard_Admin.php" class="me-3">
+            <i class="fas fa-arrow-left me-1"></i> Volver al Dashboard
+          </a>
+          <a href="/taquilleria_del_sol_web/index.php" onclick="cerrarSesion()">
+            <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+          </a>
+        </div>
 
-       <div class="form-row">
-         <div class="form-group">
-           <label for="profile_sexo">Sexo</label>
-           <select id="profile_sexo" class="form-control" required>
-             <option value="">Seleccionar...</option>
-             <option value="Masculino">Masculino</option>
-             <option value="Femenino">Femenino</option>
-             <option value="Otro">Otro</option>
-           </select>
-         </div>
-         <div class="form-group">
-           <label for="profile_correo">Correo</label>
-           <input type="email" id="profile_correo" class="form-control" required readonly>
-         </div>
-       </div>
+      </div>
+    </div>
+  </div>
 
-       <div class="form-actions">
-         <button type="submit" class="btn btn-success">💾 Guardar Cambios</button>
-       </div>
-     </form>
-   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const userDataString = sessionStorage.getItem('userData');
 
-  <!-- Incluir el archivo de conexión a API -->
-  <script src="../../../js/ApiConexion.js"></script>
-  <!-- Incluir el archivo JS consolidado del admin -->
-  <script src="../../../js/Admin/Dashboard_Admin.js"></script>
+      if (userDataString) {
+        try {
+          const profileIcon = document.getElementById('profile_icon');
+          const userData = JSON.parse(userDataString);
 
+          // Cambiar el ícono según el sexo
+          if (userData.sexo === 'M') {
+            profileIcon.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+          } else if (userData.sexo === 'F') {
+            profileIcon.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135789.png';
+          }
+
+          // Rellenar los campos del formulario
+          document.getElementById('profile_nombre').value = userData.nombres || '';
+          document.getElementById('profile_apellido').value = userData.apellidos || '';
+          document.getElementById('profile_documento').value = userData.documento || '';
+          document.getElementById('profile_correo').value = userData.correo || '';
+          document.getElementById('profile_telefono').value = userData.telefono || '';
+        } catch (e) {
+          console.error('Error al cargar datos del perfil:', e);
+        }
+      }
+    });
+
+    // Guardar cambios (lógica de simulación, lista para conectar al backend)
+    document.getElementById('form_actualizar_perfil').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('✅ Cambios guardados correctamente.');
+    });
+
+    // Cerrar sesión
+    function cerrarSesion() {
+      sessionStorage.clear();
+      localStorage.clear();
+      alert("Sesión cerrada correctamente.");
+    }
+  </script>
 </body>
 </html>

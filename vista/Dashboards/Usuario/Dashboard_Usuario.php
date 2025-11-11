@@ -30,9 +30,6 @@
         <div class="widget-content">
           <span class="widget-number">5</span>
           <span class="widget-title">Obras Vistas</span>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill orange-bg" style="width: 75%;"></div>
-          </div>
         </div>
       </div>
 
@@ -72,25 +69,28 @@
     <!-- ======= Columna Derecha ======= -->
     <section class="content-area">
       <div class="featured-function orange-bg">
-        <span class="featured-label">Su Próxima Función</span>
-        <h2 class="featured-title">Don Juan Tenorio</h2>
-        <div class="featured-details">
-          <span class="detail-item">🗓️ 12 Enero</span>
-          <span class="detail-item">🕒 8:30 PM</span>
-          <span class="detail-item">📍 Palco A12, A13</span>
+        <div class="featured-content-wrapper">
+          <span class="featured-label">Su Próxima Función</span>
+          <h2 class="featured-title">Don Juan Tenorio</h2>
+          <div class="featured-details">
+            <span class="detail-item">🗓️ 12 Enero</span>
+            <span class="detail-item">🕒 8:30 PM</span>
+            <span class="detail-item">📍 Palco A12, A13</span>
+          </div>
         </div>
-        <button class="btn btn-white-border" id="btnVerDetalles">Ver Detalles</button>
+        <a href="#" class="btn btn-white-border" id="btnVerDetalles">Ver Detalles</a>
       </div>
 
       <div class="billboard-header">
         <h3 class="section-title">Cartelera Actual</h3>
-        <a href="#" class="view-all-link">Ver Temporada Completa →</a>
       </div>
 
-      <div class="billboard-list">
 
-        <!-- Las tarjetas de eventos se cargarán aquí dinámicamente -->
-
+      <div class="seccion-cartelera">
+        <button class="nav-arrow nav-left" type="button" aria-label="Anterior">‹</button>
+        <div class="billboard-list">
+        </div>
+        <button class="nav-arrow nav-right" type="button" aria-label="Siguiente">›</button>
       </div>
     </section>
   </main>
