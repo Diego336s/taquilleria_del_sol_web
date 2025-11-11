@@ -66,7 +66,14 @@
       transition: all 0.3s ease;
     }
 
-    /* Botones */
+    /* === NOMBRE DE EMPRESA === */
+    td.nombre-empresa {
+      color: #ffffff;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    }
+
+    /* === BOTONES DE NAVEGACIÓN === */
     .btn-back, .btn-add {
       position: fixed;
       top: 25px;
@@ -89,17 +96,43 @@
       transform: scale(1.05);
     }
 
+    /* === BOTONES DE ACCIÓN (EDITAR / ELIMINAR) === */
     .btn-action {
       border: none;
-      background: none;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 1rem;
-      margin: 0 4px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      margin: 2px;
+      padding: 6px 12px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-editar {
+      background-color: #ff8c1a;
+      box-shadow: 0 4px 10px rgba(255, 140, 26, 0.4);
+    }
+
+    .btn-eliminar {
+      background-color: #ff3b3b;
+      box-shadow: 0 4px 10px rgba(255, 59, 59, 0.4);
+    }
+
+    .btn-editar:hover {
+      background-color: #ffa447;
+      transform: scale(1.05);
+    }
+
+    .btn-eliminar:hover {
+      background-color: #ff5757;
+      transform: scale(1.05);
     }
 
     @media (max-width: 768px) {
       h1 { font-size: 1.4rem; }
       th, td { padding: 8px; font-size: 0.9rem; }
+      .btn-action { padding: 4px 8px; font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -108,7 +141,7 @@
   <!-- 🔙 Botón volver -->
   <button class="btn-back" onclick="volverDashboard()">⬅️ Volver</button>
   <!-- ➕ Botón crear nueva empresa -->
- <button class="btn-add" onclick="window.location.href='Crear_Empresa.php'">➕ Nueva Empresa</button>
+  <button class="btn-add" onclick="window.location.href='Crear_Empresa.php'">➕ Nueva Empresa</button>
 
   <!-- 📦 Contenedor principal -->
   <div class="dashboard-container">
@@ -118,7 +151,6 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nombre Empresa</th>
             <th>NIT</th>
             <th>Representante Legal</th>
@@ -130,7 +162,7 @@
           </tr>
         </thead>
         <tbody id="tablaEmpresas">
-          <tr><td colspan="9">Cargando empresas...</td></tr>
+          <tr><td colspan="8">Cargando empresas...</td></tr>
         </tbody>
       </table>
     </div>
@@ -148,7 +180,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       const tbody = document.getElementById("tablaEmpresas");
       if (tbody) {
-        tbody.id = "tbody-empresas"; // Cambiar ID para coincidir con VerEmpresas.js
+        tbody.id = "tbody-empresas"; // Coincidir con VerEmpresas.js
         ctrListarEmpresas();
       }
     });
