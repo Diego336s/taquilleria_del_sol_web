@@ -2,10 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Configuración del Sistema</title>
+  <title>⚙️ Configuración del Sistema</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <style>
-    /* === ESTILO GLOBAL === */
     body {
       background-image: url('../../css/img/fondo.png');
       background-size: cover;
@@ -14,10 +13,9 @@
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
-      color: #f5f5f5;
+      color: #fff;
     }
 
-    /* === CONTENEDOR PRINCIPAL === */
     .dashboard-container {
       backdrop-filter: blur(12px);
       background: rgba(255, 255, 255, 0.08);
@@ -39,7 +37,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* === FORMULARIO === */
     .form-group {
       margin-bottom: 22px;
     }
@@ -60,22 +57,9 @@
       background: rgba(255, 255, 255, 0.15);
       color: #fff;
       font-size: 15px;
-      transition: all 0.2s ease;
     }
 
-    .form-control:focus {
-      background: rgba(255, 255, 255, 0.25);
-      outline: none;
-      border-color: #cda664;
-    }
-
-    select.form-control {
-      cursor: pointer;
-    }
-
-    /* === BOTONES === */
     .btn {
-      display: inline-block;
       padding: 10px 18px;
       border: none;
       border-radius: 8px;
@@ -85,60 +69,36 @@
       transition: all 0.3s ease;
     }
 
-    .btn-primary {
-      background-color: #cda664;
-      color: #fff;
-      box-shadow: 0 4px 15px rgba(205, 166, 100, 0.3);
-    }
-
-    .btn-primary:hover {
-      background-color: #b89358;
-      transform: translateY(-2px);
-    }
-
     .btn-success {
       background-color: #3aa76d;
       color: #fff;
-      box-shadow: 0 4px 15px rgba(58, 167, 109, 0.3);
     }
 
     .btn-success:hover {
       background-color: #329764;
-      transform: translateY(-2px);
     }
 
-    /* === BOTÓN VOLVER === */
     .btn-back {
       position: fixed;
       top: 25px;
       left: 25px;
       background-color: #cda664;
       color: #fff;
-      z-index: 999;
-      box-shadow: 0 6px 20px rgba(205, 166, 100, 0.4);
       padding: 10px 16px;
+      z-index: 999;
     }
 
     .btn-back:hover {
       background-color: #b89358;
-      transform: scale(1.05);
     }
 
-    /* === RESPONSIVO === */
     @media (max-width: 600px) {
-      .dashboard-container {
-        padding: 25px;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
+      .dashboard-container { padding: 25px; }
+      h1 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
-
-  <!-- 🔙 Botón de volver -->
   <button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver</button>
 
   <div class="dashboard-container">
@@ -147,77 +107,161 @@
     <form id="config-form">
       <div class="form-group">
         <label for="empresa">🏢 Empresa</label>
-        <select id="empresa" class="form-control">
+        <select id="empresa" class="form-control" onchange="cargarFuncionesPorEmpresa()">
           <option value="">Seleccione una empresa</option>
-          <option value="empresa1">Taquillería del Sol</option>
-          <option value="empresa2">Eventos del Norte</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="funcion">🎭 Función</label>
-        <select id="funcion" class="form-control">
+        <select id="funcion" class="form-control" onchange="cargarDatosFuncion()">
           <option value="">Seleccione una función</option>
-          <option value="funcion1">Obra de Teatro</option>
-          <option value="funcion2">Concierto</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="precioBase">💰 Precio Base</label>
-        <input type="number" id="precioBase" value="50000" class="form-control">
+        <label for="titulo">📝 Título</label>
+        <input type="text" id="titulo" class="form-control">
       </div>
 
       <div class="form-group">
-        <label for="horaApertura">🕗 Hora de Apertura</label>
-        <input type="time" id="horaApertura" value="08:00" class="form-control">
+        <label for="descripcion">📖 Descripción</label>
+        <textarea id="descripcion" class="form-control"></textarea>
       </div>
 
       <div class="form-group">
-        <label for="horaCierre">🕙 Hora de Cierre</label>
-        <input type="time" id="horaCierre" value="22:00" class="form-control">
+        <label for="fecha">📅 Fecha</label>
+        <input type="date" id="fecha" class="form-control">
       </div>
 
       <div class="form-group">
-        <label for="correoNotificaciones">📧 Correo de Notificaciones</label>
-        <input type="email" id="correoNotificaciones" value="admin@taquilleria.com" class="form-control">
+        <label for="hora_inicio">🕗 Hora Inicio</label>
+        <input type="time" id="hora_inicio" class="form-control">
       </div>
 
       <div class="form-group">
-        <label for="estadoSistema">🔒 Estado del Sistema</label>
-        <select id="estadoSistema" class="form-control">
+        <label for="hora_final">🕙 Hora Final</label>
+        <input type="time" id="hora_final" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="precio">💰 Precio</label>
+        <input type="number" id="precio" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="estado">🔒 Estado</label>
+        <select id="estado" class="form-control">
           <option value="activo">🟢 Activo</option>
-          <option value="mantenimiento">🟡 Mantenimiento</option>
           <option value="inactivo">🔴 Inactivo</option>
         </select>
       </div>
 
-      <button type="button" class="btn btn-success" onclick="guardarConfiguracion()">💾 Guardar Cambios</button>
+      <button type="button" class="btn btn-success" onclick="guardarCambiosFuncion()">💾 Guardar Cambios</button>
     </form>
   </div>
 
   <script>
-    // 🔙 Volver al Dashboard
+    const API_URL = "http://127.0.0.1:8000/api"; // Cambia si tu Laravel corre en otro puerto
+
+    // 🔙 Volver
     function volverDashboard() {
       window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
     }
 
-    // 💾 Guardar configuración (simulado)
-    function guardarConfiguracion() {
-      const configuracion = {
-        empresa: document.getElementById('empresa').value,
-        funcion: document.getElementById('funcion').value,
-        precioBase: document.getElementById('precioBase').value,
-        horaApertura: document.getElementById('horaApertura').value,
-        horaCierre: document.getElementById('horaCierre').value,
-        correo: document.getElementById('correoNotificaciones').value,
-        estado: document.getElementById('estadoSistema').value
+    // ✅ Cargar empresas desde la API
+    async function cargarEmpresas() {
+      const response = await fetch(`${API_URL}/listarEmpresas`);
+      const data = await response.json();
+
+      const select = document.getElementById('empresa');
+      select.innerHTML = '<option value="">Seleccione una empresa</option>';
+
+      if (data.success && data.data.length > 0) {
+        data.data.forEach(emp => {
+          const option = document.createElement('option');
+          option.value = emp.id;
+          option.textContent = emp.nombre_empresa;
+          select.appendChild(option);
+        });
+      } else {
+        alert("⚠️ No hay empresas registradas en el sistema.");
+      }
+    }
+
+    // 🎭 Cargar funciones según la empresa seleccionada
+    async function cargarFuncionesPorEmpresa() {
+      const empresaId = document.getElementById('empresa').value;
+      const funcionSelect = document.getElementById('funcion');
+      funcionSelect.innerHTML = '<option value="">Cargando funciones...</option>';
+
+      const response = await fetch(`${API_URL}/listarFuncionesPorEmpresa/${empresaId}`);
+      const data = await response.json();
+
+      funcionSelect.innerHTML = '<option value="">Seleccione una función</option>';
+      if (data.success && data.data.length > 0) {
+        data.data.forEach(funcion => {
+          const option = document.createElement('option');
+          option.value = funcion.id;
+          option.textContent = funcion.titulo;
+          funcionSelect.appendChild(option);
+        });
+      } else {
+        funcionSelect.innerHTML = '<option value="">No hay funciones registradas</option>';
+      }
+    }
+
+    // 🧾 Cargar los datos de una función
+    async function cargarDatosFuncion() {
+      const idFuncion = document.getElementById('funcion').value;
+      if (!idFuncion) return;
+
+      const response = await fetch(`${API_URL}/verFuncion/${idFuncion}`);
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        const f = data.data;
+        document.getElementById('titulo').value = f.titulo;
+        document.getElementById('descripcion').value = f.descripcion;
+        document.getElementById('fecha').value = f.fecha;
+        document.getElementById('hora_inicio').value = f.hora_inicio;
+        document.getElementById('hora_final').value = f.hora_final;
+        document.getElementById('precio').value = f.precio;
+        document.getElementById('estado').value = f.estado;
+      } else {
+        alert("⚠️ Error al cargar los datos de la función.");
+      }
+    }
+
+    // 💾 Guardar cambios de la función
+    async function guardarCambiosFuncion() {
+      const idFuncion = document.getElementById('funcion').value;
+      const body = {
+        titulo: document.getElementById('titulo').value,
+        descripcion: document.getElementById('descripcion').value,
+        fecha: document.getElementById('fecha').value,
+        hora_inicio: document.getElementById('hora_inicio').value,
+        hora_final: document.getElementById('hora_final').value,
+        precio: document.getElementById('precio').value,
+        estado: document.getElementById('estado').value
       };
 
-      console.log("Configuración guardada:", configuracion);
-      alert("✅ Configuración actualizada correctamente (simulación)");
-    }
-  </script>
+      const response = await fetch(`${API_URL}/actualizarFuncion/${idFuncion}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
 
+      const data = await response.json();
+      if (data.success) {
+        alert("✅ Función actualizada correctamente.");
+      } else {
+        alert("⚠️ No se pudo actualizar la función.");
+      }
+    }
+
+    // 🚀 Iniciar
+    document.addEventListener("DOMContentLoaded", cargarEmpresas);
+  </script>
 </body>
 </html>

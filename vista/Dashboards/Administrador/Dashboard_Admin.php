@@ -9,12 +9,12 @@
       <span class="welcome-text">¡Bienvenido,<strong id="nombreAdmin"></strong></span>
     </div>
     <div class="header-actions">
-      <button class="btn btn-explore" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Configuracion.php'">
-        <span class="icon-inline">⚙️</span> configuración
-      </button>
-            <button class="btn btn-explore" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Mi_Perfil.php'">
-        <span class="icon-inline">⚙️</span> Mi perfil
-      </button>
+            <a href="index.php?ruta=Configuracion_admin" class="btn btn-explore">
+        <i class="fas fa-user-circle me-2"></i>Configuracion
+      </a>
+            <a href="index.php?ruta=mi_perfil_admin" class="btn btn-explore">
+        <i class="fas fa-user-circle me-2"></i>Mi Perfil
+      </a>
       <button class="btn btn-profile" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Reportes.php'">
         <span class="icon-inline">📊</span> Reportes
       </button>
@@ -57,7 +57,7 @@
             <li>🖥️ Servidores <span class="status-active">● </span></li>
             <li>💾 Base de Datos <span class="status-active">● </span></li>
             <li>💳 Pagos <span class="status-active">● </span></li>
-          <button class="btn btn-confirm"> ⚙️ver Logs</button>
+          <button class="btn btn-confirm" onclick="window.location.href='index.php?ruta=estado_sistema'"> ⚙️ver Logs</button>
 
           </div>
         </div>
