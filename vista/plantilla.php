@@ -3,33 +3,59 @@
 include_once "vista/modulos/1cabesera.php";
 include_once "controlador/usuarioControlador.php"; 
 
+// --- Organización de Rutas por Rol ---
 
-$rutasValidas = [
-    "404" => "vista/modulos/404.php",
+// Rutas públicas y comunes a todos
+$rutasPublicasYComunes = [
     "login" => "vista/modulos/login.php",
     "registro" => "vista/modulos/registro.php",
     "verificar_codigo" => "vista/modulos/Auth/verificar_codigo.php",
     "restablecer_contraseña" => "vista/modulos/Auth/restablecerContraseña.php",
     "recibir_correo" => "vista/modulos/Auth/recibir_correo.php",
+    "404" => "vista/modulos/404.php",
+];
+
+// Rutas específicas para el rol de Cliente
+$rutasCliente = [
+    "dashboard-usuario" => "vista/Dashboards/Usuario/Dashboard_Usuario.php",
     "mi_perfil" => "vista\Dashboards\Usuario\Mi_Perfil.php",
-    "mi_perfil_admin" => "vista\Dashboards\Administrador\Mi_Perfil.php",
-    "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
-    "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
     "configuracion_cliente" => "vista/Dashboards/Usuario/Configuracion_Cliente.php",
     "cambiar_contrasena_cliente" => "vista/Dashboards/Usuario/Cambiar_Contrasena_Cliente.php",
     "cambiar_correo_cliente" => "vista/Dashboards/Usuario/Cambiar_Correo_Cliente.php",
     "seleccionar_asientos" => "vista/Dashboards/Usuario/Seleccionar_Asientos.php",
-    "dashboard-usuario" => "vista/Dashboards/Usuario/Dashboard_Usuario.php",
-    "dashboard-empresa" => "vista/Dashboards/Empresa/Dashboard_Empresa.php",
-    "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php",
-
-    //Rutas Empresa
-    "mi_perfil_empresa" => "vista\Dashboards\Empresa\Mi_Perfil_Empresa.php",
-    "Configuracion_empresa" => "vista\Dashboards\Empresa\Configuraciones_Empresa.php",
-
-
-
 ];
+
+// Rutas específicas para el rol de Empresa
+$rutasEmpresa = [
+    "dashboard-empresa" => "vista/Dashboards/Empresa/Dashboard_Empresa.php",
+    "mi_perfil_empresa" => "vista\Dashboards\Empresa\Mi_Perfil_Empresa.php",
+    "Configuracion_empresa" => "vista\Dashboards\Empresa\Configuraciones_empresa.php",
+];
+
+// Rutas específicas para el rol de Administrador
+$rutasAdmin = [
+    "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php",
+    "mi_perfil_admin" => "vista\Dashboards\Administrador\Mi_Perfil.php",
+    "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
+    "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
+];
+
+// Se unifican todas las rutas en un solo array para la validación
+$rutasValidas = $rutasPublicasYComunes + $rutasCliente + $rutasEmpresa + $rutasAdmin;
+
+// --- Inyección de Rutas para JavaScript ---
+// Creamos un objeto JS con los nombres de las rutas para que Auth.js pueda usarlo.
+$rutasParaJS = [
+    'publicas' => array_keys($rutasPublicasYComunes),
+    'protegidas' => [
+        'cliente' => array_keys($rutasCliente),
+        'empresa' => array_keys($rutasEmpresa),
+        'admin' => array_keys($rutasAdmin)
+    ]
+];
+echo "<script>window.APP_ROUTES = " . json_encode($rutasParaJS) . ";</script>";
+
+// --- Lógica de Enrutamiento PHP ---
 
 $ruta = $_GET["ruta"] ?? "login";
 

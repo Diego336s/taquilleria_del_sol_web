@@ -139,10 +139,14 @@ function checkAuthAndRedirect() {
     const params = new URLSearchParams(window.location.search);
     const ruta = params.get("ruta") || "";
 
-    const protectedRoutes = ["dashboard-usuario", "dashboard-empresa", "dashboard-admin"];
-    const publicRoutes = ["login", "registro", "forgot_contraseña", "fogout_contraseña", "restablecer_contraseña"];
-    const otherRoutes = ["404"];
-    const validRoutes = [...protectedRoutes, ...publicRoutes, ...otherRoutes];
+    // Usamos las rutas inyectadas desde PHP. Si no existen, usamos un fallback seguro.
+    const routes = window.APP_ROUTES || { publicas: [], protegidas: { cliente: [], empresa: [], admin: [] } };
+    const publicRoutes = routes.publicas;
+    const protectedCliente = routes.protegidas.cliente;
+    const protectedEmpresa = routes.protegidas.empresa;
+    const protectedAdmin = routes.protegidas.admin;
+    const protectedRoutes = [...protectedCliente, ...protectedEmpresa, ...protectedAdmin];
+    const validRoutes = [...publicRoutes, ...protectedRoutes];
 
     log("Ruta actual:", ruta, "| token:", !!token, "| userDataString:", !!userDataString);
 
