@@ -16,7 +16,7 @@
         <span class="icon-inline">📈</span> Reportes
       </button>
       <button class="btn btn-profile">
-        <span class="icon-inline">⚙️</span> Mi Equipo
+        <span class="icon-inline">⚙️</span> Mi Equipohhh
       </button>
       <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutEmpresas()">
         <span class="icon-inline">🚪</span> Cerrar Sesión
