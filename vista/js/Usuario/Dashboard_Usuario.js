@@ -336,44 +336,39 @@ async function ctrListarEventos() {
         return;
     }
 
-    billboardContainer.innerHTML = `<p class="text-white text-center">Cargando eventos...</p>`;
+    // === LOADER TEATRAL ÉPICO ===
+    billboardContainer.innerHTML = `
+    <div id="loader-teatro" class="loader-teatro">
+        <div class="spotlights"></div>
+        <h1 class="loader-title">🎭 Preparando las funciones...</h1>
+        <div class="stars">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    `;
+
+    // Esperar a que termine la animación antes de mostrar los eventos (10s)
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     const urlAPI = ApiConexion + "eventos/disponibles";
 
     try {
         const respuesta = await fetch(urlAPI);
-        console.log("Estado HTTP:", respuesta.status);
-
-        if (!respuesta.ok) {
-            throw new Error(`Error HTTP ${respuesta.status} - ${respuesta.statusText}`);
-        }
+        if (!respuesta.ok) throw new Error(`Error HTTP ${respuesta.status} - ${respuesta.statusText}`);
 
         const data = await respuesta.json();
-        console.log("Respuesta JSON:", data);
-
         billboardContainer.innerHTML = '';
 
         if (data.success && Array.isArray(data.eventos) && data.eventos.length > 0) {
             data.eventos.forEach(evento => {
-                const imageUrl = evento.imagen
-                    ? `${evento.imagen}`
-                    : 'https://via.placeholder.com/320x200?text=Sin+Imagen';
-
-                // ✅ Limpieza y formato de descripción
+                const imageUrl = evento.imagen || 'https://via.placeholder.com/320x200?text=Sin+Imagen';
                 const descripcionCompleta = (evento.descripcion_corta || evento.descripcion || 'Sin descripción')
-                    .trim()
-                    .replace(/\n+/g, '<br>')
-                    .replace(/\s{2,}/g, ' ');
-
-                // ✅ Recorte si es muy larga (máx. 180 caracteres)
+                    .trim().replace(/\n+/g, '<br>').replace(/\s{2,}/g, ' ');
+                const maxChars = 120;
                 const descripcionCorta =
-                    descripcionCompleta.length > 100
-                        ? descripcionCompleta.substring(0, 100) + '...'
+                    descripcionCompleta.length > maxChars
+                        ? descripcionCompleta.substring(0, maxChars) + '...'
                         : descripcionCompleta;
-
-                const precio = evento.precio_entrada && !isNaN(parseFloat(evento.precio_entrada))
-                    ? `$${parseFloat(evento.precio_entrada).toLocaleString('es-CO')}`
-                    : 'Gratis';
 
                 const eventoCardHTML = `
                 <div class="billboard-card">
@@ -384,36 +379,35 @@ async function ctrListarEventos() {
                     </div>
                     <div class="card-content">
                         <h4 class="card-title">${evento.titulo}</h4>
-
-                        <p class="card-description text-justify">
-                            ${descripcionCorta}
-                            ${descripcionCompleta.length > 180 ? `<a href="#" class="ver-mas text-warning" data-desc="${encodeURIComponent(descripcionCompleta)}">Ver más</a>` : ''}
-                        </p>
-
-                        <div class="card-meta">
-                            <span>🗓️ ${new Date(evento.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</span>
-                            <span>🕒 ${new Date('1970-01-01T' + evento.hora_inicio).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                        <p class="card-description">${descripcionCorta}</p>
+                        <div class="card-read-more">
+                            ${descripcionCompleta.length > maxChars
+                                ? `<a href="#" class="ver-mas" data-desc="${encodeURIComponent(descripcionCompleta)}">Ver más</a>`
+                                : ''}
                         </div>
-
+                        <div class="card-meta">
+                            <span>🗓️ ${new Date(evento.fecha).toLocaleDateString('es-ES', {
+                                day: 'numeric', month: 'long'
+                            })}</span>
+                            <span>🕒 ${new Date('1970-01-01T' + evento.hora_inicio)
+                                .toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                            </span>
+                        </div>
                         <div class="card-footer">
                             <span class="popularity-text">Popularidad</span>
                             <div class="progress-bar-container small">
                                 <div class="progress-bar-fill orange-bg" style="width: 95%;"></div>
                             </div>
                         </div>
-
                         <div class="card-booking">
-                            <span class="price">${precio}</span>
                             <a href="index.php?ruta=seleccionar_asientos&eventoId=${evento.id}" class="btn btn-confirm">Reservar</a>
                         </div>
                     </div>
                 </div>
                 `;
-
                 billboardContainer.insertAdjacentHTML('beforeend', eventoCardHTML);
             });
 
-            // ✅ Escuchar clics en "Ver más"
             document.querySelectorAll('.ver-mas').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -428,9 +422,8 @@ async function ctrListarEventos() {
                     });
                 });
             });
-            // Recalcula/Inicializa navegación de la cartelera tras renderizar tarjetas
+
             setupBillboardNav();
- 
         } else {
             billboardContainer.innerHTML = `<p class="text-white text-center">No hay eventos disponibles en este momento.</p>`;
         }

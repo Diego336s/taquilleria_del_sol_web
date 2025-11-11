@@ -106,31 +106,125 @@ document.addEventListener('DOMContentLoaded', () => {
 // =========================================================================
 
 function checkAuthAndRedirect() {
-    const token = sessionStorage.getItem('userToken');
+    // Debug helper
+    const log = (...args) => console.log("%c[Auth]", "color:#ff8c00;font-weight:bold", ...args);
 
-    // Obtener parámetro "ruta" de la URL
+    // Helper para resolver el rol de forma robusta
+    const resolveRole = (raw) => {
+        try {
+            const u = raw || {};
+            const candidates = [
+                u.rol, u.role, u.tipo, u.tipo_usuario, u.tipoUsuario, u.perfil, u.user_type, u.userType,
+                u?.rol?.nombre, u?.role?.name, u?.perfil?.nombre, u?.tipo?.nombre
+            ].filter(Boolean);
+
+            let role = candidates[0] ?? "";
+            if (typeof role === "number") {
+                // Mapeo numérico común (ajustar si aplica a tu backend)
+                role = role === 1 ? "admin" : role === 2 ? "empresa" : "cliente";
+            }
+            role = String(role).toLowerCase();
+
+            if (role.includes("admin")) return "admin";
+            if (role.includes("empresa") || role.includes("Empresa") || role.includes("business")) return "empresa";
+            if (role.includes("cliente") || role.includes("usuario") || role.includes("user")) return "cliente";
+            return "cliente";
+        } catch {
+            return "cliente";
+        }
+    };
+
+    const token = sessionStorage.getItem("userToken");
+    const userDataString = sessionStorage.getItem("userData");
     const params = new URLSearchParams(window.location.search);
-    const ruta = params.get('ruta') || '';
+    const ruta = params.get("ruta") || "";
 
     const protectedRoutes = ["dashboard-usuario", "dashboard-empresa", "dashboard-admin"];
-    // Acepta ambas variantes: "forgot_contraseña" y el typo "fogout_contraseña"
     const publicRoutes = ["login", "registro", "forgot_contraseña", "fogout_contraseña", "restablecer_contraseña"];
+    const otherRoutes = ["404"];
+    const validRoutes = [...protectedRoutes, ...publicRoutes, ...otherRoutes];
 
-    const isProtectedRoute = protectedRoutes.includes(ruta);
-    const isPublicRoute = publicRoutes.includes(ruta) || ruta === "";
+    log("Ruta actual:", ruta, "| token:", !!token, "| userDataString:", !!userDataString);
 
-    // Si está en ruta protegida y no hay token -> forzar login
-    if (isProtectedRoute && !token) {
+    // 🛑 CASO ESPECIAL: Si estás en la vista 404, no hacer NADA
+    if (ruta === "404") {
+        log("Vista 404 detectada. No se aplica protección/redirección.");
+        return;
+    }
+
+    // 🔹 CASO 1: No hay parámetro ruta (ej. index.php)
+    if (ruta === "") {
+        if (token && userDataString) {
+            try {
+                const userData = JSON.parse(userDataString);
+                const rol = resolveRole(userData);
+                log("Redirigiendo desde raíz según rol:", rol);
+                if (rol === "admin") {
+                    window.location.replace("index.php?ruta=dashboard-admin");
+                } else if (rol === "empresa") {
+                    window.location.replace("index.php?ruta=dashboard-empresa");
+                } else {
+                    window.location.replace("index.php?ruta=dashboard-usuario");
+                }
+            } catch (e) {
+                console.error("[Auth] Error al parsear userData:", e);
+                window.location.replace("index.php?ruta=login");
+            }
+        } else {
+            log("Sin sesión desde raíz. Enviando a login.");
+            window.location.replace("index.php?ruta=login");
+        }
+        return;
+    }
+
+    // 🔹 CASO 2: Ruta no válida → 404 (antes de cualquier otro flujo)
+    if (!validRoutes.includes(ruta)) {
+        log("Ruta inválida:", ruta, "→ Enviando a 404");
+        window.location.replace("index.php?ruta=404");
+        return;
+    }
+
+    const isProtected = protectedRoutes.includes(ruta);
+    const isPublic = publicRoutes.includes(ruta);
+
+    // 🔹 CASO 3: Ruta protegida sin token → login
+    if (isProtected && !token) {
+        log("Ruta protegida sin token. Enviando a login.");
         window.location.replace("index.php?ruta=login");
         return;
     }
 
-    // Si está en ruta pública (login, registro) y sí hay token -> ir al dashboard
-    if (isPublicRoute && token) {
-        window.location.replace("index.php?ruta=dashboard-usuario");
+    // 🔹 CASO 4: Ruta pública con token → redirigir según rol
+    if (isPublic && token && userDataString) {
+        try {
+            const userData = JSON.parse(userDataString);
+            const rol = resolveRole(userData);
+            log("Ruta pública con token. Rol:", rol, "Ruta actual:", ruta);
+
+            if (rol === "admin" && ruta !== "dashboard-admin") {
+                window.location.replace("index.php?ruta=dashboard-admin");
+                return;
+            }
+            if (rol === "empresa" && ruta !== "dashboard-empresa") {
+                window.location.replace("index.php?ruta=dashboard-empresa");
+                return;
+            }
+            if (rol === "cliente" && ruta !== "dashboard-usuario") {
+                window.location.replace("index.php?ruta=dashboard-usuario");
+                return;
+            }
+        } catch (e) {
+            console.error("[Auth] Error al leer userData:", e);
+            window.location.replace("index.php?ruta=login");
+        }
         return;
     }
+
+    // 🔹 CASO 5: Ruta válida → continuar normalmente
+    log("Ruta válida sin redirección automática:", ruta);
 }
+
+
 
 //==========================================================================
 // FUNCION: RECIBIR CODIGO DE VERIFICACIÓN (RESTABLECER CONTRASEÑA)
@@ -533,6 +627,7 @@ async function ctrLoginEmpresa() {
             if (token) {
                 sessionStorage.setItem('userToken', token);
                 if (user) {
+                    user.rol = "empresa";
                     sessionStorage.setItem('userData', JSON.stringify(user));
                 }
             } else {
@@ -602,6 +697,7 @@ async function ctrLoginAdmin() {
             if (token) {
                 sessionStorage.setItem('userToken', token);
                 if (user) {
+                    user.rol = "admin";
                     sessionStorage.setItem('userData', JSON.stringify(user));
                 }
             } else {

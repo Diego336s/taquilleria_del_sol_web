@@ -102,3 +102,6 @@
         }
     });
 </script>
+
+
+<script src='./vista/js/Usuario/Dashboard_Usuario.js'></script> <!-- Lógica del dashboard de usuario -->

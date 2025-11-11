@@ -3,8 +3,10 @@
 
 /* === Variables CSS === */
 :root {
-    --primary-orange: #602000; /* Naranja principal más brillante para mejor contraste */
-    --light-orange: #fff1e5;   /* Fondo de los widgets (crema/naranja muy claro) */
+    --primary-orange: #602000;
+    /* Naranja principal más brillante para mejor contraste */
+    --light-orange: #fff1e5;
+    /* Fondo de los widgets (crema/naranja muy claro) */
 
     /* Colores de texto para el fondo oscuro */
     --text-color: #ffffff;
@@ -15,14 +17,16 @@
     --card-blur: blur(10px);
     --card-border: 1px solid rgba(255, 255, 255, 0.2);
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    --card-hover-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45); /* Sombra más pronunciada para el hover */
+    --card-hover-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+    /* Sombra más pronunciada para el hover */
 
     --border-radius: 1.2rem;
 }
 
 /* El ID viene del div principal en Dashboard_Usuario.php */
 #dashboard-usuario-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Similares a la fuente de la imagen */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Similares a la fuente de la imagen */
     margin: 0;
     padding: 20px;
     /* El fondo y la capa oscura ya se aplican desde main.css, no es necesario repetirlo */
@@ -54,7 +58,8 @@
 
 .btn-secondary {
     background: transparent;
-    color: var(--text-color) !important; /* Asegurar texto blanco */
+    color: var(--text-color) !important;
+    /* Asegurar texto blanco */
 }
 
 .btn-confirm {
@@ -94,7 +99,8 @@
     align-items: center;
     padding-bottom: 20px;
     font-size: 1.1em;
-    color: var(--text-color); /* Asegurar que el texto del header sea blanco */
+    color: var(--text-color);
+    /* Asegurar que el texto del header sea blanco */
 }
 
 .user-greeting {
@@ -116,13 +122,15 @@
 
 /* === Estilos para botones del Header === */
 .header-actions .btn-explore {
-    background-color: #602000; /* Naranja vibrante */
+    background-color: #602000;
+    /* Naranja vibrante */
     color: white;
     box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 }
 
 .header-actions .btn-profile {
-    background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+    background-color: rgba(255, 255, 255, 0.15);
+    /* Fondo semitransparente */
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
@@ -130,7 +138,8 @@
 
 .dashboard-main {
     display: grid;
-    grid-template-columns: 1fr 3fr; /* Columna izquierda estrecha, derecha ancha */
+    grid-template-columns: 1fr 3fr;
+    /* Columna izquierda estrecha, derecha ancha */
     gap: 25px;
 }
 
@@ -150,15 +159,18 @@
     box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
     padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Animación suave */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
 .widget:hover {
-    transform: translateY(-8px); /* Efecto de elevación */
-    box-shadow: var(--card-hover-shadow); /* Sombra más intensa */
+    transform: translateY(-8px);
+    /* Efecto de elevación */
+    box-shadow: var(--card-hover-shadow);
+    /* Sombra más intensa */
 }
 
 .widget-icon {
@@ -247,11 +259,13 @@
 }
 
 .seat-dot.available {
-    background-color: var(--primary-orange); /* Naranja oscuro */
+    background-color: var(--primary-orange);
+    /* Naranja oscuro */
 }
 
 .seat-dot.booked {
-    background-color: var(--light-orange); /* Naranja claro */
+    background-color: var(--light-orange);
+    /* Naranja claro */
     opacity: 0.7;
 }
 
@@ -263,20 +277,27 @@
 
 /* Ajustamos el contenedor para darle un ancho máximo y centrarlo */
 .content-area {
-    max-width: 1220px; /* Ancho máximo para la columna de contenido */
-    margin: 0 auto;   /* Centra el contenido si el espacio lo permite */
-    width: 180%;      /* Ocupa todo el espacio disponible hasta el máximo */
+    max-width: 1220px;
+    /* Ancho máximo para la columna de contenido */
+    margin: 0 auto;
+    /* Centra el contenido si el espacio lo permite */
+    width: 180%;
+    /* Ocupa todo el espacio disponible hasta el máximo */
 }
 
 /* Bloque Destacado Naranja */
 .featured-function {
     padding: 30px;
     border-radius: var(--border-radius);
-    display: flex; /* Usamos Flexbox para el layout */
-    justify-content: space-between; /* Separa el contenido del botón */
-    align-items: flex-start; /* Alinea los items al inicio */
+    display: flex;
+    /* Usamos Flexbox para el layout */
+    justify-content: space-between;
+    /* Separa el contenido del botón */
+    align-items: flex-start;
+    /* Alinea los items al inicio */
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(96, 32, 0, 0.5); /* Sombra más acorde */
+    box-shadow: 0 10px 25px rgba(96, 32, 0, 0.5);
+    /* Sombra más acorde */
 }
 
 .featured-label {
@@ -317,7 +338,8 @@
 }
 
 .view-all-link {
-    color: var(--text-color); /* Cambiado a blanco para mejor contraste */
+    color: var(--text-color);
+    /* Cambiado a blanco para mejor contraste */
     text-decoration: none;
     font-weight: 500;
     white-space: nowrap;
@@ -337,21 +359,25 @@
 }
 
 .billboard-card {
-    flex: 0 0 320px; /* Tamaño fijo para cada tarjeta */
+    flex: 0 0 320px;
+    /* Tamaño fijo para cada tarjeta */
     /* Aplicamos el estilo de cristal */
     background: var(--card-background);
     backdrop-filter: var(--card-blur);
     border: var(--card-border);
     box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Animación suave */
     scroll-snap-align: start;
     overflow: hidden;
 }
 
 .billboard-card:hover {
-    transform: translateY(-8px); /* Efecto de elevación */
-    box-shadow: var(--card-hover-shadow); /* Sombra más intensa */
+    transform: translateY(-8px);
+    /* Efecto de elevación */
+    box-shadow: var(--card-hover-shadow);
+    /* Sombra más intensa */
 }
 
 .card-image-container {
@@ -360,9 +386,17 @@
     overflow: hidden;
 }
 
-.tag-drama { background-color: #6a1b9a; } 
-.tag-musical { background-color: #00897b; } 
-.tag-comedy { background-color: #ffb300; } 
+.tag-drama {
+    background-color: #6a1b9a;
+}
+
+.tag-musical {
+    background-color: #00897b;
+}
+
+.tag-comedy {
+    background-color: #ffb300;
+}
 
 .favorite-icon {
     position: absolute;
@@ -392,8 +426,28 @@
 
 .card-description {
     color: var(--secondary-text);
-    font-size: 0.9em;
-    margin-bottom: 10px;
+    font-size: 0.95em;
+    /* Un poco más grande para legibilidad */
+    line-height: 1.5;
+    /* Mayor espaciado entre líneas */
+    min-height: 80px;
+    /* Altura mínima para mantener consistencia en el layout */
+    margin-bottom: 5px;
+    /* Reducimos el margen inferior */
+    text-align: left;
+    /* Justificado a la izquierda es más legible en espacios pequeños */
+    /* Solución: Forzar el ajuste de línea para el texto */
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.card-read-more {
+    text-align: right;
+    /* Alinea el enlace "Ver más" a la derecha */
+    margin-bottom: 15px;
+    /* Espacio antes de la fecha/hora */
+    cursor: pointer;
+
 }
 
 .card-meta {
@@ -402,6 +456,10 @@
     color: var(--secondary-text);
     font-size: 0.85em;
     margin-bottom: 10px;
+}
+
+.card-content{
+    padding: 20px;
 }
 
 .card-footer {
@@ -420,7 +478,8 @@
 .price {
     font-size: 1.4em;
     font-weight: bold;
-    color: var(--text-color); /* Cambiado a blanco */
+    color: var(--text-color);
+    /* Cambiado a blanco */
 }
 
 @media (max-width: 1200px) {
@@ -462,89 +521,90 @@
 
 /* === IMAGEN === */
 .card-image-container {
-  position: relative;
-  overflow: hidden;
-  height: 180px;
+    position: relative;
+    overflow: hidden;
+    height: 180px;
 }
 
 .card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
 }
 
 .billboard-card:hover .card-image {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 /* === BADGE DE CATEGORÍA === */
 .genre-tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #6f42c1;
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.8rem;
-  border-radius: 8px;
-  padding: 4px 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #6f42c1;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    padding: 4px 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 /* === ESTRELLA DE POPULARIDAD === */
 .popularity-badge {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #ffc107;
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 3px 8px;
-  font-size: 0.9rem;
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffc107;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.9rem;
 }
 
 /* === ENLACE “VER MÁS” === */
 .ver-mas {
-  color: #ffc107;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
+    color: #ffc107;
+    /* Mantenemos el color llamativo */
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
+
 .ver-mas:hover {
+    color: #ffd54f;
+    /* Un amarillo más brillante al pasar el cursor */
 }
 
 .popularity-text {
-  font-size: 0.85rem;
-  color: #ccc;
+    font-size: 0.85rem;
+    color: #ccc;
 }
 
 /* === BARRA DE POPULARIDAD === */
 .progress-bar-container {
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
-  height: 6px;
-  margin-top: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    height: 6px;
+    margin-top: 4px;
 }
 
 .progress-bar-fill.orange-bg {
-  background: linear-gradient(90deg, #ff9800, #ffc107);
-  height: 100%;
-  border-radius: 10px;
+    background: linear-gradient(90deg, #ff9800, #ffc107);
+    height: 100%;
+    border-radius: 10px;
 }
 
 /* === PRECIO Y BOTÓN === */
 
 .price {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
 }
-
-
-
-
 
 
 
@@ -554,117 +614,222 @@
 
 /* Sección que contiene la cartelera */
 .seccion-cartelera {
-  margin: 10px 0 0 0; /* Eliminamos el ancho fijo */
-  background: var(--card-background);
-  backdrop-filter: var(--card-blur);
-  border: var(--card-border);
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  padding: 8px 0 0 0;
-  position: relative;
-  overflow: hidden;
+    margin: 10px 0 0 0;
+    /* Eliminamos el ancho fijo */
+    background: var(--card-background);
+    backdrop-filter: var(--card-blur);
+    border: var(--card-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    padding: 8px 0 0 0;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Fades laterales para indicar que hay más contenido */
 .seccion-cartelera::before,
 .seccion-cartelera::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 40px;
-  pointer-events: none;
-  z-index: 2;
-  transition: opacity 0.3s ease; /* Añadimos transición para suavizar */
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+    /* Añadimos transición para suavizar */
 }
 
 .seccion-cartelera::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(10,10,10,0.75), rgba(10,10,10,0));
+    left: 0;
+    background: linear-gradient(90deg, rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0));
 }
 
 .seccion-cartelera::after {
-  right: 0;
-  background: linear-gradient(270deg, rgba(10,10,10,0.75), rgba(10,10,10,0));
+    right: 0;
+    background: linear-gradient(270deg, rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0));
 }
 
 /* Ocultar el degradado izquierdo cuando el scroll está al inicio */
 .seccion-cartelera.at-start::before {
-  opacity: 0;
+    opacity: 0;
 }
 
 /* Ocultar el degradado derecho cuando el scroll está al final */
 .seccion-cartelera.at-end::after {
-  opacity: 0;
+    opacity: 0;
 }
 
 /* Flechas de navegación para la cartelera */
 .nav-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(96, 32, 0, 0.85);
-  color: #fff;
-  cursor: pointer;
-  z-index: 3;
-  box-shadow: var(--card-shadow);
-  backdrop-filter: var(--card-blur);
-  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
-  user-select: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(96, 32, 0, 0.85);
+    color: #fff;
+    cursor: pointer;
+    z-index: 3;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: var(--card-blur);
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+    user-select: none;
 }
+
 .nav-arrow:hover {
-  transform: translateY(-50%) scale(1.05);
-  background: rgba(96, 32, 0, 1);
+    transform: translateY(-50%) scale(1.05);
+    background: rgba(96, 32, 0, 1);
 }
 
 .nav-arrow.disabled {
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* Animación de salida específica para cada flecha */
 .nav-left.disabled {
-  transform: translateY(-50%) translateX(-50%) scale(0.8);
-}
-.nav-right.disabled {
-  transform: translateY(-50%) translateX(50%) scale(0.8);
+    transform: translateY(-50%) translateX(-50%) scale(0.8);
 }
 
-.nav-left { left: 8px; }
-.nav-right { right: 8px; }
+.nav-right.disabled {
+    transform: translateY(-50%) translateX(50%) scale(0.8);
+}
+
+.nav-left {
+    left: 8px;
+}
+
+.nav-right {
+    right: 8px;
+}
 
 @media (max-width: 768px) {
-  .nav-arrow { width: 34px; height: 34px; }
+    .nav-arrow {
+        width: 34px;
+        height: 34px;
+    }
 }
 
 /* === CONTENEDOR PRINCIPAL DE LA CARTELERA === */
 .cartelera-container {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden; /* Evita que afecte al body */
-  margin-top: 20px;
-  position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    /* Evita que afecte al body */
+    margin-top: 20px;
+    position: relative;
 }
 
 /* === Scrollbar para navegadores WebKit (Chrome, Edge, Safari) === */
 .billboard-list::-webkit-scrollbar {
-  height: 6px;
+    height: 6px;
 }
+
 .billboard-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #ff8c00, #ffb84d);
-  border-radius: 10px;
+    background: linear-gradient(90deg, #ff8c00, #ffb84d);
+    border-radius: 10px;
 }
+
 .billboard-list::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 .billboard-card {
-  scroll-snap-align: center; /* Clave: Alinear al centro */
+    scroll-snap-align: center;
+    /* Clave: Alinear al centro */
+}
+
+/* === LOADER TEATRAL DINÁMICO === */
+.loader-teatro {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #0a0a0a 25%, #1c1c1c 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  box-shadow: 0 0 80px rgba(255, 215, 0, 0.2);
+  animation: fadeOutLoader 1s ease-in-out 2s forwards;
+}
+
+/* Luces reflectoras cruzadas */
+.spotlights::before, .spotlights::after {
+  content: "";
+  position: absolute;
+  top: -60px;
+  width: 300px;
+  height: 450px;
+  background: radial-gradient(ellipse at top, rgba(255,255,180,0.25), transparent 70%);
+  transform-origin: top;
+  animation: fadeOutLoader 1s ease-in-out 1s forwards;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+.spotlights::before {
+  left: 10%;
+  transform: rotate(25deg);
+}
+.spotlights::after {
+  right: 10%;
+  transform: rotate(-25deg);
+  animation-delay: 1.5s;
+}
+@keyframes spotlightMove {
+  0% { opacity: 0.4; transform: rotate(20deg); }
+  100% { opacity: 1; transform: rotate(30deg); }
+}
+
+/* Título teatral */
+.loader-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.5rem;
+  color: gold;
+  text-shadow: 0 0 25px gold, 0 0 60px orange;
+  animation: glowText 2.5s ease-in-out infinite alternate;
+  z-index: 2;
+}
+@keyframes glowText {
+  0% { text-shadow: 0 0 15px gold, 0 0 40px orange; transform: scale(1); }
+  100% { text-shadow: 0 0 40px gold, 0 0 80px orange; transform: scale(1.05); }
+}
+
+/* Estrellas titilantes */
+.stars {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 2;
+}
+.stars span {
+  width: 10px;
+  height: 10px;
+  background: gold;
+  border-radius: 50%;
+  box-shadow: 0 0 10px gold, 0 0 20px orange;
+  animation: sparkle 1.5s infinite ease-in-out;
+}
+.stars span:nth-child(2) { animation-delay: 0.2s; }
+.stars span:nth-child(3) { animation-delay: 0.4s; }
+.stars span:nth-child(4) { animation-delay: 0.6s; }
+.stars span:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.6); }
+}
+
+/* Desvanecimiento final */
+@keyframes fadeOutLoader {
+  to { opacity: 0; transform: scale(0.98); display: none; }
 }
