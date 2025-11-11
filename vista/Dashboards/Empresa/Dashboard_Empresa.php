@@ -10,13 +10,13 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-explore">
-        <span class="icon-inline">📝</span> Nueva Reservas
+        <span class="icon-inline">📝</span> Nueva Reserva
       </button>
       <button class="btn btn-profile">
         <span class="icon-inline">📈</span> Reportes
       </button>
       <button class="btn btn-profile">
-        <span class="icon-inline">⚙️</span> Mi Perfil Empresa
+        <span class="icon-inline">⚙️</span> Mi Equipo
       </button>
       <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutEmpresas()">
         <span class="icon-inline">🚪</span> Cerrar Sesión
@@ -49,7 +49,7 @@
             <button class="btn btn-profile"><span class="icon-inline">⚙️</span> Facturación</button>
           </div>
         </div>
-      </div>fgfffffffffffffffff
+      </div>
     </aside>
 
     <!-- ======= Columna Derecha (Contenido de Empresa) ======= -->
@@ -58,7 +58,7 @@
         <div class="widget">
           <div class="widget-icon">💸</div>
           <div class="widget-content">
-            <span class="widget-number">$156 Miguel me lo mama perro hp</span>
+            <span class="widget-number">$156k</span>
             <span class="widget-title">Gastado este año</span>
           </div>
         </div>
