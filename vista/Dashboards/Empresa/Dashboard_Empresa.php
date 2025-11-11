@@ -49,7 +49,7 @@
             <button class="btn btn-profile"><span class="icon-inline">⚙️</span> Facturación</button>
           </div>
         </div>
-      </div>
+      </div>fgfffffffffffffffff
     </aside>
 
     <!-- ======= Columna Derecha (Contenido de Empresa) ======= -->
