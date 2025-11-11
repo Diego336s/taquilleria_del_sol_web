@@ -2,11 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Editar Usuario</title>
-
-  <!-- Mantiene el mismo diseño del dashboard -->
-  <link rel="stylesheet" href="../../../css/Dashboards/Administrador.css?v=1.0">
-
+  <title>✏️ Editar Usuario</title>
+  <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -14,188 +11,217 @@
       background-attachment: fixed;
       background-position: center;
       font-family: 'Poppins', sans-serif;
+      color: #fff;
       margin: 0;
       padding: 0;
     }
 
-    .dashboard-container {
+    .container {
       backdrop-filter: blur(10px);
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       padding: 30px;
-      margin: 40px auto;
       width: 90%;
       max-width: 600px;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-      color: white;
+      margin: 60px auto;
+      box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 20px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     label {
+      display: block;
+      margin-top: 12px;
       font-weight: bold;
-      color: #fff;
+      color: #ffdca8;
     }
 
     input {
+      width: 100%;
       padding: 10px;
-      border: none;
       border-radius: 8px;
-      font-size: 15px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
+      border: none;
+      margin-top: 6px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 1rem;
     }
 
     input:focus {
       outline: 2px solid #ff6b1f;
-      background: rgba(255, 255, 255, 0.3);
     }
 
     .btn {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 10px;
       border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
       cursor: pointer;
       font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
+      margin-top: 20px;
+      width: 48%;
     }
 
-    .btn-save {
-      background-color: #4CAF50;
-      color: #fff;
-      box-shadow: 0 10px 20px rgba(0, 255, 100, 0.5);
+    .btn-guardar {
+      background-color: #28a745;
+      color: white;
     }
 
-    .btn-save:hover {
-      transform: scale(1.05);
-      background-color: #43a047;
+    .btn-volver {
+      background-color: #ff6b1f;
+      color: white;
     }
 
-    .btn-back {
-      position: fixed;
-      top: 25px;
-      left: 25px;
-      background-color: #9c4012e6;
-      color: #fff;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-      z-index: 999;
-    }
-
-    .btn-back:hover {
-      background-color: #9c4012e6;
-      transform: scale(1.05);
+    .acciones {
+      display: flex;
+      justify-content: space-between;
     }
   </style>
 </head>
 <body>
 
-  <!-- Botón fijo arriba -->
-  <button class="btn btn-back" onclick="volverDashboard()">
-    ⬅️ Volver a Inicio
-  </button>
-
-  <div class="dashboard-container">
+  <div class="container">
     <h1>✏️ Editar Usuario</h1>
+    <form id="formEditar">
+      <input type="hidden" id="idUsuario" value="<?php echo htmlspecialchars($_GET['id'] ?? ''); ?>">
+      
+      <div id="formBody">
+        <p>Cargando datos del usuario...</p>
+      </div>
 
-    <form id="formEditarUsuario">
-      <input type="hidden" id="idUsuario">
-
-      <label for="nombres">Nombres</label>
-      <input type="text" id="nombres" required>
-
-      <label for="apellidos">Apellidos</label>
-      <input type="text" id="apellidos" required>
-
-      <label for="documento">Documento</label>
-      <input type="number" id="documento" required>
-
-      <label for="telefono">Teléfono</label>
-      <input type="text" id="telefono" required>
-
-      <label for="correo">Correo</label>
-      <input type="email" id="correo" required>
-
-      <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-      <input type="date" id="fecha_nacimiento" required>
-
-      <button type="submit" class="btn btn-save">💾 Guardar Cambios</button>
+      <div class="acciones">
+        <button type="submit" class="btn btn-guardar" id="btnGuardar" style="display:none;">💾 Guardar Cambios</button>
+        <button type="button" class="btn btn-volver" onclick="window.location.href='Usuarios_Registrados.php'">⬅️ Volver</button>
+      </div>
     </form>
   </div>
 
   <script>
-    // 🔙 Función para volver sin dañar el diseño
-    function volverDashboard() {
-      window.location.href = 'Ver_Usuarios.php';
+    const API_BASE = "http://127.0.0.1:8000/api/";
+    const idUsuario = document.getElementById("idUsuario").value;
+    const formBody = document.getElementById("formBody");
+    const btnGuardar = document.getElementById("btnGuardar");
+
+    // 🧩 Función para proteger HTML
+    function escapeHtml(str) {
+      return String(str || "").replace(/[&<>"']/g, function (m) {
+        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m];
+      });
     }
 
-    // 🧠 Obtener el ID del usuario desde la URL (ej: Editar_Usuario.php?id=1)
-    const params = new URLSearchParams(window.location.search);
-    const idUsuario = params.get('id');
+    // 🧩 Normaliza la respuesta del backend
+    function normalizeResponse(json) {
+      if (!json) return [];
+      if (Array.isArray(json)) return json;
+      if (json.data && Array.isArray(json.data)) return json.data;
+      if (json.usuarios && Array.isArray(json.usuarios)) return json.usuarios;
+      return [];
+    }
 
-    // 📡 Cargar datos del usuario
+    // 🧩 Cargar usuario
     async function cargarUsuario() {
+      if (!idUsuario) {
+        formBody.innerHTML = "<p>ID inválido.</p>";
+        return;
+      }
+
       try {
-        const response = await fetch(`http://localhost:8000/api/usuarios/${idUsuario}`);
-        if (!response.ok) throw new Error("Error al cargar el usuario");
+        // Intentar primero endpoint individual
+        let res = await fetch(`${API_BASE}listarClientes/${idUsuario}`);
+        let data = null;
 
-        const usuario = await response.json();
+        if (res.ok) {
+          data = await res.json().catch(() => null);
+          if (data?.data) {
+            mostrarFormulario(data.data);
+            return;
+          } else if (data?.id) {
+            mostrarFormulario(data);
+            return;
+          }
+        }
 
-        document.getElementById("idUsuario").value = usuario.id;
-        document.getElementById("nombres").value = usuario.nombre;
-        document.getElementById("apellidos").value = usuario.apellido;
-        document.getElementById("documento").value = usuario.documento;
-        document.getElementById("telefono").value = usuario.telefono;
-        document.getElementById("correo").value = usuario.correo;
-        document.getElementById("fecha_nacimiento").value = usuario.fecha_nacimiento;
+        // Fallback: listar todos y buscar por id
+        res = await fetch(`${API_BASE}listarClientes`);
+        if (!res.ok) throw new Error("Error al obtener usuarios");
+        data = await res.json().catch(() => null);
+
+        const usuarios = normalizeResponse(data);
+        const usuario = usuarios.find(u => String(u.id) === String(idUsuario));
+
+        if (!usuario) {
+          formBody.innerHTML = "<p>No se encontraron datos del usuario.</p>";
+          return;
+        }
+
+        mostrarFormulario(usuario);
       } catch (error) {
-        console.error(error);
-        alert("Error al cargar los datos del usuario.");
+        console.error("Error:", error);
+        formBody.innerHTML = "<p>Error al cargar los datos del usuario.</p>";
       }
     }
 
-    // 📝 Guardar cambios del usuario
-    document.getElementById("formEditarUsuario").addEventListener("submit", async (e) => {
+    // 🧩 Mostrar formulario con los datos
+    function mostrarFormulario(u) {
+      formBody.innerHTML = `
+        <label>Nombre:</label>
+        <input type="text" id="nombre" value="${escapeHtml(u.nombre)}" required>
+
+        <label>Apellido:</label>
+        <input type="text" id="apellido" value="${escapeHtml(u.apellido)}" required>
+
+        <label>Documento:</label>
+        <input type="text" id="documento" value="${escapeHtml(u.documento)}" required>
+
+        <label>Teléfono:</label>
+        <input type="text" id="telefono" value="${escapeHtml(u.telefono)}">
+
+        <label>Correo:</label>
+        <input type="email" id="correo" value="${escapeHtml(u.correo)}" required>
+      `;
+      btnGuardar.style.display = "inline-block";
+    }
+
+    // 🧩 Guardar cambios
+    document.getElementById("formEditar").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const datos = {
-        nombre: document.getElementById("nombres").value,
-        apellido: document.getElementById("apellidos").value,
+      const usuario = {
+        nombre: document.getElementById("nombre").value,
+        apellido: document.getElementById("apellido").value,
         documento: document.getElementById("documento").value,
         telefono: document.getElementById("telefono").value,
-        correo: document.getElementById("correo").value,
-        fecha_nacimiento: document.getElementById("fecha_nacimiento").value,
+        correo: document.getElementById("correo").value
       };
 
       try {
-        const response = await fetch(`http://localhost:8000/api/usuarios/${idUsuario}`, {
+        const res = await fetch(`${API_BASE}actualizarUsuario/${idUsuario}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos),
+          body: JSON.stringify(usuario)
         });
 
-        if (!response.ok) throw new Error("Error al actualizar el usuario");
+        const json = await res.json().catch(() => null);
 
-        alert("✅ Usuario actualizado correctamente");
-        volverDashboard();
+        if (res.ok && (json?.success || res.status === 200)) {
+          alert("✅ Usuario actualizado correctamente.");
+          window.location.href = "Usuarios_Registrados.php";
+        } else {
+          console.error("Respuesta de error:", json);
+          alert("⚠️ No se pudo actualizar el usuario.");
+        }
       } catch (error) {
         console.error(error);
-        alert("❌ Error al guardar los cambios");
+        alert("❌ Error al conectar con el servidor.");
       }
     });
 
-    // Ejecutar la carga al abrir la página
-    if (idUsuario) cargarUsuario();
+    // 🧩 Cargar datos al iniciar
+    document.addEventListener("DOMContentLoaded", cargarUsuario);
   </script>
 
 </body>

@@ -2,9 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Crear Empresa</title>
+  <title>Registrar Nueva Empresa</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
-
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -119,15 +118,12 @@
   </style>
 </head>
 <body>
-
-  <script src="../../../vista/js/ApiConexion.js"></script>
-
   <button class="btn btn-back" onclick="volverEmpresas()">⬅️ Volver</button>
 
   <div class="form-container">
     <h1>Registrar Nueva Empresa</h1>
 
-    <form id="formEmpresa">
+    <form id="formEmpresa" onsubmit="return false;">
       <label>Nombre de la Empresa</label>
       <input type="text" id="nombre_empresa" placeholder="Ej: Teatro del Sol" required>
 
@@ -151,73 +147,84 @@
 
       <label>Contraseña</label>
       <div class="password-toggle">
-        <input type="password" id="password" placeholder="Crea una contraseña segura" required>
+        <input type="password" id="clave" placeholder="Crea una contraseña segura" required>
         <button type="button" class="toggle-btn" onclick="togglePassword()">👁️</button>
       </div>
-
-      <button type="submit" class="btn btn-save">💾 Guardar Empresa</button>
+      <button type="submit" class="btn btn-save" id="btnGuardar">💾 Guardar Empresa</button>
     </form>
 
     <p id="mensaje" class="message"></p>
   </div>
 
+  <!-- Archivos JS -->
+  <script src="../../../js/ApiConexion.js"></script>
   <script>
     function volverEmpresas() {
-      window.location.href = 'ver_Empresas.php';
+      window.location.href = "Ver_Empresas.php";
     }
 
     function togglePassword() {
-      const passInput = document.getElementById("password");
+      const passInput = document.getElementById("clave");
       passInput.type = passInput.type === "password" ? "text" : "password";
     }
 
-    const form = document.getElementById('formEmpresa');
-    const mensaje = document.getElementById('mensaje');
+    // ✅ Función principal corregida
+    async function ctrRegistrarEmpresa() {
+      const mensaje = document.getElementById("mensaje");
+      mensaje.textContent = "Registrando empresa...";
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const datos = {
-        nombre_empresa: document.getElementById('nombre_empresa').value,
-        nit: document.getElementById('nit').value,
-        representante_legal: document.getElementById('representante_legal').value,
-        documento_representante: document.getElementById('documento_representante').value,
-        nombre_contacto: document.getElementById('nombre_contacto').value,
-        telefono: document.getElementById('telefono').value,
-        correo: document.getElementById('correo').value,
-        password: document.getElementById('password').value
+      const data = {
+        nombre_empresa: document.getElementById("nombre_empresa").value.trim(),
+        nit: document.getElementById("nit").value.trim(),
+        representante_legal: document.getElementById("representante_legal").value.trim(),
+        documento_representante: document.getElementById("documento_representante").value.trim(),
+        nombre_contacto: document.getElementById("nombre_contacto").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        correo: document.getElementById("correo").value.trim(),
+        clave: document.getElementById("clave").value.trim()
       };
 
-      try {
-        const response = await fetch(`${ApiConexion}crearEmpresa`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(datos)
-        });
+      // Validación rápida
+      for (const key in data) {
+        if (!data[key]) {
+          mensaje.textContent = "⚠️ Por favor completa todos los campos.";
+          mensaje.style.color = "yellow";
+          return;
+        }
+      }
 
-        if (!response.ok) throw new Error("Error al registrar la empresa");
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/registrarEmpresa", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
 
         const result = await response.json();
 
-        if (result.success || response.status === 201) {
-          mensaje.style.color = "#00ff99";
-          mensaje.textContent = "✅ Empresa registrada correctamente";
-          form.reset();
-
-          setTimeout(() => {
-            window.location.href = "ver_Empresas.php";
-          }, 1500);
-        } else {
-          mensaje.style.color = "#ff8080";
-          mensaje.textContent = "❌ No se pudo registrar la empresa.";
+        if (!response.ok) {
+          throw new Error(result.message || "Error al registrar la empresa");
         }
-      } catch (error) {
-        console.error(error);
-        mensaje.style.color = "#ff8080";
-        mensaje.textContent = "⚠️ Error al conectar con el servidor.";
-      }
-    });
-  </script>
 
+        mensaje.textContent = "✅ Empresa registrada con éxito.";
+        mensaje.style.color = "#4caf50";
+
+        // Redirige automáticamente
+        setTimeout(() => {
+          window.location.href = "Ver_Empresas.php";
+        }, 1500);
+
+      } catch (error) {
+        console.error("Error:", error);
+        mensaje.textContent = `❌ ${error.message}`;
+        mensaje.style.color = "red";
+      }
+    }
+
+    // Asigna el evento al botón
+    document.getElementById("btnGuardar").addEventListener("click", ctrRegistrarEmpresa);
+  </script>
 </body>
 </html>
