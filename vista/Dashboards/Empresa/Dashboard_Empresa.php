@@ -58,7 +58,7 @@
         <div class="widget">
           <div class="widget-icon">💸</div>
           <div class="widget-content">
-            <span class="widget-number">$156k</span>
+            <span class="widget-number">$1565555k</span>
             <span class="widget-title">Gastado este año</span>
           </div>
         </div>
