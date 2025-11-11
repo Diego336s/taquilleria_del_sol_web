@@ -10,7 +10,7 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-explore">
-        <span class="icon-inline">📝</span> Nueva Reservasss
+        <span class="icon-inline">📝</span> Nueva Reservas
       </button>
       <button class="btn btn-profile">
         <span class="icon-inline">📈</span> Reportes
