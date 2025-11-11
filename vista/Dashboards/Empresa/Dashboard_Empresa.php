@@ -1,5 +1,7 @@
 <!-- Enlazamos la hoja de estilos específica para este dashboard -->
 <link rel="stylesheet" href="vista/css/empresa.css?v=1.0">
+<link rel="stylesheet" href="vista/css/main.css?v=1.0">
+
 
 <!-- Usamos el mismo ID para heredar el fondo y estilos base -->
 <div class="dashboard-container" id="dashboard-usuario-body">
@@ -15,10 +17,18 @@
       <button class="btn btn-profile">
         <span class="icon-inline">📈</span> Reportes
       </button>
-      <button class="btn btn-profile">
-        <span class="icon-inline">⚙️</span> Mi Equipohhh
+      
+      <button class="btn btn-profile"onclick="">
+        <a href="index.php?ruta=configuracion_empresa" class="btn btn-explore"> </a>
+        <span class="icon-inline">⚙️</span> Mi Equipo
       </button>
-      <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutEmpresas()">
+
+      <button class="btn btn-profile">
+      <a href="index.php?ruta=mi_perfil_empresa" class="btn btn-explore"></a>
+        <span class="icon-inline">🙍‍♂️</span> Perfil
+
+      </button>
+       <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutEmpresas()">
         <span class="icon-inline">🚪</span> Cerrar Sesión
       </button>
     </div>
@@ -160,4 +170,4 @@
       </div>
     </section>
   </main>
-</div>
+</div>}

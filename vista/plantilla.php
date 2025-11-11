@@ -21,7 +21,14 @@ $rutasValidas = [
     "seleccionar_asientos" => "vista/Dashboards/Usuario/Seleccionar_Asientos.php",
     "dashboard-usuario" => "vista/Dashboards/Usuario/Dashboard_Usuario.php",
     "dashboard-empresa" => "vista/Dashboards/Empresa/Dashboard_Empresa.php",
-    "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php"
+    "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php",
+
+    //Rutas Empresa
+    "mi_perfil_empresa" => "vista\Dashboards\Empresa\Mi_Perfil_Empresa.php",
+    "Configuracion_empresa" => "vista\Dashboards\Empresa\Configuraciones_Empresa.php",
+
+
+
 ];
 
 $ruta = $_GET["ruta"] ?? "login";
