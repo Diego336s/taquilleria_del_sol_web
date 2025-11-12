@@ -11,24 +11,26 @@
       <span class="welcome-text">¡Bienvenido,<strong id="nombreEmpresa"></strong></span>
     </div>
     <div class="header-actions">
-      <button class="btn btn-explore">
-        <span class="icon-inline">📝</span> Nueva Reserva
-      </button>
-      <button class="btn btn-profile">
-        <span class="icon-inline">📈</span> Reportes
-      </button>
-      
-      <button class="btn btn-profile"onclick="">
-        <a href="index.php?ruta=configuracion_empresa" class="btn btn-explore"> </a>
-        <span class="icon-inline">⚙️</span> Mi Equipo
-      </button>
 
-      <button class="btn btn-profile">
-      <a href="index.php?ruta=mi_perfil_empresa" class="btn btn-explore"></a>
-        <span class="icon-inline">🙍‍♂️</span> Perfil
+        <a href="index.php?ruta=Reportes_empresa" class="btn btn-explore">
+          <span class="icon-inline">📈</span> Reportes
+        </a>
 
-      </button>
-       <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutEmpresas()">
+
+
+        <a href="index.php?ruta=Configuracion_empresa" class="btn btn-explore">
+          <i class="fas fa-cog me-2"></i> Mi Equipo
+        </a>
+
+
+
+
+        <a href="index.php?ruta=mi_perfil_empresa" class="btn btn-explore">
+          <i class="fas fa-user-circle me-2"></i> Mi Perfil
+        </a>
+
+
+      <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutEmpresas()">
         <span class="icon-inline">🚪</span> Cerrar Sesión
       </button>
     </div>
@@ -141,7 +143,7 @@
 
         </div>
 
-         <div class="widget recent-reservations-card">
+        <div class="widget recent-reservations-card">
           <div class="widget-header">
             <h3 class="section-title" style="margin: 0; color: #fff;">Análisis Corporativo</h3>
           </div>

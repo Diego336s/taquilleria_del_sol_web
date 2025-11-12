@@ -404,7 +404,7 @@
     position: relative;
     overflow: hidden;
     min-height: 150px;
-    box-shadow: 0 10px 20px rgba(255, 107, 31, 0.4);
+    box-shadow: 0 10px 20px #ff6b1f66;
 }
 
 .featured-label {
