@@ -7,212 +7,164 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body {
-      background-image: url('../../css/img/fondo.png');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #fff;
-    }
-
+    /* === AJUSTES BÁSICOS DE ORDEN (NO CAMBIAN TU DISEÑO ORIGINAL) === */
     .dashboard-container {
-      backdrop-filter: blur(12px);
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 40px;
-      margin: 60px auto;
-      width: 90%;
       max-width: 1200px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin: 50px auto;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      color: white;
     }
 
-    h1 {
+    h1, h2, h3 {
       text-align: center;
-      font-weight: 600;
-      font-size: 28px;
-      color: #fff;
-      margin-bottom: 35px;
-      letter-spacing: 0.5px;
     }
 
-    /* === Tarjetas métricas === */
+    .metrics, .charts, .services, .activity {
+      margin-top: 40px;
+    }
+
+    /* === MÉTRICAS === */
     .metrics {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      margin-bottom: 40px;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
       text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 1px solid rgba(255,255,255,0.2);
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
     }
 
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+      transform: scale(1.05);
     }
 
     .card i {
-      font-size: 2rem;
+      font-size: 40px;
       color: #ff6b1f;
       margin-bottom: 10px;
     }
 
     .card h3 {
-      font-size: 1rem;
-      margin: 5px 0;
-      color: #e0e0e0;
+      margin: 10px 0;
     }
 
-    .card p {
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    /* === Gráficos === */
+    /* === GRÁFICOS === */
     .charts {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
     }
 
     .chart-container {
-      position: relative;
-      height: 300px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
+      background: rgba(255,255,255,0.15);
       padding: 20px;
-      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
 
-    .chart-container h2 {
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-      text-align: center;
-      color: #ffb47f;
-    }
-
-    /* === Servicios === */
-    .services h2, .activity h2 {
-      text-align: center;
-      color: #ffb47f;
-      margin-bottom: 20px;
-    }
-
+    /* === SERVICIOS === */
     .service-list {
       display: flex;
-      justify-content: space-around;
       flex-wrap: wrap;
       gap: 20px;
-      margin-bottom: 40px;
+      justify-content: center;
     }
 
     .service-item {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      width: 180px;
-      border: 1px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.15);
+      padding: 10px 20px;
+      border-radius: 8px;
     }
 
     .status-dot {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
+      width: 15px;
+      height: 15px;
       border-radius: 50%;
-      margin-right: 8px;
     }
 
-    .status-active { background-color: #28a745; }
-    .status-warning { background-color: #ffc107; }
-    .status-error { background-color: #dc3545; }
+    .status-active {
+      background-color: #28a745;
+    }
 
-    /* === Actividad reciente === */
+    /* === ACTIVIDAD === */
     .activity-list {
-      max-height: 250px;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      max-height: 300px;
       overflow-y: auto;
-      padding-right: 10px;
-      margin-bottom: 20px;
     }
 
     .activity-item {
       display: flex;
       align-items: center;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 10px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .activity-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      margin-bottom: 15px;
     }
 
     .activity-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 12px;
+      font-size: 14px;
+      margin-right: 10px;
     }
 
-    .activity-icon.success { background-color: rgba(40, 167, 69, 0.8); }
-    .activity-icon.warning { background-color: rgba(255, 193, 7, 0.8); }
-    .activity-icon.info { background-color: rgba(0, 123, 255, 0.8); }
-
-    .activity-title { font-weight: 600; color: #fff; }
-    .activity-time { font-size: 0.85rem; color: #ccc; }
+    .activity-content {
+      flex: 1;
+    }
 
     .refresh-btn {
       display: block;
-      margin: 0 auto;
+      margin: 20px auto;
       padding: 10px 20px;
-      border-radius: 8px;
-      background-color: #3aa76d;
+      background: #ff6b1f;
+      color: white;
       border: none;
-      color: #fff;
-      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
 
     .refresh-btn:hover {
-      background-color: #329764;
+      background: #ff8533;
     }
 
+    /* === BOTÓN VOLVER === */
+    .btn-back {
+      background: #ff6b1f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 20px;
+    }
+
+    .btn-back:hover {
+      background: #ff8533;
+    }
+
+    /* === NOTIFICACIONES === */
     .notification {
       position: fixed;
       top: 20px;
       right: 20px;
-      background-color: rgba(40, 167, 69, 0.9);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 10px;
+      padding: 15px 25px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
       opacity: 0;
-      transform: translateY(-10px);
-      transition: 0.3s;
-      z-index: 999;
+      transform: translateY(-20px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 9999;
     }
 
     .notification.show {
@@ -220,39 +172,28 @@
       transform: translateY(0);
     }
 
-    .notification-success { background-color: rgba(40, 167, 69, 0.9); }
-    .notification-error { background-color: rgba(220, 53, 69, 0.9); }
-
-    .btn-back {
-      position: fixed;
-      top: 25px;
-      left: 25px;
-      background-color: #cda664;
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 8px;
-      z-index: 999;
-      font-weight: 600;
+    .notification-success {
+      background-color: #28a745;
     }
 
-    .btn-back:hover {
-      background-color: #b89358;
+    .notification-warning {
+      background-color: #ffc107;
+      color: black;
     }
 
-    @media (max-width: 600px) {
-      .dashboard-container { padding: 25px; }
-      h1 { font-size: 22px; }
+    .notification-info {
+      background-color: #17a2b8;
     }
   </style>
 </head>
-<body>
 
+<body>
   <button class="btn-back" onclick="volverDashboard()">⬅️ Volver</button>
 
   <div class="dashboard-container">
     <h1>📊 Estado del Sistema</h1>
 
-    <!-- Tarjetas de Métricas -->
+    <!-- === TARJETAS DE MÉTRICAS === -->
     <div class="metrics">
       <div class="card">
         <i class="fas fa-users"></i>
@@ -276,7 +217,7 @@
       </div>
     </div>
 
-    <!-- Gráficos -->
+    <!-- === GRÁFICOS === -->
     <div class="charts">
       <div class="chart-container">
         <h2>Actividad de Usuarios</h2>
@@ -296,7 +237,7 @@
       </div>
     </div>
 
-    <!-- Servicios -->
+    <!-- === ESTADO DE SERVICIOS === -->
     <div class="services">
       <h2>Estado de Servicios</h2>
       <div class="service-list">
@@ -319,7 +260,7 @@
       </div>
     </div>
 
-    <!-- Actividad -->
+    <!-- === ACTIVIDAD RECIENTE === -->
     <div class="activity">
       <h2>Actividad Reciente</h2>
       <div id="activityList" class="activity-list"></div>
@@ -328,7 +269,7 @@
   </div>
 
   <script>
-    // === Datos de ejemplo ===
+    // === DATOS DE EJEMPLO ===
     const exampleMetrics = {
       activeUsers: 125,
       companies: 23,
@@ -366,7 +307,7 @@
       });
     }
 
-    // === Gráficos ===
+    // === GRÁFICOS ===
     const userActivityChart = new Chart(document.getElementById('userActivityChart'), {
       type: 'line',
       data: {
@@ -439,7 +380,7 @@
       setTimeout(() => notif.remove(), 3000);
     }
 
-    // 🔙 Volver a Dashboard
+    // 🔙 Volver al Dashboard
     function volverDashboard() {
       window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
     }

@@ -23,7 +23,7 @@
       padding: 40px;
       margin: 60px auto;
       width: 90%;
-      max-width: 800px;
+      max-width: 850px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
@@ -92,9 +92,67 @@
       background-color: #b89358;
     }
 
-    @media (max-width: 600px) {
-      .dashboard-container { padding: 25px; }
-      h1 { font-size: 22px; }
+    /* ==== Tarjetas de precios ==== */
+    .precios-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .precio-card {
+      flex: 1 1 30%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      transition: all 0.3s ease;
+    }
+
+    .precio-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .precio-card h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffd580;
+    }
+
+    .precio-card input[type="number"] {
+      margin-top: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      padding: 10px;
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .precio-card input[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .precio-card .toggle {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .precios-container { flex-direction: column; }
+      .precio-card { width: 100%; }
     }
   </style>
 </head>
@@ -144,9 +202,35 @@
         <input type="time" id="hora_final" class="form-control">
       </div>
 
+      <!-- 💰 SECCIÓN DE PRECIOS POR PISOS -->
       <div class="form-group">
-        <label for="precio">💰 Precio</label>
-        <input type="number" id="precio" class="form-control">
+        <label>💰 Precios por Piso</label>
+        <div class="precios-container">
+          <div class="precio-card">
+            <h3>1️⃣ Primer Piso</h3>
+            <input type="number" id="precio_piso1" placeholder="Ej: 30000">
+            <div class="toggle">
+              <input type="checkbox" id="usar_piso1" checked onchange="togglePrecio(1)">
+              <label for="usar_piso1">Usar piso 1</label>
+            </div>
+          </div>
+          <div class="precio-card">
+            <h3>2️⃣ Segundo Piso</h3>
+            <input type="number" id="precio_piso2" placeholder="Ej: 25000">
+            <div class="toggle">
+              <input type="checkbox" id="usar_piso2" checked onchange="togglePrecio(2)">
+              <label for="usar_piso2">Usar piso 2</label>
+            </div>
+          </div>
+          <div class="precio-card">
+            <h3>3️⃣ Tercer Piso</h3>
+            <input type="number" id="precio_piso3" placeholder="Ej: 20000">
+            <div class="toggle">
+              <input type="checkbox" id="usar_piso3" checked onchange="togglePrecio(3)">
+              <label for="usar_piso3">Usar piso 3</label>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="form-group">
@@ -162,14 +246,19 @@
   </div>
 
   <script>
-    const API_URL = "http://127.0.0.1:8000/api"; // Cambia si tu Laravel corre en otro puerto
+    const API_URL = "http://127.0.0.1:8000/api";
 
-    // 🔙 Volver
     function volverDashboard() {
       window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
     }
 
-    // ✅ Cargar empresas desde la API
+    function togglePrecio(piso) {
+      const check = document.getElementById(`usar_piso${piso}`);
+      const input = document.getElementById(`precio_piso${piso}`);
+      input.disabled = !check.checked;
+      if (!check.checked) input.value = "";
+    }
+
     async function cargarEmpresas() {
       const response = await fetch(`${API_URL}/listarEmpresas`);
       const data = await response.json();
@@ -189,7 +278,6 @@
       }
     }
 
-    // 🎭 Cargar funciones según la empresa seleccionada
     async function cargarFuncionesPorEmpresa() {
       const empresaId = document.getElementById('empresa').value;
       const funcionSelect = document.getElementById('funcion');
@@ -211,7 +299,6 @@
       }
     }
 
-    // 🧾 Cargar los datos de una función
     async function cargarDatosFuncion() {
       const idFuncion = document.getElementById('funcion').value;
       if (!idFuncion) return;
@@ -226,24 +313,49 @@
         document.getElementById('fecha').value = f.fecha;
         document.getElementById('hora_inicio').value = f.hora_inicio;
         document.getElementById('hora_final').value = f.hora_final;
-        document.getElementById('precio').value = f.precio;
         document.getElementById('estado').value = f.estado;
+
+        // Cargar precios por piso si existen
+        document.getElementById('precio_piso1').value = f.precio_piso1 || '';
+        document.getElementById('precio_piso2').value = f.precio_piso2 || '';
+        document.getElementById('precio_piso3').value = f.precio_piso3 || '';
+
+        // Desactivar si el precio no está definido
+        for (let i = 1; i <= 3; i++) {
+          const input = document.getElementById(`precio_piso${i}`);
+          const check = document.getElementById(`usar_piso${i}`);
+          if (!input.value) {
+            input.disabled = true;
+            check.checked = false;
+          } else {
+            input.disabled = false;
+            check.checked = true;
+          }
+        }
       } else {
         alert("⚠️ Error al cargar los datos de la función.");
       }
     }
 
-    // 💾 Guardar cambios de la función
     async function guardarCambiosFuncion() {
       const idFuncion = document.getElementById('funcion').value;
+
+      const precios = {};
+      for (let i = 1; i <= 3; i++) {
+        const check = document.getElementById(`usar_piso${i}`);
+        precios[`precio_piso${i}`] = check.checked
+          ? parseFloat(document.getElementById(`precio_piso${i}`).value || 0)
+          : null;
+      }
+
       const body = {
         titulo: document.getElementById('titulo').value,
         descripcion: document.getElementById('descripcion').value,
         fecha: document.getElementById('fecha').value,
         hora_inicio: document.getElementById('hora_inicio').value,
         hora_final: document.getElementById('hora_final').value,
-        precio: document.getElementById('precio').value,
-        estado: document.getElementById('estado').value
+        estado: document.getElementById('estado').value,
+        ...precios
       };
 
       const response = await fetch(`${API_URL}/actualizarFuncion/${idFuncion}`, {
@@ -260,7 +372,6 @@
       }
     }
 
-    // 🚀 Iniciar
     document.addEventListener("DOMContentLoaded", cargarEmpresas);
   </script>
 </body>

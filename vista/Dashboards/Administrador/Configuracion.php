@@ -57,7 +57,7 @@
 
             <!-- Volver al Dashboard -->
             <p class="mt-4 text-center small">
-                <a href="index.php?ruta=dashboard-usuario">
+                <a href="index.php?ruta=dashboard-admin">
                     <i class="fas fa-arrow-left me-1"></i> Volver al Dashboard
                 </a>
             </p>
