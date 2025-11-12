@@ -25,14 +25,59 @@
       width: 95%;
       max-width: 1200px;
       box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
+      position: relative;
+    }
+
+    /* === TITULO Y BUSCADOR === */
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
     }
 
     h1 {
-      text-align: center;
       color: #fff;
-      margin-bottom: 30px;
       text-transform: uppercase;
       letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      padding: 8px 14px;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+      transition: 0.3s;
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      padding: 6px 10px;
+      font-size: 15px;
+      width: 220px;
+    }
+
+    .search-box input::placeholder {
+      color: #ddd;
+    }
+
+    .search-box i {
+      color: #ffcc00;
+      font-size: 18px;
+      margin-right: 6px;
+    }
+
+    .search-box:hover {
+      box-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+      transform: scale(1.02);
     }
 
     .table-container {
@@ -66,13 +111,6 @@
       transition: all 0.3s ease;
     }
 
-    /* === NOMBRE DE EMPRESA === */
-    td.nombre-empresa {
-      color: #ffffff;
-      font-weight: bold;
-      text-shadow: 0 0 5px rgba(255,255,255,0.3);
-    }
-
     /* === BOTONES DE NAVEGACIÓN === */
     .btn-back, .btn-add {
       position: fixed;
@@ -96,7 +134,7 @@
       transform: scale(1.05);
     }
 
-    /* === BOTONES DE ACCIÓN (EDITAR / ELIMINAR) === */
+    /* === BOTONES DE ACCIÓN === */
     .btn-action {
       border: none;
       border-radius: 6px;
@@ -130,22 +168,38 @@
     }
 
     @media (max-width: 768px) {
+      .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
       h1 { font-size: 1.4rem; }
+      .search-box input { width: 100%; }
       th, td { padding: 8px; font-size: 0.9rem; }
       .btn-action { padding: 4px 8px; font-size: 0.8rem; }
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
   <!-- 🔙 Botón volver -->
   <button class="btn-back" onclick="volverDashboard()">⬅️ Volver</button>
+
   <!-- ➕ Botón crear nueva empresa -->
   <button class="btn-add" onclick="window.location.href='Crear_Empresa.php'">➕ Nueva Empresa</button>
 
   <!-- 📦 Contenedor principal -->
   <div class="dashboard-container">
-    <h1>🏢 Empresas Registradas</h1>
+    <div class="header-section">
+      <h1>🏢 Empresas Registradas</h1>
+
+      <!-- 🔍 Buscador -->
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="buscador" placeholder="Buscar empresa...">
+      </div>
+    </div>
 
     <div class="table-container">
       <table>
@@ -183,6 +237,18 @@
         tbody.id = "tbody-empresas"; // Coincidir con VerEmpresas.js
         ctrListarEmpresas();
       }
+
+      // 🔍 Filtro en tiempo real
+      const buscador = document.getElementById('buscador');
+      buscador.addEventListener('keyup', () => {
+        const filtro = buscador.value.toLowerCase();
+        const filas = document.querySelectorAll('#tbody-empresas tr');
+
+        filas.forEach(fila => {
+          const textoFila = fila.textContent.toLowerCase();
+          fila.style.display = textoFila.includes(filtro) ? '' : 'none';
+        });
+      });
     });
   </script>
 </body>

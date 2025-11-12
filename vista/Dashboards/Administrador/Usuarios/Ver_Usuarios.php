@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>👥 Usuarios Registrados</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -15,6 +16,7 @@
       padding: 0;
       color: #fff;
     }
+
     .dashboard-container {
       backdrop-filter: blur(10px);
       background-color: rgba(255, 255, 255, 0.12);
@@ -24,144 +26,280 @@
       width: 95%;
       max-width: 1200px;
       box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
+      position: relative;
     }
-    h1 { text-align: center; color: #fff; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 50px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    /* ===== Buscador moderno y elegante ===== */
+    .search-container {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 174, 66, 0.5);
+      border-radius: 30px;
+      padding: 6px 14px;
+      box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .search-container:hover {
+      box-shadow: 0 0 20px rgba(255, 174, 66, 0.8);
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.02);
+    }
+
+    .search-input {
+      border: none;
+      background: transparent;
+      outline: none;
+      color: #fff;
+      font-size: 15px;
+      padding: 8px;
+      width: 200px;
+      transition: width 0.4s ease;
+    }
+
+    .search-input::placeholder {
+      color: #eee;
+      font-style: italic;
+    }
+
+    .search-container i {
+      color: #ffb347;
+      font-size: 18px;
+      margin-left: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .search-container:focus-within i {
+      transform: rotate(10deg) scale(1.2);
+    }
+
     .table-container { overflow-x: auto; }
+
     table {
-      width: 100%; border-collapse: collapse; text-align: center; border-radius: 15px; overflow: hidden;
-      background-color: rgba(0,0,0,0.4); color: #fff;
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      border-radius: 15px;
+      overflow: hidden;
+      background-color: rgba(0,0,0,0.4);
+      color: #fff;
     }
-    thead { background: linear-gradient(90deg, #ff6b1f, #ffcc00); color: #000; font-weight: bold; text-transform: uppercase; }
+
+    thead {
+      background: linear-gradient(90deg, #ff6b1f, #ffcc00);
+      color: #000;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
     th, td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    tbody tr:hover { background-color: rgba(255,255,255,0.06); transition: all 0.2s ease; }
-    .estado-activo { background-color: #28a745; color: #fff; border-radius: 20px; padding: 4px 12px; font-size: .85rem; font-weight: bold; }
-    .estado-inactivo { background-color: #dc3545; color: #fff; border-radius: 20px; padding: 4px 12px; font-size: .85rem; font-weight: bold; }
-    .btn-back { position: fixed; top:25px; left:25px; background-color:#9c4012e6; color:#fff; border:none; border-radius:8px; padding:10px 16px; cursor:pointer; font-weight:bold; box-shadow:0 10px 20px rgba(255,107,31,0.5); z-index:999; }
-    .btn { border:none; border-radius:6px; padding:6px 12px; cursor:pointer; font-weight:bold; transition:all .2s ease; }
+
+    tbody tr:hover {
+      background-color: rgba(255,255,255,0.06);
+      transition: all 0.2s ease;
+    }
+
+    .estado-activo {
+      background-color: #28a745;
+      color: #fff;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: .85rem;
+      font-weight: bold;
+    }
+
+    .estado-inactivo {
+      background-color: #dc3545;
+      color: #fff;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: .85rem;
+      font-weight: bold;
+    }
+
+    .btn-back {
+      position: fixed;
+      top:25px;
+      left:25px;
+      background-color:#9c4012e6;
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      padding:10px 16px;
+      cursor:pointer;
+      font-weight:bold;
+      box-shadow:0 10px 20px rgba(255,107,31,0.5);
+      z-index:999;
+    }
+
+    .btn {
+      border:none;
+      border-radius:6px;
+      padding:6px 12px;
+      cursor:pointer;
+      font-weight:bold;
+      transition:all .2s ease;
+    }
+
     .btn-editar { background:#ffc107; color:#000; }
     .btn-eliminar { background:#dc3545; color:#fff; }
-    @media (max-width:768px){ th,td{padding:8px;font-size:.9rem;} h1{font-size:1.4rem;} }
+
+    @media (max-width:768px){
+      th,td{padding:8px;font-size:.9rem;}
+      h1{font-size:1.4rem;}
+      .search-container { top: 20px; right: 15px; }
+      .search-input { width: 120px; }
+    }
   </style>
 </head>
+
 <body>
   <button class="btn-back" onclick="volverDashboard()">⬅️ Volver al Dashboard</button>
 
   <div class="dashboard-container">
     <h1>👥 Usuarios Registrados</h1>
+
+    <!-- Buscador elegante -->
+    <div class="search-container">
+      <input type="text" id="buscador" class="search-input" placeholder="Buscar usuario...">
+      <i class="fas fa-search"></i>
+    </div>
+
     <div class="table-container">
       <table>
         <thead>
           <tr>
-            <th>ID</th><th>Nombre</th><th>Apellido</th><th>Documento</th><th>Teléfono</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Acciones</th>
+            <th>Nombre</th><th>Apellido</th><th>Documento</th><th>Teléfono</th>
+            <th>Fecha nacimiento</th><th>Correo</th><th>Sexo</th><th>Rol</th><th>Acciones</th>
           </tr>
         </thead>
         <tbody id="tablaUsuarios">
-          <tr><td colspan="9">Cargando usuarios...</td></tr>
+          <tr><td colspan="11">Cargando usuarios...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-<script>
-  const API_BASE = "http://127.0.0.1:8000/api/";
-  const LIST_URL = `${API_BASE}listarClientes`;
+  <script>
+    const API_BASE = "http://127.0.0.1:8000/api/";
+    const LIST_URL = `${API_BASE}listarClientes`;
 
-  function volverDashboard(){ window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin'; }
+    function volverDashboard(){
+      window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
+    }
 
-  // Normaliza respuesta: puede ser array, { data: [...] }, o { success:true, data: [...] }
-  function normalizeUsersResponse(json) {
-    if (!json) return [];
-    if (Array.isArray(json)) return json;
-    if (json.data && Array.isArray(json.data)) return json.data;
-    // try possible alternative fields
-    if (json.usuarios && Array.isArray(json.usuarios)) return json.usuarios;
-    return [];
-  }
+    function normalizeUsersResponse(json) {
+      if (!json) return [];
+      if (Array.isArray(json)) return json;
+      if (json.data && Array.isArray(json.data)) return json.data;
+      if (json.usuarios && Array.isArray(json.usuarios)) return json.usuarios;
+      return [];
+    }
 
-  async function cargarUsuarios() {
-    const tbody = document.getElementById('tablaUsuarios');
-    tbody.innerHTML = `<tr><td colspan="9">Cargando usuarios...</td></tr>`;
-    const token = sessionStorage.getItem('userToken');
+    async function cargarUsuarios() {
+      const tbody = document.getElementById('tablaUsuarios');
+      tbody.innerHTML = `<tr><td colspan="11">Cargando usuarios...</td></tr>`;
+      const token = sessionStorage.getItem('userToken');
 
-    try {
-      const headers = { "Content-Type": "application/json" };
-      if (token) headers['Authorization'] = 'Bearer ' + token;
+      try {
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
 
-      const res = await fetch(LIST_URL, { method: 'GET', headers });
-      if (!res.ok) {
-        // try to parse error body for debugging
-        let errText = await res.text().catch(()=>res.statusText);
-        console.error('HTTP Error:', res.status, errText);
-        tbody.innerHTML = `<tr><td colspan="9">Error al cargar los usuarios (HTTP ${res.status}).</td></tr>`;
-        return;
+        const res = await fetch(LIST_URL, { method: 'GET', headers });
+        if (!res.ok) {
+          tbody.innerHTML = `<tr><td colspan="11">Error al cargar los usuarios (HTTP ${res.status}).</td></tr>`;
+          return;
+        }
+
+        const json = await res.json();
+        const usuarios = normalizeUsersResponse(json);
+        renderUsuarios(usuarios);
+
+        const buscador = document.getElementById("buscador");
+        buscador.addEventListener("input", () => filtrarUsuarios(usuarios, buscador.value));
+
+      } catch (err) {
+        console.error('❌ Error al cargar:', err);
+        tbody.innerHTML = `<tr><td colspan="11">Error al cargar los usuarios.</td></tr>`;
       }
+    }
 
-      const json = await res.json().catch(()=>null);
-      const usuarios = normalizeUsersResponse(json);
-
+    function renderUsuarios(usuarios) {
+      const tbody = document.getElementById('tablaUsuarios');
       if (!usuarios.length) {
-        tbody.innerHTML = `<tr><td colspan="9">No hay usuarios registrados.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="11">No hay usuarios registrados.</td></tr>`;
         return;
       }
 
-      const rows = usuarios.map(u => {
-        const estado = (u.estado || '').toString();
-        return `
-          <tr id="usuario-${u.id}">
-            <td>${u.id ?? ''}</td>
-            <td>${u.nombre ?? ''}</td>
-            <td>${u.apellido ?? ''}</td>
-            <td>${u.documento ?? ''}</td>
-            <td>${u.telefono ?? ''}</td>
-            <td>${u.correo ?? ''}</td>
-            <td>${u.rol ?? 'Cliente'}</td>
-            <td><span class="${estado.toLowerCase()==='activo' ? 'estado-activo' : 'estado-inactivo'}">${u.estado ?? 'Activo'}</span></td>
-            <td>
-              <button class="btn btn-editar" onclick="editarUsuario(${u.id})">✏️ Editar</button>
-              <button class="btn btn-eliminar" onclick="eliminarUsuario(${u.id})">🗑️ Eliminar</button>
-            </td>
-          </tr>`;
-      }).join('');
-
-      tbody.innerHTML = rows;
-
-    } catch (err) {
-      console.error('Fetch error:', err);
-      document.getElementById('tablaUsuarios').innerHTML = `<tr><td colspan="9">Error al cargar los usuarios.</td></tr>`;
+      tbody.innerHTML = usuarios.map(u => `
+        <tr>
+          <td>${u.nombre ?? ''}</td>
+          <td>${u.apellido ?? ''}</td>
+          <td>${u.documento ?? ''}</td>
+          <td>${u.telefono ?? ''}</td>
+          <td>${u.fecha_nacimiento ?? ''}</td>
+          <td>${u.correo ?? ''}</td>
+          <td>${u.sexo ?? ''}</td>
+          <td>${u.rol ?? 'Cliente'}</td>
+          <td>
+            <button class="btn btn-editar" onclick="editarUsuario(${u.id})">✏️ Editar</button>
+            <button class="btn btn-eliminar" onclick="eliminarUsuario(${u.id})">🗑️ Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
     }
-  }
 
-  function editarUsuario(id) {
-    if (!id) return alert('ID inválido');
-    window.location.href = `Editar_Usuario.php?id=${id}`;
-  }
+    function filtrarUsuarios(usuarios, texto) {
+      texto = texto.toLowerCase();
+      const filtrados = usuarios.filter(u =>
+        (u.nombre ?? '').toLowerCase().includes(texto) ||
+        (u.apellido ?? '').toLowerCase().includes(texto) ||
+        (u.documento ?? '').toLowerCase().includes(texto) ||
+        (u.telefono ?? '').toLowerCase().includes(texto) ||
+        (u.fecha_nacimiento ?? '').toLowerCase().includes(texto) ||
+        (u.correo ?? '').toLowerCase().includes(texto)
+      );
+      renderUsuarios(filtrados);
+    }
 
-  async function eliminarUsuario(id) {
-    if (!confirm('¿Seguro que deseas eliminar este usuario?')) return;
-    const token = sessionStorage.getItem('userToken');
+    function editarUsuario(id) {
+      if (!id) return alert('ID inválido');
+      window.location.href = `Editar_Usuario.php?id=${id}`;
+    }
 
-    try {
-      const headers = {};
-      if (token) headers['Authorization'] = 'Bearer ' + token;
-
-      const res = await fetch(`${API_BASE}eliminarUsuario/${id}`, { method: 'DELETE', headers });
-      const json = await res.json().catch(()=>null);
-
-      if (res.ok && (json?.success || json?.message)) {
-        alert('✅ Usuario eliminado correctamente.');
-        cargarUsuarios();
-      } else {
-        console.error('Delete response', res.status, json);
-        alert('⚠️ No se pudo eliminar el usuario.');
+    async function eliminarUsuario(id) {
+      if (!confirm('¿Seguro que deseas eliminar este usuario?')) return;
+      const token = sessionStorage.getItem('userToken');
+      try {
+        const headers = { "Authorization": 'Bearer ' + token };
+        const res = await fetch(`${API_BASE}eliminarUsuario/${id}`, { method: 'DELETE', headers });
+        const json = await res.json();
+        if (res.ok && (json.success || json.message)) {
+          alert('✅ Usuario eliminado correctamente.');
+          cargarUsuarios();
+        } else {
+          alert('⚠️ No se pudo eliminar el usuario.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('❌ Error al conectar con el servidor.');
       }
-    } catch (err) {
-      console.error(err);
-      alert('❌ Error al conectar con el servidor.');
     }
-  }
 
-  // Init
-  document.addEventListener('DOMContentLoaded', cargarUsuarios);
-</script>
+    document.addEventListener('DOMContentLoaded', cargarUsuarios);
+  </script>
 </body>
 </html>

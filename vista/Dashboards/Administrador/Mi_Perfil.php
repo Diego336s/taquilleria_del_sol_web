@@ -6,7 +6,7 @@
         <div class="card-body">
 
             <div class="text-center mb-4">
-                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Icono de Perfil" class="login-logo mb-3" id="profile_icon">
+                <img src="https://cdn3d.iconscout.com/3d/premium/thumb/manager-3d-icon-download-in-png-blend-fbx-gltf-file-formats--business-businessman-man-model-canvas-pack-icons-9616909.png?f=webp" alt="Icono de Perfil" class="login-logo mb-3" id="profile_icon">
                 <h1 class="h3 text-white">Mi Perfil</h1>
                 <p class="text-white-50">Gestiona tu información personal y tu cuenta.</p>
             </div>
@@ -41,16 +41,6 @@
                             <label for="profile_telefono" class="form-label">Teléfono</label>
                             <input type="tel" class="form-control" id="profile_telefono" name="telefono" placeholder="Tu teléfono" required>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="profile_sexo" class="form-label">Género</label>
-                            <select class="form-select" id="profile_sexo" name="sexo" required>
-                                <option value="">Seleccionar</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
-                            </select>
-                        </div>
-
                     </div>
                 </div>
 
@@ -65,7 +55,7 @@
             <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
 
             <p class="mt-4 text-center small">
-                <a href="index.php?ruta=dashboard-usuario">
+                <a href="index.php?ruta=dashboard-admin">
                     <i class="fas fa-arrow-left me-1"></i> Volver al Dashboard
                 </a>
             </p>
@@ -82,12 +72,7 @@
                 const profileIcon = document.getElementById('profile_icon');
                 const userData = JSON.parse(userDataString);
 
-                // Cambiar el ícono según el sexo
-                if (userData.sexo === 'M') {
-                    profileIcon.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; // Icono masculino
-                } else if (userData.sexo === 'F') {
-                    profileIcon.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135789.png'; // Icono femenino
-                }
+
 
                 // Rellenar los campos del formulario
                 document.getElementById('profile_nombre').value = userData.nombres || '';
