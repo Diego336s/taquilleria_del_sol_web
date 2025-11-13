@@ -31,29 +31,61 @@
                 <p class="text-white-50">Ajusta tus preferencias y seguridad.</p>
             </div>
 
-            <form id="form_configuracion_usuario">
-                <!-- Sección de Seguridad -->
-                <h5 class="text-white mt-4 mb-3 border-bottom pb-2">
-                    <i class="fas fa-shield-alt me-2"></i>Seguridad
-                </h5>
-                <div class="config-options-container">
-                    <a href="index.php?ruta=cambiar_contrasena_cliente" class="config-option">
-                        <i class="fas fa-key option-icon me-3"></i>
-                        <span class="option-text">Cambiar Contraseña</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="index.php?ruta=cambiar_correo_cliente" class="config-option">
-                        <i class="fas fa-envelope option-icon me-3"></i>
-                        <span class="option-text">Cambiar Correo</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="#" class="config-option text-danger">
-                        <i class="fas fa-trash-alt option-icon me-3"></i>
-                        <span class="option-text">Eliminar Cuenta</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
+            <!-- Sección de Seguridad -->
+            <h5 class="text-white mt-4 mb-3 border-bottom pb-2">
+                <i class="fas fa-shield-alt me-2"></i>Seguridad
+            </h5>
+
+            <!-- Cambiar Contraseña -->
+            <div class="mb-4">
+                <button class="btn btn-outline-light w-100 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePassword" aria-expanded="false" aria-controls="collapsePassword">
+                    <i class="fas fa-key me-2"></i>Cambiar Contraseña
+                </button>
+                <div class="collapse" id="collapsePassword">
+                    <form id="form_cambiar_clave_config_empresa">
+                        <div class="mb-3">
+                            <label for="id_nueva_clave_config" class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="id_nueva_clave_config" name="nueva_clave" placeholder="Nueva contraseña" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_confirm_nueva_clave_config" class="form-label">Confirmar Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="id_confirm_nueva_clave_config" name="confirmar_clave" placeholder="Confirmar nueva contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Cambiar Contraseña</button>
+                    </form>
                 </div>
-            </form>
+            </div>
+
+            <!-- Cambiar Correo -->
+            <div class="mb-4">
+                <button class="btn btn-outline-light w-100 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEmail" aria-expanded="false" aria-controls="collapseEmail">
+                    <i class="fas fa-envelope me-2"></i>Cambiar Correo
+                </button>
+                <div class="collapse" id="collapseEmail">
+                    <form id="form_cambiar_correo_config_empresa">
+                        <div class="mb-3">
+                            <label for="id_correo_config_empresa" class="form-label">Nuevo Correo</label>
+                            <input type="email" class="form-control" id="id_correo_config_empresa" name="nuevo_correo" placeholder="Nuevo correo electrónico" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_confirm_correo_config_empresa" class="form-label">Confirmar Nuevo Correo</label>
+                            <input type="email" class="form-control" id="id_confirm_correo_config_empresa" name="confirmar_correo" placeholder="Confirmar nuevo correo electrónico" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Cambiar Correo</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Eliminar Cuenta -->
+            <div class="mb-4">
+                <button class="btn btn-outline-danger w-100 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDelete" aria-expanded="false" aria-controls="collapseDelete">
+                    <i class="fas fa-trash-alt me-2"></i>Eliminar Cuenta
+                </button>
+                <div class="collapse" id="collapseDelete">
+                    <p class="text-white-50 mb-3">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+                    <button type="button" class="btn btn-danger w-100" id="btn_eliminar_cuenta_empresa">Eliminar Cuenta</button>
+                </div>
+            </div>
 
             <!-- Volver al Dashboard -->
             <p class="mt-4 text-center small">
@@ -65,3 +97,5 @@
         </div>
     </div>
 </div>
+
+<script src='./vista/js/Empresa/Dashboard_Empresa.js'></script>
