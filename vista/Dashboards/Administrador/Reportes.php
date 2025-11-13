@@ -5,6 +5,8 @@
   <title>Reportes de Ventas y Eventos</title>
   <link rel="stylesheet" href="../../../css/main.css?v=1.0">
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     body {
@@ -94,7 +96,6 @@
       transform: scale(1.05);
     }
 
-    /* ✅ Botón fijo en la esquina */
     .btn-back {
       position: fixed;
       top: 25px;
@@ -115,7 +116,7 @@
       font-style: italic;
     }
 
-    .input-precio, .input-fecha {
+    .input-precio {
       background: rgba(255, 255, 255, 0.2);
       border: none;
       border-radius: 6px;
@@ -124,31 +125,20 @@
       text-align: center;
       width: 90%;
     }
-
-    .input-precio:focus, .input-fecha:focus {
-      outline: none;
-      background-color: rgba(255, 255, 255, 0.3);
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Botón fijo arriba -->
-  <button class="btn btn-back" onclick="volverDashboard()">
-    ⬅️ Volver a Inicio
-  </button>
+  <button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver a Inicio</button>
 
   <div class="dashboard-container">
-    <h1>📊 Reportes de Ventas de Tickets</h1>
+    <h1>💰 Reportes de Ventas (Tickets)</h1>
 
-    <!-- Tabla de Tickets -->
     <table id="tabla-reportes">
       <thead>
         <tr>
           <th>Evento</th>
           <th>Cliente</th>
-          <th>Tipo</th>
           <th>Precio</th>
           <th>Estado</th>
           <th>Fecha de Compra</th>
@@ -156,27 +146,28 @@
         </tr>
       </thead>
       <tbody id="tbody-reportes">
-        <tr><td colspan="7" class="loading">Cargando reportes...</td></tr>
+        <tr><td colspan="6" class="loading">Cargando reportes...</td></tr>
       </tbody>
     </table>
 
-    <h1>🕒 Reporte de Eventos</h1>
+    <h1>🎭 Reporte de Eventos</h1>
 
-    <!-- Tabla de Eventos -->
     <table id="tabla-eventos">
       <thead>
         <tr>
           <th>Título</th>
           <th>Descripción</th>
-          <th>Fecha Inicio</th>
-          <th>Fecha Fin</th>
-          <th>Lugar</th>
+          <th>Fecha</th>
+          <th>Hora Inicio</th>
+          <th>Hora Fin</th>
           <th>Estado</th>
+          <th>Empresa</th>
+          <th>Categoría</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="tbody-eventos">
-        <tr><td colspan="7" class="loading">Cargando eventos...</td></tr>
+        <tr><td colspan="9" class="loading">Cargando eventos...</td></tr>
       </tbody>
     </table>
   </div>
@@ -188,11 +179,6 @@
     function volverDashboard() {
       window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
     }
-
-    // Cargar reportes al iniciar la página
-    document.addEventListener('DOMContentLoaded', function() {
-      ctrGenerarReportes();
-    });
   </script>
 
 </body>
