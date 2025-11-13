@@ -285,6 +285,7 @@
     /* Ocupa todo el espacio disponible hasta el máximo */
 }
 
+
 /* Bloque Destacado Naranja */
 .featured-function {
     padding: 30px;
@@ -458,7 +459,7 @@
     margin-bottom: 10px;
 }
 
-.card-content{
+.card-content {
     padding: 20px;
 }
 
@@ -482,39 +483,108 @@
     /* Cambiado a blanco */
 }
 
+
+/* =========================================================================
+   📱 MEDIAS QUERIES PARA RESPONSIVIDAD
+   ========================================================================= */
+
+/* Para tablets y pantallas medianas (hasta 1200px) */
 @media (max-width: 1200px) {
     .dashboard-main {
         grid-template-columns: 1fr;
+        /* Las columnas se apilan una sobre otra */
     }
 
-    .billboard-list {
-        justify-content: center;
+    .content-area {
+        max-width: none;
+        /* Permitimos que ocupe todo el ancho disponible */
+        width: 100%;
+    }
+
+    .dashboard-main {
+        grid-template-columns: 1fr;
+        /* Las columnas del dashboard se apilan */
+    }
+
+    .summary-widgets {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        /* Widgets en una cuadrícula flexible */
+        gap: 20px;
     }
 }
 
+/* Para dispositivos móviles (hasta 768px) */
 @media (max-width: 768px) {
+    #dashboard-usuario-body {
+        padding: 15px;
+        /* Reducimos el padding general en móviles */
+        padding: 1rem;
+        /* Reducimos el padding general en móviles */
+    }
+
+    .dashboard-main {
+        display: block;
+        /* Deshacemos el grid para un layout de una sola columna */
+    }
+
     .dashboard-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+        gap: 20px;
+        gap: 1rem;
     }
 
     .header-actions {
         width: 100%;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        /* Permitimos que los botones pasen a la siguiente línea si no caben */
+        justify-content: flex-start;
+        /* Alineamos los botones al inicio */
+        gap: 10px;
+        gap: 0.5rem;
     }
 
-    .featured-function .btn-white-border {
-        position: static;
-        margin-top: 15px;
+    .header-actions .btn {
+        flex-grow: 1;
+        /* Hacemos que los botones crezcan para ocupar el espacio */
+        text-align: center;
+        padding: 0.75rem;
+    }
+
+    .summary-widgets {
+        grid-template-columns: 1fr;
+        /* Forzamos los widgets a una sola columna */
+        margin-bottom: 1.5rem;
     }
 
     .featured-function {
-        min-height: auto;
+        flex-direction: column;
+        /* Apilamos el contenido de la tarjeta destacada */
+        align-items: flex-start;
+        padding: 20px;
+        padding: 1.5rem;
+        text-align: left;
+    }
+
+    .featured-title {
+        font-size: 1.8em;
+        /* Reducimos el tamaño del título principal */
+    }
+
+    .featured-details {
+        flex-direction: column;
+        /* Apilamos los detalles del evento */
+        gap: 8px;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .billboard-card {
+        flex: 0 0 280px;
+        /* Hacemos las tarjetas de eventos un poco más pequeñas */
     }
 }
-
-
 
 /* === CONTENEDOR DE TARJETA === */
 
@@ -747,89 +817,205 @@
 
 /* === LOADER TEATRAL DINÁMICO === */
 .loader-teatro {
-  position: relative;
-  width: 100%;
-  height: 350px;
-  overflow: hidden;
-  background: radial-gradient(circle at center, #0a0a0a 25%, #1c1c1c 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 18px;
-  box-shadow: 0 0 80px rgba(255, 215, 0, 0.2);
-  animation: fadeOutLoader 1s ease-in-out 2s forwards;
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #0a0a0a 25%, #1c1c1c 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+    box-shadow: 0 0 80px rgba(255, 215, 0, 0.2);
+    animation: fadeOutLoader 1s ease-in-out 2s forwards;
 }
 
 /* Luces reflectoras cruzadas */
-.spotlights::before, .spotlights::after {
-  content: "";
-  position: absolute;
-  top: -60px;
-  width: 300px;
-  height: 450px;
-  background: radial-gradient(ellipse at top, rgba(255,255,180,0.25), transparent 70%);
-  transform-origin: top;
-  animation: fadeOutLoader 1s ease-in-out 1s forwards;
-  z-index: 1;
-  mix-blend-mode: screen;
-}
-.spotlights::before {
-  left: 10%;
-  transform: rotate(25deg);
-}
+.spotlights::before,
 .spotlights::after {
-  right: 10%;
-  transform: rotate(-25deg);
-  animation-delay: 1.5s;
+    content: "";
+    position: absolute;
+    top: -60px;
+    width: 300px;
+    height: 450px;
+    background: radial-gradient(ellipse at top, rgba(255, 255, 180, 0.25), transparent 70%);
+    transform-origin: top;
+    animation: fadeOutLoader 1s ease-in-out 1s forwards;
+    z-index: 1;
+    mix-blend-mode: screen;
 }
+
+.spotlights::before {
+    left: 10%;
+    transform: rotate(25deg);
+}
+
+.spotlights::after {
+    right: 10%;
+    transform: rotate(-25deg);
+    animation-delay: 1.5s;
+}
+
 @keyframes spotlightMove {
-  0% { opacity: 0.4; transform: rotate(20deg); }
-  100% { opacity: 1; transform: rotate(30deg); }
+    0% {
+        opacity: 0.4;
+        transform: rotate(20deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotate(30deg);
+    }
 }
 
 /* Título teatral */
 .loader-title {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 2.5rem;
-  color: gold;
-  text-shadow: 0 0 25px gold, 0 0 60px orange;
-  animation: glowText 2.5s ease-in-out infinite alternate;
-  z-index: 2;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 2.5rem;
+    color: gold;
+    text-shadow: 0 0 25px gold, 0 0 60px orange;
+    animation: glowText 2.5s ease-in-out infinite alternate;
+    z-index: 2;
 }
+
 @keyframes glowText {
-  0% { text-shadow: 0 0 15px gold, 0 0 40px orange; transform: scale(1); }
-  100% { text-shadow: 0 0 40px gold, 0 0 80px orange; transform: scale(1.05); }
+    0% {
+        text-shadow: 0 0 15px gold, 0 0 40px orange;
+        transform: scale(1);
+    }
+
+    100% {
+        text-shadow: 0 0 40px gold, 0 0 80px orange;
+        transform: scale(1.05);
+    }
 }
 
 /* Estrellas titilantes */
 .stars {
-  position: absolute;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 15px;
-  z-index: 2;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 2;
 }
+
 .stars span {
-  width: 10px;
-  height: 10px;
-  background: gold;
-  border-radius: 50%;
-  box-shadow: 0 0 10px gold, 0 0 20px orange;
-  animation: sparkle 1.5s infinite ease-in-out;
+    width: 10px;
+    height: 10px;
+    background: gold;
+    border-radius: 50%;
+    box-shadow: 0 0 10px gold, 0 0 20px orange;
+    animation: sparkle 1.5s infinite ease-in-out;
 }
-.stars span:nth-child(2) { animation-delay: 0.2s; }
-.stars span:nth-child(3) { animation-delay: 0.4s; }
-.stars span:nth-child(4) { animation-delay: 0.6s; }
-.stars span:nth-child(5) { animation-delay: 0.8s; }
+
+.stars span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.stars span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.stars span:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.stars span:nth-child(5) {
+    animation-delay: 0.8s;
+}
 
 @keyframes sparkle {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.6); }
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.6);
+    }
 }
 
 /* Desvanecimiento final */
 @keyframes fadeOutLoader {
-  to { opacity: 0; transform: scale(0.98); display: none; }
+    to {
+        opacity: 0;
+        transform: scale(0.98);
+        display: none;
+    }
+}
+
+@keyframes glowText {
+    0% {
+        text-shadow: 0 0 15px gold, 0 0 40px orange;
+        transform: scale(1);
+    }
+
+    100% {
+        text-shadow: 0 0 40px gold, 0 0 80px orange;
+        transform: scale(1.05);
+    }
+}
+
+/* Estrellas titilantes */
+.stars {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 2;
+}
+
+.stars span {
+    width: 10px;
+    height: 10px;
+    background: gold;
+    border-radius: 50%;
+    box-shadow: 0 0 10px gold, 0 0 20px orange;
+    animation: sparkle 1.5s infinite ease-in-out;
+}
+
+.stars span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.stars span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.stars span:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.stars span:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.6);
+    }
+}
+
+/* Desvanecimiento final */
+@keyframes fadeOutLoader {
+    to {
+        opacity: 0;
+        transform: scale(0.98);
+        display: none;
+    }
 }
