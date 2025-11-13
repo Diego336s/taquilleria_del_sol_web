@@ -39,6 +39,7 @@ $rutasAdmin = [
     "mi_perfil_admin" => "vista\Dashboards\Administrador\Mi_Perfil.php",
     "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
     "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
+    "reportes" => "vista/Dashboards/Administrador/Reportes.php",
 ];
 
 // Se unifican todas las rutas en un solo array para la validación

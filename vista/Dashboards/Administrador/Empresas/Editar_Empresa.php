@@ -132,7 +132,6 @@
       }
 
       try {
-        // 👇 Cambia 'obtenerEmpresa' por 'listarEmpresas' si tu backend no tiene endpoint individual
         const res = await fetch(`${API_URL}listarEmpresas`);
         const data = await res.json();
 
@@ -141,14 +140,13 @@
           return;
         }
 
-        // Buscar empresa específica
         const empresa = data.data.find(e => e.id == idEmpresa);
         if (!empresa) {
           contenido.innerHTML = "<p>No se encontraron datos de la empresa.</p>";
           return;
         }
 
-        // ✅ Mostrar datos en el formulario
+        // ✅ Mostrar datos
         contenido.innerHTML = `
           <label>Nombre Empresa</label>
           <input type="text" name="nombre_empresa" value="${empresa.nombre_empresa}" class="form-control" required>
@@ -196,9 +194,17 @@
 
         const data = await res.json();
 
-        if (res.ok && data.success) {
-          Swal.fire("✅ Actualizada", data.message || "Empresa actualizada correctamente", "success")
-            .then(() => window.location.href = "Empresas_Registradas.php");
+        // 🟢 Si la respuesta fue correcta, redirigir al detalle de empresa
+        if (res.ok) {
+          Swal.fire({
+            icon: "success",
+            title: "✅ Empresa actualizada correctamente",
+            timer: 1500,
+            showConfirmButton: false
+          }).then(() => {
+            // 🔁 Redirigir al detalle de la empresa
+            window.location.href = `Ver_Empresas.php?id=${idEmpresa}`;
+          });
         } else {
           Swal.fire("⚠️ Error", data.message || "No se pudo actualizar la empresa", "error");
         }
