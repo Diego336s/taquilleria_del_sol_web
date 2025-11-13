@@ -16,7 +16,7 @@
     }
 
     .dashboard-container {
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 40px;
@@ -24,6 +24,7 @@
       width: 90%;
       max-width: 700px;
       box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
     h1 {
@@ -31,6 +32,7 @@
       color: #fff;
       margin-bottom: 30px;
       letter-spacing: 0.5px;
+      font-weight: 600;
     }
 
     label {
@@ -49,6 +51,12 @@
       color: #fff;
       font-size: 15px;
       margin-top: 4px;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: #00bcd4;
+      box-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
     }
 
     .btn {
@@ -90,12 +98,13 @@
     .loading {
       text-align: center;
       color: #ccc;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
 
-  <button class="btn btn-back" onclick="window.location.href='Ver_Clientes.php'">⬅️ Volver</button>
+  <button class="btn btn-back" onclick="window.location.href='Ver_Usuarios.php'">⬅️ Volver</button>
 
   <div class="dashboard-container">
     <h1>✏️ Editar Cliente</h1>
@@ -109,7 +118,7 @@
   <script>
   (function(){
     const API_BASE = "http://127.0.0.1:8000/api/";
-    const token = sessionStorage.getItem('userToken') || null;
+    const token = sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
     const params = new URLSearchParams(window.location.search);
     const idCliente = params.get("id");
 
@@ -132,76 +141,59 @@
         .replace(/'/g, "&#39;");
     }
 
+    // 🔹 Cargar cliente desde listarClientes
     async function cargarCliente() {
       if (!idCliente) {
-        contenido.innerHTML = "<p>No se proporcionó ID del cliente.</p>";
+        contenido.innerHTML = "<p>❌ No se proporcionó el ID del cliente.</p>";
         return;
       }
 
-      let cliente = null;
-
-      // 🟢 Intento 1: verCliente/{id}
       try {
-        const res = await fetch(`${API_BASE}verCliente/${idCliente}`, { headers: buildHeaders() });
-        if (res.ok) {
-          const json = await res.json();
-          cliente = json.data || json || null;
+        const res = await fetch(`${API_BASE}listarClientes`, { headers: buildHeaders() });
+        const json = await res.json();
+        if (!res.ok) throw new Error("Error al obtener clientes");
+
+        const lista = json.data || json;
+        const cliente = lista.find(c => c.id == idCliente || c.idCliente == idCliente);
+
+        if (!cliente) {
+          contenido.innerHTML = "<p>⚠️ No se encontró el cliente solicitado.</p>";
+          return;
         }
+
+        contenido.innerHTML = `
+          <label>Nombre</label>
+          <input type="text" name="nombre" value="${escapeHtml(cliente.nombre || '')}" class="form-control" required>
+
+          <label>Apellido</label>
+          <input type="text" name="apellido" value="${escapeHtml(cliente.apellido || '')}" class="form-control" required>
+
+          <label>Documento</label>
+          <input type="text" name="documento" value="${escapeHtml(cliente.documento || '')}" class="form-control" required>
+
+          <label>Teléfono</label>
+          <input type="text" name="telefono" value="${escapeHtml(cliente.telefono || '')}" class="form-control">
+
+          <label>Fecha de Nacimiento</label>
+          <input type="date" name="fecha_nacimiento" value="${escapeHtml(cliente.fecha_nacimiento || '')}" class="form-control">
+
+          <label>Sexo</label>
+          <select name="sexo" class="form-control">
+            <option value="Masculino" ${cliente.sexo === "Masculino" ? "selected" : ""}>Masculino</option>
+            <option value="Femenino" ${cliente.sexo === "Femenino" ? "selected" : ""}>Femenino</option>
+          </select>
+
+          <label>Correo Electrónico</label>
+          <input type="email" name="correo" value="${escapeHtml(cliente.correo || '')}" class="form-control" required>
+        `;
+        btnGuardar.style.display = "inline-block";
+
       } catch (err) {
-        console.warn("Fallo verCliente:", err);
+        contenido.innerHTML = `<p>❌ Error al cargar los datos del cliente.<br><small>${err.message}</small></p>`;
       }
-
-      // 🟢 Intento 2: listarClientes y buscar manualmente
-      if (!cliente) {
-        try {
-          const res = await fetch(`${API_BASE}listarClientes`, { headers: buildHeaders() });
-          if (res.ok) {
-            const json = await res.json();
-            const lista = json.data || json || [];
-            cliente = Array.isArray(lista)
-              ? lista.find(c => c.id == idCliente || c.idCliente == idCliente)
-              : null;
-          }
-        } catch (err) {
-          console.warn("Fallo listarClientes:", err);
-        }
-      }
-
-      if (!cliente) {
-        contenido.innerHTML = "<p>No se encontró el cliente. (Verifica la API o el ID)</p>";
-        return;
-      }
-
-      // Llenar formulario
-      contenido.innerHTML = `
-        <label>Nombre</label>
-        <input type="text" name="nombre" value="${escapeHtml(cliente.nombre || cliente.nombres || '')}" class="form-control" required>
-
-        <label>Apellido</label>
-        <input type="text" name="apellido" value="${escapeHtml(cliente.apellido || cliente.apellidos || '')}" class="form-control" required>
-
-        <label>Documento</label>
-        <input type="text" name="documento" value="${escapeHtml(cliente.documento || cliente.doc || '')}" class="form-control" required>
-
-        <label>Teléfono</label>
-        <input type="text" name="telefono" value="${escapeHtml(cliente.telefono || cliente.celular || '')}" class="form-control">
-
-        <label>fecha nacimiento</label>
-        <input type="text" name="fecha_nacimiento" value="${escapeHtml(cliente.fecha_nacimiento || cliente.fecha_nacimiento || '')}" class="form-control">
-
-        <label>sexo</label>
-        <input type="text" name="sexo" value="${escapeHtml(cliente.sexo || cliente.sexo || '')}" class="form-control">
-
-        <label>Correo Electrónico</label>
-        <input type="email" name="correo" value="${escapeHtml(cliente.correo || cliente.email || '')}" class="form-control" required>
-
-        
-        
-      `;
-
-      btnGuardar.style.display = "inline-block";
     }
 
+    // 🔹 Guardar actualización
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form).entries());
@@ -209,22 +201,24 @@
       try {
         const res = await fetch(`${API_BASE}actualizarCliente/${idCliente}`, {
           method: "PUT",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             ...buildHeaders()
           },
           body: JSON.stringify(data)
         });
 
-        const json = await res.json().catch(()=>null);
+        const json = await res.json().catch(() => null);
+
         if (res.ok) {
-          Swal.fire("✅ Actualizado", json?.message || "Cliente actualizado correctamente", "success")
+          Swal.fire("✅ Éxito", json?.message || "Cliente actualizado correctamente.", "success")
             .then(() => window.location.href = "Ver_Clientes.php");
         } else {
-          Swal.fire("⚠️ Error", json?.message || "No se pudo actualizar el cliente.", "error");
+          Swal.fire("❌ Error", json?.message || "No se pudo actualizar el cliente.", "error");
         }
+
       } catch (err) {
-        Swal.fire("❌ Error", "Error al conectar con el servidor", "error");
+        Swal.fire("❌ Error", "No se pudo conectar con el servidor.", "error");
       }
     });
 

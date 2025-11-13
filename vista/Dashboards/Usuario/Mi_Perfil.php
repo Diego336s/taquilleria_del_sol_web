@@ -84,9 +84,9 @@
 
                 // Cambiar el ícono según el sexo
                 if (userData.sexo === 'M') {
-                    profileIcon.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; // Icono masculino
+                    profileIcon.src = 'https://img.freepik.com/vector-premium/perfil-avatar-hombre-icono-redondo_24640-14044.jpg'; // Icono masculino
                 } else if (userData.sexo === 'F') {
-                    profileIcon.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135789.png'; // Icono femenino
+                    profileIcon.src = 'https://img.freepik.com/vector-premium/perfil-avatar-mujer-icono-redondo_24640-14042.jpg'; // Icono femenino
                 }
 
                 // Rellenar los campos del formulario

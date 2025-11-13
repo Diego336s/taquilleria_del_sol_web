@@ -44,11 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Aquí pasaríamos los datos del evento dinámicamente en un futuro
             mostrarDetallesEvento();
         });
-    }
+    }    
 
     // Inicializar navegación de cartelera (flechas y estados)
     setupBillboardNav();
 });
+
 
 
 // =========================================================================
@@ -382,15 +383,15 @@ async function ctrListarEventos() {
                         <p class="card-description">${descripcionCorta}</p>
                         <div class="card-read-more">
                             ${descripcionCompleta.length > maxChars
-                                ? `<a href="#" class="ver-mas" data-desc="${encodeURIComponent(descripcionCompleta)}">Ver más</a>`
-                                : ''}
+                        ? `<a href="#" class="ver-mas" data-desc="${encodeURIComponent(descripcionCompleta)}">Ver más</a>`
+                        : ''}
                         </div>
                         <div class="card-meta">
                             <span>🗓️ ${new Date(evento.fecha).toLocaleDateString('es-ES', {
-                                day: 'numeric', month: 'long'
-                            })}</span>
+                            day: 'numeric', month: 'long'
+                        })}</span>
                             <span>🕒 ${new Date('1970-01-01T' + evento.hora_inicio)
-                                .toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                        .toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}
                             </span>
                         </div>
                         <div class="card-footer">
@@ -400,7 +401,7 @@ async function ctrListarEventos() {
                             </div>
                         </div>
                         <div class="card-booking">
-                            <a href="index.php?ruta=seleccionar_asientos&eventoId=${evento.id}" class="btn btn-confirm">Reservar</a>
+                            <a href="index.php?ruta=seleccionar_asientos&eventoid=${evento.id}" class="btn btn-confirm">Reservar</a>
                         </div>
                     </div>
                 </div>
@@ -433,7 +434,6 @@ async function ctrListarEventos() {
         billboardContainer.innerHTML = `<p class="text-danger text-center">No se pudieron cargar los eventos. Inténtalo más tarde.</p>`;
     }
 }
-
 
 // =========================================================================
 // FUNCION: MOSTRAR MODAL CON DETALLES DEL EVENTO
@@ -488,6 +488,9 @@ function mostrarDetallesEvento(evento) {
     });
 }
 
+// =========================================================================
+// FUNCION: LISTAR SILLAS DEL TEATRO
+// =========================================================================
 
 
 
@@ -578,4 +581,66 @@ function setupBillboardNav() {
     requestAnimationFrame(updateArrows);
 
     list.dataset.navInitialized = 'true';
+}
+
+// =========================================================================
+// FUNCION: ELIMINAR CUENTA DE CLIENTE
+// =========================================================================
+
+async function ctrEliminarCuenta() {
+    // 1. Obtener token y datos de sesión
+    const token = sessionStorage.getItem('userToken');
+    const userDataString = sessionStorage.getItem('userData');
+
+    if (!token || !userDataString) {
+        mostrarAlerta('error', 'Sesión inválida', 'No se puede realizar esta acción sin una sesión activa.');
+        return;
+    }
+
+    // 2. Mostrar alerta de "cargando"
+    Swal.fire({
+        title: 'Eliminando tu cuenta...',
+        text: 'Este proceso puede tardar unos segundos. No cierres esta ventana.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // 3. Preparar y ejecutar la llamada a la API
+    try {
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
+        const urlAPI = `${ApiConexion}eliminar/cliente/${userId}`;
+
+        const respuesta = await fetch(urlAPI, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        const data = await respuesta.json();
+
+        if (data.success === true) {
+            // 4. Limpiar sesión y redirigir
+            sessionStorage.clear();
+            Swal.fire({
+                icon: 'success',
+                title: 'Cuenta Eliminada',
+                text: data.message || 'Tu cuenta ha sido eliminada con éxito. Esperamos verte de nuevo.',
+                showConfirmButton: false,
+                timer: 2500
+            }).then(() => {
+                window.location.replace("index.php?ruta=login");
+            });
+        } else {
+            mostrarAlerta('error', 'Error al eliminar', data.message || 'No se pudo completar la eliminación de la cuenta.');
+        }
+    } catch (error) {
+        Swal.close();
+        console.error("Error al eliminar cuenta:", error);
+        mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor para eliminar la cuenta.');
+    }
 }

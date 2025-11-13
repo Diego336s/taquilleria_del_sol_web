@@ -20,6 +20,6 @@
     </div>
     <button type="submit" class="btn btn-secondary btn_usuario w-100 py-2">Iniciar como Usuario</button>
     <p class="mt-3 text-center small">
-        ¿No tienes cuenta? <a href="registro">Regístrate aquí</a>
+        ¿No tienes cuenta? <a href="index.php?ruta=registro">Regístrate aquí</a>
     </p>
 </form>

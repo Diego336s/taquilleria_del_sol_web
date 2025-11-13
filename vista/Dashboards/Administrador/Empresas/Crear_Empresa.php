@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Registrar Nueva Empresa</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -13,6 +14,7 @@
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
+      color: #fff;
     }
 
     .form-container {
@@ -20,17 +22,18 @@
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 40px;
-      margin: 50px auto;
+      margin: 60px auto;
       width: 90%;
       max-width: 700px;
       box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-      color: #fff;
     }
 
     h1 {
       text-align: center;
       color: #fff;
       margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     label {
@@ -94,12 +97,6 @@
       transform: scale(1.05);
     }
 
-    .message {
-      text-align: center;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
     .password-toggle {
       position: relative;
     }
@@ -115,8 +112,14 @@
       font-size: 16px;
     }
 
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
   </style>
 </head>
+
 <body>
   <button class="btn btn-back" onclick="volverEmpresas()">⬅️ Volver</button>
 
@@ -150,13 +153,13 @@
         <input type="password" id="clave" placeholder="Crea una contraseña segura" required>
         <button type="button" class="toggle-btn" onclick="togglePassword()">👁️</button>
       </div>
+
       <button type="submit" class="btn btn-save" id="btnGuardar">💾 Guardar Empresa</button>
     </form>
 
     <p id="mensaje" class="message"></p>
   </div>
 
-  <!-- Archivos JS -->
   <script src="../../../js/ApiConexion.js"></script>
   <script>
     function volverEmpresas() {
@@ -168,10 +171,14 @@
       passInput.type = passInput.type === "password" ? "text" : "password";
     }
 
-    // ✅ Función principal corregida
+    document.getElementById("btnGuardar").addEventListener("click", ctrRegistrarEmpresa);
+
     async function ctrRegistrarEmpresa() {
       const mensaje = document.getElementById("mensaje");
       mensaje.textContent = "Registrando empresa...";
+      mensaje.style.color = "#ffcc00";
+
+      const token = sessionStorage.getItem("userToken");
 
       const data = {
         nombre_empresa: document.getElementById("nombre_empresa").value.trim(),
@@ -184,47 +191,74 @@
         clave: document.getElementById("clave").value.trim()
       };
 
-      // Validación rápida
+      // Validación de campos vacíos
       for (const key in data) {
         if (!data[key]) {
-          mensaje.textContent = "⚠️ Por favor completa todos los campos.";
-          mensaje.style.color = "yellow";
+          Swal.fire({
+            icon: "warning",
+            title: "⚠️ Campos incompletos",
+            text: "Por favor completa todos los campos."
+          });
           return;
         }
       }
 
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/registrarEmpresa", {
+        const response = await fetch(`${ApiConexion}registrarEmpresa`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": "Bearer " + token } : {})
           },
           body: JSON.stringify(data)
         });
 
-        const result = await response.json();
+        // ✅ Leer la respuesta cruda
+        const textResponse = await response.text();
+        console.log("📥 Respuesta del servidor:", textResponse);
 
-        if (!response.ok) {
-          throw new Error(result.message || "Error al registrar la empresa");
+        // ✅ Intentar parsear a JSON
+        let result;
+        try {
+          result = JSON.parse(textResponse);
+        } catch {
+          throw new Error("El servidor devolvió una respuesta no válida.");
         }
+
+        // ✅ Validar respuesta del backend
+        if (!response.ok || result.success === false) {
+          const errorMsg = result.message || result.error || "Error al registrar la empresa.";
+          throw new Error(errorMsg);
+        }
+
+        // ✅ Registro exitoso
+        Swal.fire({
+          icon: "success",
+          title: "✅ Empresa registrada",
+          text: result.message || "La empresa fue registrada exitosamente.",
+          timer: 2000,
+          showConfirmButton: false
+        });
 
         mensaje.textContent = "✅ Empresa registrada con éxito.";
         mensaje.style.color = "#4caf50";
+        document.getElementById("formEmpresa").reset();
 
-        // Redirige automáticamente
         setTimeout(() => {
           window.location.href = "Ver_Empresas.php";
-        }, 1500);
+        }, 1800);
 
       } catch (error) {
-        console.error("Error:", error);
-        mensaje.textContent = `❌ ${error.message}`;
+        console.error("❌ Error al registrar empresa:", error);
+        Swal.fire({
+          icon: "error",
+          title: "❌ Error",
+          text: error.message || "Ocurrió un problema al registrar la empresa."
+        });
+        mensaje.textContent = "❌ " + (error.message || "Error desconocido.");
         mensaje.style.color = "red";
       }
     }
-
-    // Asigna el evento al botón
-    document.getElementById("btnGuardar").addEventListener("click", ctrRegistrarEmpresa);
   </script>
 </body>
 </html>
