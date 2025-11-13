@@ -99,3 +99,6 @@
         }
     });
 </script>
+
+
+<script src='./vista/js/Empresa/Dashboard_Empresa.js'></script> <!-- Lógica del dashboard de usuario -->

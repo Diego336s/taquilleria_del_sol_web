@@ -28,7 +28,7 @@ $rutasCliente = [
 // Rutas específicas para el rol de Empresa
 $rutasEmpresa = [
     "dashboard-empresa" => "vista/Dashboards/Empresa/Dashboard_Empresa.php",
-    "mi_perfil_empresa" => "vista\Dashboards\Empresa\Mi_Perfil_Empresa.php",
+    "mi_perfil_empresa" => "vista/Dashboards/Empresa/Mi_Perfil_Empresa.php",
     "Configuracion_empresa" => "vista\Dashboards\Empresa\Configuraciones_Empresa.php",
     "Reportes_empresa" => "vista/Dashboards/Empresa/Reportes_Empresa.php",
 ];
