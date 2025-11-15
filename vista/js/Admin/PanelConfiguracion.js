@@ -1,450 +1,199 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Verificar Autenticación y Redirigir (Protección de Rutas)
+/* ==========================================================
+   PanelConfiguracion.js – COMPLETO Y FUNCIONAL
+   Unificado con tu configuración y tus reportes del sistema
+=========================================================== */
+
+const ApiConexion = "http://127.0.0.1:8000/api/";
+
+let empresasMap = {};
+let categoriasMap = {};
+let clientesMap = {};
+let eventosMap = {};
+
+// ==========================================================
+// 🚀 EJECUCIÓN INICIAL
+// ==========================================================
+document.addEventListener('DOMContentLoaded', async () => {
+
+    // 👉 Verifica login
     checkAuthAndRedirect();
 
-    // Poblar datos del administrador en la UI
+    // 👉 Llena los datos del admin en pantalla
     populateAdminData();
 
-    // Cargar configuración actual
+    // 👉 Cargar configuración del panel (colores, idioma, etc.)
     ctrCargarConfiguracion();
 
-    // Aplicar configuración visual al cargar
+    // 👉 Aplicar configuración de apariencia
     const config = JSON.parse(localStorage.getItem('adminConfig') || '{}');
     aplicarConfiguracionVisual(config);
+
+    // 👉 Cargar datos del sistema
+    await cargarEmpresas();
+    await cargarCategorias();
+    await cargarClientes();
+    await cargarEventos();
+    await cargarReportesTickets();
+    await cargarReportesEventos();
 });
 
-// =========================================================================
-// 🔐 FUNCIÓN: PROTECCIÓN DE RUTAS PARA ADMIN
-// =========================================================================
-
-function checkAuthAndRedirect() {
-    const token = sessionStorage.getItem('userToken');
-    const userDataString = sessionStorage.getItem('userData');
-
-    if (!token || !userDataString) {
-        mostrarAlerta('error', 'Sesión inválida', 'No se encontraron datos de sesión. Redirigiendo al login.');
-        window.location.replace("../../../index.php?ruta=login");
-        return;
-    }
-
+// ==========================================================
+// 📌 CARGAR EMPRESAS
+// ==========================================================
+async function cargarEmpresas() {
     try {
-        const userData = JSON.parse(userDataString);
-        const userRole = userData.rol || userData.role || userData.tipo || 'user';
-        if (userRole.toLowerCase() !== 'admin' && userRole.toLowerCase() !== 'administrator') {
-            console.warn('Usuario no es admin, rol actual:', userRole);
-            window.location.replace("../../../index.php?ruta=dashboard-usuario");
-            return;
-        }
+        const res = await fetch(ApiConexion + 'listarEmpresas');
+        const data = await res.json();
+
+        empresasMap = {};
+        (data.data || []).forEach(e => {
+            empresasMap[e.id] = e.nombre_empresa;
+        });
+
     } catch (e) {
-        console.error('Error parseando userData:', e);
-        sessionStorage.clear();
-        window.location.replace("../../../index.php?ruta=login");
-        return;
+        console.error("Error cargando empresas", e);
     }
 }
 
-// =========================================================================
-// ✨ FUNCIÓN: POBLAR DATOS DEL ADMIN EN LA UI
-// =========================================================================
-
-function populateAdminData() {
-    const userDataString = sessionStorage.getItem('userData');
-
-    if (!userDataString) {
-        console.warn('⚠️ No hay datos de administrador en sessionStorage.');
-        return;
-    }
-
+// ==========================================================
+// 📌 CARGAR CATEGORÍAS
+// ==========================================================
+async function cargarCategorias() {
     try {
-        const userData = JSON.parse(userDataString);
-        console.log("👨‍💼 Datos del administrador cargados desde sessionStorage:", userData);
-        // Aquí podríamos poblar algún elemento si fuera necesario
+        const res = await fetch(ApiConexion + 'listarCategorias');
+        const data = await res.json();
+
+        categoriasMap = {};
+        (data.data || []).forEach(c => {
+            categoriasMap[c.id] = c.nombre;
+        });
+
     } catch (e) {
-        console.error('❌ Error al parsear los datos del administrador desde sessionStorage:', e);
+        console.error("Error cargando categorías", e);
     }
 }
 
-// =========================================================================
-// ⚙️ FUNCIÓN: CARGAR CONFIGURACIÓN
-// =========================================================================
+// ==========================================================
+// 📌 CARGAR CLIENTES
+// ==========================================================
+async function cargarClientes() {
+    try {
+        const res = await fetch(ApiConexion + 'listarClientes');
+        const data = await res.json();
 
-async function ctrCargarConfiguracion() {
-    // Cargar configuración desde localStorage (sin backend)
-    cargarConfiguracionLocalStorage();
-}
-
-// =========================================================================
-// 💾 FUNCIÓN: CARGAR CONFIGURACIÓN DESDE LOCALSTORAGE
-// =========================================================================
-
-function cargarConfiguracionLocalStorage() {
-    const config = JSON.parse(localStorage.getItem('adminConfig') || '{}');
-
-    // Tema y apariencia
-    document.getElementById('modoOscuro').value = config.modoOscuro || 'false';
-    document.getElementById('colorPrincipal').value = config.colorPrincipal || '#ff6b1f';
-    document.getElementById('logoTema').value = config.logoTema || '';
-    document.getElementById('tamañoFuenteSelect').value = config.tamañoFuente || '14';
-
-    // Sistema
-    document.getElementById('precioBase').value = config.precioBase || 50000;
-    document.getElementById('horaApertura').value = config.horaApertura || '08:00';
-    document.getElementById('horaCierre').value = config.horaCierre || '22:00';
-    document.getElementById('correoNotificaciones').value = config.correoNotificaciones || 'admin@taquilleria.com';
-    document.getElementById('estadoSistema').value = config.estadoSistema || 'activo';
-    document.getElementById('mensajeMantenimiento').value = config.mensajeMantenimiento || '';
-
-    // Notificaciones
-    document.getElementById('notificacionesSonoras').checked = config.notificacionesSonoras !== false;
-    document.getElementById('notificacionesVisuales').checked = config.notificacionesVisuales !== false;
-    document.getElementById('notificacionesEmail').checked = config.notificacionesEmail !== false;
-    document.getElementById('volumenNotificaciones').value = config.volumenNotificaciones || 50;
-
-    // Idioma y regional
-    document.getElementById('idioma').value = config.idioma || 'es';
-    document.getElementById('zonaHoraria').value = config.zonaHoraria || 'America/Bogota';
-    document.getElementById('formatoFecha').value = config.formatoFecha || 'DD/MM/YYYY';
-
-    // Cargar estadísticas
-    actualizarEstadisticas();
-
-    // Aplicar configuración visual inicial
-    aplicarConfiguracionVisual(config);
-    aplicarTamañoFuente(config.tamañoFuente || '14');
-}
-
-// =========================================================================
-// 💾 FUNCIÓN: GUARDAR CONFIGURACIÓN
-// =========================================================================
-
-async function guardarConfiguracion() {
-    // Recolectar datos del formulario
-    const configuracion = {
-        // Tema y apariencia
-        modoOscuro: document.getElementById('modoOscuro').value,
-        colorPrincipal: document.getElementById('colorPrincipal').value,
-        logoTema: document.getElementById('logoTema').value.trim(),
-        tamañoFuente: document.getElementById('tamañoFuenteSelect').value,
-
-        // Sistema
-        precioBase: document.getElementById('precioBase').value,
-        horaApertura: document.getElementById('horaApertura').value,
-        horaCierre: document.getElementById('horaCierre').value,
-        correoNotificaciones: document.getElementById('correoNotificaciones').value,
-        estadoSistema: document.getElementById('estadoSistema').value,
-        mensajeMantenimiento: document.getElementById('mensajeMantenimiento').value.trim(),
-
-        // Notificaciones
-        notificacionesSonoras: document.getElementById('notificacionesSonoras').checked,
-        notificacionesVisuales: document.getElementById('notificacionesVisuales').checked,
-        notificacionesEmail: document.getElementById('notificacionesEmail').checked,
-        volumenNotificaciones: document.getElementById('volumenNotificaciones').value,
-
-        // Idioma y regional
-        idioma: document.getElementById('idioma').value,
-        zonaHoraria: document.getElementById('zonaHoraria').value,
-        formatoFecha: document.getElementById('formatoFecha').value
-    };
-
-    // Validaciones básicas
-    if (!configuracion.precioBase || configuracion.precioBase < 0) {
-        mostrarAlerta('error', 'Precio inválido', 'El precio base debe ser un número positivo.');
-        return;
-    }
-
-    if (!configuracion.correoNotificaciones || !configuracion.correoNotificaciones.includes('@')) {
-        mostrarAlerta('error', 'Correo inválido', 'Por favor ingresa un correo electrónico válido.');
-        return;
-    }
-
-    // Guardar solo en localStorage
-    localStorage.setItem('adminConfig', JSON.stringify(configuracion));
-    mostrarAlerta('success', 'Configuración guardada', 'Los cambios se han guardado localmente. ✅');
-
-    // Aplicar cambios visuales inmediatamente
-    aplicarConfiguracionVisual(configuracion);
-
-    // Aplicar idioma si cambió
-    aplicarIdioma(configuracion.idioma);
-
-    // Aplicar tamaño de fuente
-    aplicarTamañoFuente(configuracion.tamañoFuente);
-
-    // Actualizar indicadores de estado
-    actualizarIndicadoresEstado(configuracion);
-}
-
-// =========================================================================
-// 🎨 FUNCIÓN: APLICAR CONFIGURACIÓN VISUAL
-// =========================================================================
-
-function aplicarConfiguracionVisual(config) {
-    // Aplicar modo oscuro
-    if (config.modoOscuro === 'true') {
-        document.body.classList.add('dark-mode');
-        // Cambiar estilos para modo oscuro
-        document.body.style.backgroundColor = '#1a1a1a';
-        document.querySelectorAll('.dashboard-container').forEach(el => {
-            el.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            el.style.color = '#fff';
+        clientesMap = {};
+        (data || []).forEach(c => {
+            clientesMap[c.id] = `${c.nombre} ${c.apellido}`;
         });
-        document.getElementById('temaActual').textContent = 'Oscuro';
-    } else {
-        document.body.classList.remove('dark-mode');
-        // Restaurar estilos claros
-        document.body.style.backgroundColor = '';
-        document.querySelectorAll('.dashboard-container').forEach(el => {
-            el.style.backgroundColor = '';
-            el.style.color = '';
+
+    } catch (e) {
+        console.error("Error cargando clientes", e);
+    }
+}
+
+// ==========================================================
+// 📌 CARGAR EVENTOS
+// ==========================================================
+async function cargarEventos() {
+    try {
+        const res = await fetch(ApiConexion + 'listarEventos');
+        const data = await res.json();
+
+        eventosMap = {};
+        (data.eventos || []).forEach(ev => {
+            eventosMap[ev.id] = ev.titulo;
         });
-        document.getElementById('temaActual').textContent = 'Claro';
+
+    } catch (e) {
+        console.error("Error cargando eventos", e);
     }
-
-    // Aplicar color principal
-    document.documentElement.style.setProperty('--primary-color', config.colorPrincipal);
-
-    // Aplicar logo si existe
-    if (config.logoTema) {
-        const logoElement = document.querySelector('.logo');
-        if (logoElement) {
-            logoElement.src = config.logoTema;
-        }
-    }
-
-    // Aplicar mensaje de mantenimiento si existe
-    if (config.mensajeMantenimiento && config.estadoSistema === 'mantenimiento') {
-        mostrarMensajeMantenimiento(config.mensajeMantenimiento);
-    } else {
-        ocultarMensajeMantenimiento();
-    }
-
-    // Actualizar indicadores de notificaciones
-    actualizarIndicadoresNotificaciones(config);
 }
 
-// =========================================================================
-// 📏 FUNCIÓN: APLICAR TAMAÑO DE FUENTE
-// =========================================================================
-
-function aplicarTamañoFuente(tamaño) {
-    const sizeMap = {
-        '12': '12px',
-        '14': '14px',
-        '16': '16px',
-        '18': '18px'
-    };
-
-    document.documentElement.style.setProperty('--font-size-base', sizeMap[tamaño] || '14px');
-    document.getElementById('tamañoFuente').textContent = sizeMap[tamaño] || '14px';
-
-    // Aplicar a elementos específicos
-    document.body.style.fontSize = sizeMap[tamaño] || '14px';
-}
-
-// =========================================================================
-// 🔄 FUNCIÓN: CAMBIAR TEMA
-// =========================================================================
-
-function cambiarTema() {
-    const select = document.getElementById('modoOscuro');
-    const currentValue = select.value;
-    select.value = currentValue === 'true' ? 'false' : 'true';
-
-    // Aplicar cambio inmediatamente
-    const config = JSON.parse(localStorage.getItem('adminConfig') || '{}');
-    config.modoOscuro = select.value;
-    aplicarConfiguracionVisual(config);
-
-    mostrarAlerta('success', 'Tema cambiado', `Tema cambiado a ${select.value === 'true' ? 'oscuro' : 'claro'}.`);
-}
-
-// =========================================================================
-// 🔍 FUNCIÓN: VERIFICAR ESTADO DEL SISTEMA
-// =========================================================================
-
-async function verificarEstadoSistema() {
-    mostrarAlerta('info', 'Verificando...', 'Comprobando estado del sistema...');
+// ==========================================================
+// 🎫 CARGAR TICKETS
+// ==========================================================
+async function cargarReportesTickets() {
+    const tbody = document.getElementById('tbody-reportes');
+    tbody.innerHTML = '<tr><td colspan="6" class="loading">Cargando tickets...</td></tr>';
 
     try {
-        // Simular verificación de API
-        const response = await fetch(`${ApiConexion}usuarios`, {
-            method: 'GET',
-            headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('userToken') }
-        });
+        const res = await fetch(ApiConexion + 'listarTickets');
+        const tickets = await res.json();
+        tbody.innerHTML = '';
 
-        const serverStatus = response.ok ? 'OK' : 'Error';
-        const dbStatus = response.ok ? 'OK' : 'Error';
-        const apiStatus = response.ok ? 'OK' : 'Error';
+        if (Array.isArray(tickets) && tickets.length > 0) {
 
-        // Actualizar indicadores
-        document.getElementById('serverStatus').innerHTML = `🖥️ Servidor <span class="status-${serverStatus.toLowerCase()}">● ${serverStatus}</span>`;
-        document.getElementById('dbStatus').innerHTML = `💾 Base Datos <span class="status-${dbStatus.toLowerCase()}">● ${dbStatus}</span>`;
-        document.getElementById('apiStatus').innerHTML = `🔗 API <span class="status-${apiStatus.toLowerCase()}">● ${apiStatus}</span>`;
+            tickets.forEach(ticket => {
 
-        mostrarAlerta('success', 'Verificación completada', 'Estado del sistema actualizado.');
+                const nombreEvento = eventosMap[ticket.evento_id] ?? "—";
+                const nombreCliente = clientesMap[ticket.cliente_id] ?? "—";
+
+                tbody.innerHTML += `
+                  <tr>
+                    <td>${nombreEvento}</td>
+                    <td>${nombreCliente}</td>
+                    <td><input type="number" class="input-precio" value="${ticket.precio ?? 0}" readonly></td>
+                    <td>${ticket.estado ?? '—'}</td>
+                    <td>${ticket.fecha_compra ?? '—'}</td>
+                  </tr>`;
+            });
+
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6" class="loading">No hay tickets registrados</td></tr>';
+        }
 
     } catch (error) {
-        console.error('Error verificando estado:', error);
-        mostrarAlerta('error', 'Error de conexión', 'No se pudo verificar el estado del sistema.');
+        console.error("❌ Error cargando tickets:", error);
+        tbody.innerHTML = '<tr><td colspan="6" class="loading">Error cargando tickets</td></tr>';
     }
 }
 
-// =========================================================================
-// 🔧 FUNCIONES DE CONFIGURACIÓN ADICIONALES
-// =========================================================================
-
-function actualizarIndicadoresEstado(config) {
-    // Actualizar indicadores de notificaciones
-    document.getElementById('notificacionesActivas').textContent = config.notificacionesSonoras || config.notificacionesVisuales ? 'ON' : 'OFF';
-    document.getElementById('sonidoActivo').textContent = config.notificacionesSonoras ? 'ON' : 'OFF';
-    document.getElementById('idiomaActual').textContent = config.idioma.toUpperCase();
-}
-
-function actualizarIndicadoresNotificaciones(config) {
-    document.getElementById('notificacionesActivas').textContent = config.notificacionesSonoras || config.notificacionesVisuales ? 'ON' : 'OFF';
-    document.getElementById('sonidoActivo').textContent = config.notificacionesSonoras ? 'ON' : 'OFF';
-}
-
-function restaurarConfiguracion() {
-    if (confirm('¿Estás seguro de que quieres restaurar la configuración por defecto?')) {
-        localStorage.removeItem('adminConfig');
-        location.reload();
-        mostrarAlerta('success', 'Configuración restaurada', 'Se ha restaurado la configuración por defecto.');
-    }
-}
-
-function exportarConfiguracion() {
-    const config = localStorage.getItem('adminConfig') || '{}';
-    const dataStr = JSON.stringify(JSON.parse(config), null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
-    const exportFileDefaultName = 'configuracion_admin.json';
-
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-
-    mostrarAlerta('success', 'Configuración exportada', 'El archivo de configuración se ha descargado.');
-}
-
-// =========================================================================
-// 🌍 FUNCIÓN: APLICAR IDIOMA
-// =========================================================================
-
-function aplicarIdioma(idioma) {
-    // Guardar idioma en localStorage
-    localStorage.setItem('idioma', idioma);
-
-    // Aquí se implementarían las traducciones
-    // Por ahora solo guardamos la preferencia
-    console.log('Idioma aplicado:', idioma);
-}
-
-// =========================================================================
-// 📊 FUNCIÓN: ACTUALIZAR ESTADÍSTICAS
-// =========================================================================
-
-async function actualizarEstadisticas() {
-    const token = sessionStorage.getItem('userToken');
-
-    if (!token) {
-        console.warn('No hay token para actualizar estadísticas');
-        return;
-    }
+// ==========================================================
+// 🎭 CARGAR EVENTOS PARA TABLA
+// ==========================================================
+async function cargarReportesEventos() {
+    const tbody = document.getElementById('tbody-eventos');
+    tbody.innerHTML = '<tr><td colspan="9" class="loading">Cargando eventos...</td></tr>';
 
     try {
-        // Obtener estadísticas de usuarios
-        const usuariosResponse = await fetch(`${ApiConexion}usuarios`, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        });
-        const usuariosData = await usuariosResponse.json();
+        const res = await fetch(ApiConexion + 'listarEventos');
+        const data = await res.json();
+        const eventos = Array.isArray(data.eventos) ? data.eventos : [];
 
-        // Obtener estadísticas de empresas
-        const empresasResponse = await fetch(`${ApiConexion}empresas`, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        });
-        const empresasData = await empresasResponse.json();
+        tbody.innerHTML = '';
 
-        // Actualizar UI con datos simulados ya que no tenemos endpoints específicos
-        const usuariosActivos = usuariosData.usuarios ? usuariosData.usuarios.filter(u => u.estado === 'Activo').length : 0;
-        const empresasRegistradas = empresasData.empresas ? empresasData.empresas.length : 0;
+        if (eventos.length > 0) {
 
-        // Datos simulados para tickets e ingresos (ya que no están en el backend actual)
-        const ticketsVendidos = Math.floor(Math.random() * 50) + 10;
-        const ingresosDia = (ticketsVendidos * 50000).toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+            eventos.forEach(evento => {
+                const empresaNombre   = empresasMap[evento.empresa_id]   || "—";
+                const categoriaNombre = categoriasMap[evento.categoria_id] || "—";
 
-        // Actualizar elementos del DOM
-        document.getElementById('usuariosActivosHoy').textContent = usuariosActivos;
-        document.getElementById('empresasRegistradas').textContent = empresasRegistradas;
-        document.getElementById('ticketsVendidosHoy').textContent = ticketsVendidos;
-        document.getElementById('ingresosDia').textContent = ingresosDia;
+                tbody.innerHTML += `
+                  <tr>
+                    <td>${evento.titulo ?? '—'}</td>
+                    <td>${evento.descripcion ?? '—'}</td>
+                    <td>${evento.fecha ?? '—'}</td>
+                    <td>${evento.hora_inicio ?? '—'}</td>
+                    <td>${evento.hora_final ?? '—'}</td>
+                    <td>${evento.estado ?? '—'}</td>
+                    <td>${empresaNombre}</td>
+                    <td>${categoriaNombre}</td>
+                  </tr>`;
+            });
 
-        mostrarAlerta('success', 'Estadísticas actualizadas', 'Los datos se han actualizado correctamente.');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="9" class="loading">No hay eventos registrados</td></tr>';
+        }
 
     } catch (error) {
-        console.error('Error actualizando estadísticas:', error);
-        mostrarAlerta('error', 'Error al actualizar', 'No se pudieron cargar las estadísticas.');
+        console.error("❌ Error cargando eventos:", error);
+        tbody.innerHTML = '<tr><td colspan="9" class="loading">Error cargando eventos</td></tr>';
     }
 }
 
-// =========================================================================
-// 🔧 FUNCIONES DE MANTENIMIENTO
-// =========================================================================
-
-function mostrarMensajeMantenimiento(mensaje) {
-    // Crear banner de mantenimiento si no existe
-    let banner = document.getElementById('maintenance-banner');
-    if (!banner) {
-        banner = document.createElement('div');
-        banner.id = 'maintenance-banner';
-        banner.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #ff6b1f;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            z-index: 1000;
-            font-weight: bold;
-        `;
-        document.body.insertBefore(banner, document.body.firstChild);
-    }
-    banner.textContent = mensaje;
-    banner.style.display = 'block';
-}
-
-function ocultarMensajeMantenimiento() {
-    const banner = document.getElementById('maintenance-banner');
-    if (banner) {
-        banner.style.display = 'none';
-    }
-}
-
-// =========================================================================
-// 🔙 FUNCIÓN: VOLVER AL DASHBOARD
-// =========================================================================
-
+// ==========================================================
+// 🔙 VOLVER AL DASHBOARD
+// ==========================================================
 function volverDashboard() {
-    window.location.href = '../../../index.php?ruta=dashboard-admin';
-}
-
-// =========================================================================
-// ℹ️ FUNCIÓN AUXILIAR: MOSTRAR ALERTAS
-// =========================================================================
-
-function mostrarAlerta(icon, title, text) {
-    if (typeof Swal !== 'undefined') {
-        Swal.fire({
-            icon: icon,
-            title: title,
-            html: text,
-            showConfirmButton: true,
-            confirmButtonText: "Aceptar"
-        });
-    } else {
-        alert(`${title} (${icon}): ${text.replace(/<br>/g, '\n')}`);
-    }
+    window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
 }

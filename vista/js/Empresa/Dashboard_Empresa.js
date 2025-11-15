@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     populateUserData();
 
-    
-    // Event Listener para REGISTRO (formulario actualizar mi perfil)
+    // Event Listener para actualizar perfil
     const update_Empresa = document.getElementById('form_actualizar_perfil_empresa');
     if (update_Empresa) {
         update_Empresa.addEventListener('submit', async function (event) {
@@ -14,33 +13,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Event Listener para (formulario cambiar clave empresa/Config)
-       const cambiar_clave_config = document.getElementById('form_cambiar_clave_config_empresa');
+    // Event Listener cambiar clave
+    const cambiar_clave_config = document.getElementById('form_cambiar_clave_config_empresa');
     if (cambiar_clave_config) {
         cambiar_clave_config.addEventListener('submit', async function (event) {
             console.log("prueba de envio");
             event.preventDefault();
             await ctrCambiarClaveConfigEmpresa();
         });
-    };
+    }
 
-    // Event Listener para (formulario cambiar correo empresa/Config)
+    // Event listener cambiar correo
     const cambiar_correo_config = document.getElementById('form_cambiar_correo_config_empresa');
     if (cambiar_correo_config) {
         cambiar_correo_config.addEventListener('submit', async function (event) {
             event.preventDefault();
             await ctrCambiarCorreoConfigEmpresa();
         });
-    };
+    }
 
-    // Event Listener para eliminar cuenta empresa
+    // Event Listener eliminar cuenta
     const btn_eliminar_cuenta = document.getElementById('btn_eliminar_cuenta_empresa');
     if (btn_eliminar_cuenta) {
         btn_eliminar_cuenta.addEventListener('click', async function (event) {
             event.preventDefault();
             await ctrEliminarCuentaEmpresa();
         });
-    };
+    }
 
 });
 
@@ -66,10 +65,25 @@ async function ctrupdatePerfilEmpresa() {
         telefono: document.getElementById('profile_telefono').value.trim(),
     };
 
-    // Validación de campos
-    if (!datos.nombre_empresa || !datos.nit || !datos.representante_legal || 
+    // Validación
+    if (!datos.nombre_empresa || !datos.nit || !datos.representante_legal ||
         !datos.documento_representante || !datos.nombre_contacto || !datos.telefono) {
         mostrarAlerta('error', 'Campos incompletos', 'Por favor, rellena todos los campos requeridos.');
+        return;
+    }
+
+    if (!/^\d+$/.test(datos.nit)) {
+        mostrarAlerta('error', 'NIT inválido', 'El NIT debe contener solo números.');
+        return;
+    }
+
+    if (!/^\d+$/.test(datos.documento_representante)) {
+        mostrarAlerta('error', 'Documento inválido', 'El documento del representante debe contener solo números.');
+        return;
+    }
+
+    if (!/^\d+$/.test(datos.telefono)) {
+        mostrarAlerta('error', 'Teléfono inválido', 'El teléfono debe contener solo números.');
         return;
     }
 
@@ -94,15 +108,18 @@ async function ctrupdatePerfilEmpresa() {
         });
 
         const data = await respuesta.json();
+        console.log("Response status:", respuesta.status);
+        console.log("Response data:", data);
         Swal.close();
 
-        if (data.success === true) {
-            // Actualizar sessionStorage con los nuevos datos
-            const updatedUserData = data.empresa || data.user || data.data;
-            if (updatedUserData) {
-                sessionStorage.setItem('userData', JSON.stringify(updatedUserData));
-                populateUserData();
-            }
+        // *** CORRECCIÓN PRINCIPAL ***
+        if (respuesta.ok) {
+
+            // Si no viene data.empresa, usamos los datos enviados
+            let updatedUserData = data.empresa || data.data || data || datos;
+
+            sessionStorage.setItem('userData', JSON.stringify(updatedUserData));
+            populateUserData();
 
             Swal.fire({
                 icon: 'success',
@@ -115,6 +132,7 @@ async function ctrupdatePerfilEmpresa() {
             setTimeout(() => {
                 window.location.reload();
             }, 2000);
+
         } else {
             mostrarAlerta('error', 'Error al actualizar', data.message || 'No se pudieron guardar los cambios.');
         }
@@ -137,14 +155,14 @@ function mostrarAlerta(icon, title, text) {
         confirmButtonColor: '#3085d6'
     });
 }
-// =========================================================================
-// FUNCION: CAMBIAR CORREO CLIENTE/CONFIG
-// =========================================================================
 
+// =========================================================================
+// FUNCIÓN: CAMBIAR CLAVE EMPRESA
+// =========================================================================
 
 async function ctrCambiarClaveConfigEmpresa() {
 
-    console.log("➡️ ctrCambiarClaveConfigCliente ejecutado");
+    console.log("➡️ ctrCambiarClaveConfigEmpresa ejecutado");
     // 1. Recolectar datos del formulario
     const clave = document.getElementById('id_nueva_clave_config')?.value;
     const confirmar_clave_nueva = document.getElementById('id_confirm_nueva_clave_config')?.value;
@@ -189,7 +207,7 @@ async function ctrCambiarClaveConfigEmpresa() {
 
     // 5. Preparar datos y URL para la API
     const datos = {
-        password: clave
+        clave: clave
     };
     const urlAPI = `${ApiConexion}cambiarClave/${userId}`;
 
@@ -218,7 +236,7 @@ async function ctrCambiarClaveConfigEmpresa() {
             });
             // Redirigir a la página de configuración después del éxito
             setTimeout(() => {
-                window.location.href = "index.php?ruta=configuraciones_Empresa";
+                window.location.href = "index.php?ruta=configuraciones_empresa";
             }, 2000);
         } else {
             mostrarAlerta('error', 'Error al actualizar', data.message || 'No se pudo cambiar la contraseña. Verifica tu contraseña actual.');
@@ -229,59 +247,54 @@ async function ctrCambiarClaveConfigEmpresa() {
         mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor.');
     }
 }
-// =========================================================================
-// FUNCION: CAMBIAR CORREO EMPRESA/CONFIG
-// =========================================================================
 
+
+
+
+
+// =========================================================================
+// FUNCIÓN: CAMBIAR CORREO EMPRESA
+// =========================================================================
 
 async function ctrCambiarCorreoConfigEmpresa() {
 
-    // 1. Recolectar datos del formulario
     const correo = document.getElementById('id_correo_config_empresa')?.value;
     const confirmar_correo_nuevo = document.getElementById('id_confirm_correo_config_empresa')?.value;
 
-    // 2. Validaciones
     if (!correo || !confirmar_correo_nuevo) {
         mostrarAlerta('error', 'Campos incompletos', 'Por favor, rellena todos los campos.');
         return;
     }
 
     if (correo !== confirmar_correo_nuevo) {
-        mostrarAlerta('error', 'Error de validación', 'El nuevo correo y su confirmación no coinciden.');
+        mostrarAlerta('error', 'Error de validación', 'Los correos no coinciden.');
         return;
     }
 
-
-    // 3. Obtener token y ID de usuario
     const token = sessionStorage.getItem('userToken');
     const userDataString = sessionStorage.getItem('userData');
 
     if (!token || !userDataString) {
-        mostrarAlerta('error', 'Sesión inválida', 'No se encontraron datos de sesión. Por favor, inicia sesión de nuevo.');
+        mostrarAlerta('error', 'Sesión inválida', 'Por favor inicia sesión nuevamente.');
         return;
     }
 
     const userData = JSON.parse(userDataString);
     const userId = userData.id;
 
-    // 4. Mostrar alerta de carga
     Swal.fire({
-        title: 'Actualizando Correo...',
+        title: 'Actualizando correo...',
         text: 'Por favor, espera un momento.',
         allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
+        didOpen: () => Swal.showLoading()
     });
 
-    // 5. Preparar datos y URL para la API
-    const datos = {
-        email: correo
-    };
+    const datos = { email: correo };
     const urlAPI = `${ApiConexion}cambiar/correo/empresa/${userId}`;
 
     try {
         console.log("➡️ Enviando petición a:", urlAPI);
+
         const respuesta = await fetch(urlAPI, {
             method: 'PUT',
             headers: {
@@ -292,31 +305,33 @@ async function ctrCambiarCorreoConfigEmpresa() {
         });
 
         const data = await respuesta.json();
-        console.log("✅ Respuesta recibida:", respuesta);
+        console.log("Respuesta:", data);
         Swal.close();
 
-        if (data.success === true) {
-            // Eliminar token y datos de sesión
+        if (respuesta.ok) {
+
             sessionStorage.removeItem('userToken');
             sessionStorage.removeItem('userData');
 
             Swal.fire({
                 icon: 'success',
-                title: 'Correo Actualizado!',
-                text: data.message || 'Tu Correo se ha cambiado correctamente.',
+                title: 'Correo actualizado',
+                text: data.message || 'Tu correo ha sido cambiado.',
                 timer: 2000,
                 showConfirmButton: false
             });
-            // Redirigir a la página de login después del éxito
+
             setTimeout(() => {
                 window.location.href = "index.php?ruta=login";
             }, 2000);
+
         } else {
-            mostrarAlerta('error', 'Error al actualizar', data.message || 'No se pudo cambiar el correo. Verifica tu correo actual.');
+            mostrarAlerta('error', 'Error al actualizar', data.message || 'No se pudo cambiar el correo.');
         }
+
     } catch (error) {
         Swal.close();
-        console.error("Error al cambiar el correo:", error);
+        console.error("Error al cambiar correo:", error);
         mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor.');
     }
 }

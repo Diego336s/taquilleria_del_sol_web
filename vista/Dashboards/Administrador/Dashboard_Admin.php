@@ -47,14 +47,16 @@
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
   const usuariosElement = document.getElementById("usuariosActivos");
-  usuariosElement.textContent = "—"; // muestra temporal mientras carga
+  usuariosElement.textContent = "—"; // temporal mientras carga
 
   try {
     const response = await fetch("http://localhost:8000/api/listarClientes", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("tokenCliente") || localStorage.getItem("token")}`,
+        "Authorization": `Bearer ${
+          localStorage.getItem("tokenCliente") || localStorage.getItem("token")
+        }`,
       },
     });
 
@@ -62,24 +64,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const data = await response.json();
 
-    let totalUsuarios = 0;
+    // ⬇️⬇️ ESTA ES LA CLAVE — TU API DEVUELVE "clientes"
+    let totalUsuarios = Array.isArray(data.clientes) ? data.clientes.length : 0;
 
-    // ✅ Verificamos distintos formatos posibles de respuesta
-    if (data.success && Array.isArray(data.data)) {
-      totalUsuarios = data.data.length;
-    } else if (Array.isArray(data)) {
-      totalUsuarios = data.length;
-    }
-
-    // ✅ Mostramos el número real o 0 si no hay
     usuariosElement.textContent = totalUsuarios.toLocaleString();
   } catch (error) {
     console.error("❌ Error al obtener usuarios:", error);
-    // 👇 Si ocurre error, dejamos el guion, sin texto ni símbolos feos
     usuariosElement.textContent = "—";
   }
 });
 </script>
+
 </style>
 
 
