@@ -48,10 +48,11 @@
                             },
                             body: JSON.stringify({
                                 total: reserva.total,
-                                asientos: reserva.asientos
+                                asientos: reserva.id_asientos
                             })
                         });
 
+                        console.log("ids asientos", reserva.id_asientos);
                         const data = await response.json();
                         Swal.close();
 

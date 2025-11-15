@@ -35,7 +35,7 @@
     backdrop-filter: blur(10px) saturate(180%);
 
   }
-  
+
   /* 🌟 ESTILOS PARA EL ENCABEZADO DEL EVENTO */
   .event-details-header {
     border-bottom: 1px solid rgba(255, 215, 0, 0.2);
@@ -44,12 +44,14 @@
     width: 100%;
     max-width: 900px;
   }
+
   .event-details-header .event-title {
     font-size: 2.2rem;
     font-weight: bold;
     color: #ffd966;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
   }
+
   .event-details-header .event-description {
     font-size: 1rem;
     color: #e0e0e0;
@@ -179,7 +181,7 @@
     max-width: 800px;
     width: 100%;
     backdrop-filter: blur(10px);
-    margin: 0 auto; 
+    margin: 0 auto;
   }
 
   .booking-summary h3 {
@@ -294,6 +296,7 @@
       const resultadoEvento = await respuestaEvento.json();
 
       const sillas = (resultadoAsientos.asientos || []).map(a => ({
+        id_asiento_evento: a.id_asiento_evento, // 👈 Guardamos el ID
         codigo: `${a.fila}${a.numero}`,
         fila: a.fila,
         numero: parseInt(a.numero), // 👈 convertir a número
@@ -307,7 +310,10 @@
       const eventName = evento.titulo || 'Mapa de Asientos';
       const eventDescripcion = evento.descripcion_corta || evento.descripcion || 'Selecciona tus lugares para esta increíble función.';
       const eventDate = evento.fecha ? new Date(evento.fecha).toLocaleDateString('es-CO', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       }) : '';
 
       theatreLayout.innerHTML = `
@@ -355,7 +361,7 @@
         }
         return a.localeCompare(b); // Si tienen la misma prioridad, ordenar alfabéticamente
       });
-      
+
 
       zonasOrdenadas.forEach(zona => {
         const divZona = document.createElement('div');
@@ -388,6 +394,7 @@
             const divSeat = document.createElement('div');
             divSeat.classList.add('seat');
             if (silla.estado === 'ocupado') divSeat.classList.add('occupied');
+            divSeat.dataset.idAsientoEvento = silla.id_asiento_evento; // 👈 Añadimos el ID al dataset
             divSeat.dataset.fila = silla.fila;
             divSeat.dataset.ubicacion = silla.zona;
             divSeat.dataset.numero = silla.numero;
@@ -459,7 +466,7 @@
             icon: 'warning',
             title: 'No has seleccionado asientos',
             text: 'Por favor, elige al menos un asiento para continuar.',
-            confirmButtonText: 'Entendido',            
+            confirmButtonText: 'Entendido',
             background: 'rgba(10, 10, 10, 0.9)',
             color: '#fff',
             confirmButtonColor: '#00cc66'
@@ -471,20 +478,22 @@
         const eventTitle = document.querySelector('.event-title').textContent;
         const totalText = document.getElementById('total-price').textContent;
         const asientosSeleccionados = Array.from(selectedSeats).map(seat => ({
-              id: seat.dataset.id_asiento_evento,
-              ubicacion: seat.dataset.ubicacion,
-              numero: seat.dataset.numero,
-              precio: seat.dataset.precio
-            }));
+          ubicacion: seat.dataset.ubicacion,
+          numero: seat.dataset.numero,
+          precio: seat.dataset.precio
+        }));
+
+        const id_asientosSeleccionados = Array.from(selectedSeats).map(seat => parseInt(seat.dataset.idAsientoEvento));
 
         const reserva = {
-              evento: {
-                id: eventId,
-                nombre: eventTitle
-              },
-              asientos: asientosSeleccionados,
-              total: parseInt(totalText.replace(/\./g, ''))
-            };
+          evento: {
+            id: eventId,
+            nombre: eventTitle
+          },
+          asientos: asientosSeleccionados,
+          id_asientos: id_asientosSeleccionados,
+          total: parseInt(totalText.replace(/\./g, ''))
+        };
 
         sessionStorage.setItem('reservaActual', JSON.stringify(reserva));
         window.location.href = `index.php?ruta=pagar_reserva`;
