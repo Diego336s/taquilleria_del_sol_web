@@ -449,67 +449,34 @@
         totalPrice.textContent = total.toLocaleString('es-CO');
       }
 
-      // 🌟 Lógica para el modal de confirmación
+      // 🌟 Lógica para confirmar y redirigir al pago
       const confirmButton = document.getElementById('btn-confirmar-reserva');
       confirmButton.addEventListener('click', () => {
         const selectedSeats = document.querySelectorAll('.seat-row .seat.selected');
-        const eventTitle = document.querySelector('.event-title').textContent;
 
         if (selectedSeats.length === 0) {
           Swal.fire({
             icon: 'warning',
             title: 'No has seleccionado asientos',
             text: 'Por favor, elige al menos un asiento para continuar.',
-            confirmButtonText: 'Entendido',
-            confirmButtonColor: '#00ff7899',
+            confirmButtonText: 'Entendido',            
             background: 'rgba(10, 10, 10, 0.9)',
-            color: '#fff'
+            color: '#fff',
+            confirmButtonColor: '#00cc66'
           });
           return;
         }
 
-        let seatsSummaryHtml = '<ul style="list-style: none; padding: 0; text-align: left; max-height: 150px; overflow-y: auto;">';
-        selectedSeats.forEach(seat => {
-          const ubicacion = seat.dataset.ubicacion;
-          const numero = seat.dataset.numero;
-          const precio = parseInt(seat.dataset.precio).toLocaleString('es-CO');
-          seatsSummaryHtml += `<li style="margin-bottom: 8px; font-size: 1rem; overflow: hidden;">✅ ${ubicacion} - Silla: ${numero}<span style="float: right; color: #ccc; font-weight: bold;">$ ${precio} COP</span></li>`;
-        });
-        seatsSummaryHtml += '</ul>';
-
+        // Guardar la información de la reserva en sessionStorage y redirigir
+        const eventTitle = document.querySelector('.event-title').textContent;
         const totalText = document.getElementById('total-price').textContent;
-
-        Swal.fire({
-          title: '<span style="color: #ffd966;">🎭 Confirma tu Reserva</span>',
-          html: `
-            <div style="color: #fff; text-align: left;">
-              <p style="font-size: 1.1rem;">Estás a punto de reservar para:</p>
-              <h3 style="color: #fff; font-weight: bold;">${eventTitle}</h3>
-              <hr style="border-color: rgba(255,215,0,0.2);">
-              <p style="font-size: 1.1rem;">Tus asientos seleccionados:</p>
-              ${seatsSummaryHtml}
-              <hr style="border-color: rgba(255,215,0,0.2);">
-              <p style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #ffcc33;">Total a Pagar: $ ${totalText} COP</p>
-            </div>
-          `,
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonText: '¡Confirmar y Pagar!',
-          cancelButtonText: 'Cancelar',
-          confirmButtonColor: '#00cc66',
-          cancelButtonColor: '#d33', 
-          background: 'rgba(10, 10, 10, 0.95)',
-          backdrop: `rgba(0,0,0,0.8)`
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // 🌟 Guardar toda la información de la reserva en sessionStorage
-            const asientosSeleccionados = Array.from(selectedSeats).map(seat => ({
+        const asientosSeleccionados = Array.from(selectedSeats).map(seat => ({
               ubicacion: seat.dataset.ubicacion,
               numero: seat.dataset.numero,
               precio: seat.dataset.precio
             }));
 
-            const reserva = {
+        const reserva = {
               evento: {
                 id: eventId,
                 nombre: eventTitle
@@ -518,10 +485,8 @@
               total: parseInt(totalText.replace(/\./g, ''))
             };
 
-            sessionStorage.setItem('reservaActual', JSON.stringify(reserva));
-            window.location.href = `index.php?ruta=pagar_reserva`;
-          }
-        });
+        sessionStorage.setItem('reservaActual', JSON.stringify(reserva));
+        window.location.href = `index.php?ruta=pagar_reserva`;
       });
 
     } catch (error) {
