@@ -256,7 +256,7 @@
       Confirmar Reserva
     </button>
     <p class="mt-4 text-center small">
-      <a href="index.php?ruta=dashboard-usuario&id_asiento_evento=<?php echo $_GET['eventoid']; ?>">
+      <a href="index.php?ruta=dashboard-usuario" class="text-white">
         <i class="fas fa-arrow-left me-1"></i> Volver
       </a>
     </p>
@@ -502,8 +502,24 @@
           backdrop: `rgba(0,0,0,0.8)`
         }).then((result) => {
           if (result.isConfirmed) {
-            //redirigir a la pagina de pago con asientos seleccionados
-          
+            // 🌟 Guardar toda la información de la reserva en sessionStorage
+            const asientosSeleccionados = Array.from(selectedSeats).map(seat => ({
+              ubicacion: seat.dataset.ubicacion,
+              numero: seat.dataset.numero,
+              precio: seat.dataset.precio
+            }));
+
+            const reserva = {
+              evento: {
+                id: eventId,
+                nombre: eventTitle
+              },
+              asientos: asientosSeleccionados,
+              total: parseInt(totalText.replace(/\./g, ''))
+            };
+
+            sessionStorage.setItem('reservaActual', JSON.stringify(reserva));
+            window.location.href = `index.php?ruta=pagar_reserva`;
           }
         });
       });

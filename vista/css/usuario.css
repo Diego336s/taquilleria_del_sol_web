@@ -181,6 +181,11 @@
     margin-bottom: 15px;
 }
 
+.widget-icon i {
+    color: #1a1a1a; /* Color negro suave para los íconos */
+}
+
+
 .widget-content {
     width: 100%;
 }
@@ -1018,4 +1023,120 @@
         transform: scale(0.98);
         display: none;
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.stage-label {  
+  background: linear-gradient(135deg, #fff3b0, #ffd966);
+  color: #1a1a1a;
+  padding: 0.6rem 0;
+  width: 70%;
+  margin: 15px auto;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(255, 240, 160, 0.4);
+  text-transform: uppercase;
+}
+
+.backstage-box {
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  background: #444;
+  color: white;
+  padding: 4px;
+  margin-bottom: 15px;
+}
+
+.area-label {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.seat-map-container {
+  display: grid;
+  grid-template-columns: 120px 1fr 120px; /* palco - general - palco */
+  gap: 10px;
+}
+
+.palco-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.palco-title {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.palco-seats {
+  margin-bottom: 4px;
+}
+
+.seat-map {
+  display: grid;
+  gap: 6px;
+}
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.seat-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.seat-dot.available {
+  background: green;
+}
+
+.seat-dot.booked {
+  background: red;
+}
+
+.backstage-box {
+  text-align: center;
+  font-weight: bold;
+  margin: 10px auto;
+  padding: 6px;
+}
+
+.centrar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }

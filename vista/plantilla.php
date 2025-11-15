@@ -23,6 +23,7 @@ $rutasCliente = [
     "cambiar_contrasena_cliente" => "vista/Dashboards/Usuario/Cambiar_Contrasena_Cliente.php",
     "cambiar_correo_cliente" => "vista/Dashboards/Usuario/Cambiar_Correo_Cliente.php",
     "seleccionar_asientos" => "vista/Dashboards/Usuario/Seleccionar_Asientos.php",
+    "pagar_reserva" => "vista/Dashboards/Usuario/Pagar_Reserva.php",
 ];
 
 // Rutas específicas para el rol de Empresa
