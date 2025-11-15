@@ -35,11 +35,11 @@
             </div>
 
             <!-- Volver -->
-            <p class="mt-4 text-center small">
-                <a href="javascript:history.back()">
+            <div class="mt-4 text-center">
+                <a href="javascript:history.back()" class="btn btn-outline-light w-50">
                     <i class="fas fa-arrow-left me-1"></i> Volver
                 </a>
-            </p>
+            </div>
 
         </div>
     </div>

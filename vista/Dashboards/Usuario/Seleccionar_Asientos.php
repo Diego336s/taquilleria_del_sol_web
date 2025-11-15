@@ -471,6 +471,7 @@
         const eventTitle = document.querySelector('.event-title').textContent;
         const totalText = document.getElementById('total-price').textContent;
         const asientosSeleccionados = Array.from(selectedSeats).map(seat => ({
+              id: seat.dataset.id_asiento_evento,
               ubicacion: seat.dataset.ubicacion,
               numero: seat.dataset.numero,
               precio: seat.dataset.precio

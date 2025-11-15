@@ -13,7 +13,7 @@ $rutasPublicasYComunes = [
     "restablecer_contraseña" => "vista/modulos/Auth/restablecerContraseña.php",
     "recibir_correo" => "vista/modulos/Auth/recibir_correo.php",
     "404" => "vista/modulos/404.php",
-    "terminos_y_condiciones" => "vista/modulos/Legal/Terminos_y_Condiciones.php",
+    "terminos_condiciones" => "vista/Dashboards/Usuario/Poli/Terminos_Condiciones.php",
 ];
 
 // Rutas específicas para el rol de Cliente
@@ -25,7 +25,6 @@ $rutasCliente = [
     "cambiar_correo_cliente" => "vista/Dashboards/Usuario/Settings/Cambiar_Correo_Cliente.php",
     "seleccionar_asientos" => "vista/Dashboards/Usuario/Seleccionar_Asientos.php",
     "pagar_reserva" => "vista/Dashboards/Usuario/Pagar_Reserva.php",
-    "terminos_condiciones" => "vista/Dashboards/Usuario/Settings/Terminos_Condiciones.php",
 
 ];
 

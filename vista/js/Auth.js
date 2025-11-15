@@ -464,6 +464,13 @@ async function ctrRegistroUsuario() {
         confirmar_clave: document.getElementById('id_ClaveConfirm')?.value || ''
     };
 
+    // Validación del checkbox de términos y condiciones
+    const terminosAceptados = document.getElementById('check_terminos')?.checked;
+    if (!terminosAceptados) {
+        mostrarAlerta('warning', 'Términos y Condiciones', 'Debes aceptar los términos y condiciones para poder registrarte.');
+        return;
+    }
+
     // Validaciones básicas
     if (!datos.clave || !datos.confirmar_clave || datos.clave.length < 6) {
         mostrarAlerta('error', 'Error', 'Las contraseñas deben tener al menos 6 caracteres.');
