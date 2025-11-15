@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <title>👥 Usuarios Registrados</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- ✅ FontAwesome sin errores CORS -->
+  <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -38,7 +42,6 @@
       font-weight: 700;
     }
 
-    /* ===== Buscador moderno y elegante ===== */
     .search-container {
       position: absolute;
       top: 30px;
@@ -82,10 +85,6 @@
       transition: transform 0.3s ease;
     }
 
-    .search-container:focus-within i {
-      transform: rotate(10deg) scale(1.2);
-    }
-
     .table-container { overflow-x: auto; }
 
     table {
@@ -110,24 +109,6 @@
     tbody tr:hover {
       background-color: rgba(255,255,255,0.06);
       transition: all 0.2s ease;
-    }
-
-    .estado-activo {
-      background-color: #28a745;
-      color: #fff;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: .85rem;
-      font-weight: bold;
-    }
-
-    .estado-inactivo {
-      background-color: #dc3545;
-      color: #fff;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: .85rem;
-      font-weight: bold;
     }
 
     .btn-back {
@@ -156,13 +137,6 @@
 
     .btn-editar { background:#ffc107; color:#000; }
     .btn-eliminar { background:#dc3545; color:#fff; }
-
-    @media (max-width:768px){
-      th,td{padding:8px;font-size:.9rem;}
-      h1{font-size:1.4rem;}
-      .search-container { top: 20px; right: 15px; }
-      .search-input { width: 120px; }
-    }
   </style>
 </head>
 
@@ -172,7 +146,6 @@
   <div class="dashboard-container">
     <h1>👥 Usuarios Registrados</h1>
 
-    <!-- Buscador elegante -->
     <div class="search-container">
       <input type="text" id="buscador" class="search-input" placeholder="Buscar usuario...">
       <i class="fas fa-search"></i>
@@ -193,113 +166,91 @@
     </div>
   </div>
 
-  <script>
-    const API_BASE = "http://127.0.0.1:8000/api/";
-    const LIST_URL = `${API_BASE}listarClientes`;
+<script>
+const API_BASE = "http://127.0.0.1:8000/api/";
+const LIST_URL = `${API_BASE}listarClientes`;
 
-    function volverDashboard(){
-      window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
-    }
+function volverDashboard(){
+  window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
+}
 
-    function normalizeUsersResponse(json) {
-      if (!json) return [];
-      if (Array.isArray(json)) return json;
-      if (json.data && Array.isArray(json.data)) return json.data;
-      if (json.usuarios && Array.isArray(json.usuarios)) return json.usuarios;
-      return [];
-    }
+function normalizeUsersResponse(json) {
+  if (!json) return [];
+  if (Array.isArray(json)) return json;
+  if (json.clientes && Array.isArray(json.clientes)) return json.clientes;
+  return [];
+}
 
-    async function cargarUsuarios() {
-      const tbody = document.getElementById('tablaUsuarios');
-      tbody.innerHTML = `<tr><td colspan="11">Cargando usuarios...</td></tr>`;
-      const token = sessionStorage.getItem('userToken');
+async function cargarUsuarios() {
+  const tbody = document.getElementById('tablaUsuarios');
+  tbody.innerHTML = `<tr><td colspan="11">Cargando usuarios...</td></tr>`;
 
-      try {
-        const headers = { "Content-Type": "application/json" };
-        if (token) headers['Authorization'] = 'Bearer ' + token;
+  try {
+    const res = await fetch(LIST_URL);
+    const json = await res.json();
 
-        const res = await fetch(LIST_URL, { method: 'GET', headers });
-        if (!res.ok) {
-          tbody.innerHTML = `<tr><td colspan="11">Error al cargar los usuarios (HTTP ${res.status}).</td></tr>`;
-          return;
-        }
+    const usuarios = normalizeUsersResponse(json);
+    renderUsuarios(usuarios);
 
-        const json = await res.json();
-        const usuarios = normalizeUsersResponse(json);
-        renderUsuarios(usuarios);
+    document.getElementById("buscador")
+      .addEventListener("input", e => filtrarUsuarios(usuarios, e.target.value));
 
-        const buscador = document.getElementById("buscador");
-        buscador.addEventListener("input", () => filtrarUsuarios(usuarios, buscador.value));
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="11">Error al cargar usuarios.</td></tr>`;
+  }
+}
 
-      } catch (err) {
-        console.error('❌ Error al cargar:', err);
-        tbody.innerHTML = `<tr><td colspan="11">Error al cargar los usuarios.</td></tr>`;
-      }
-    }
+function renderUsuarios(usuarios) {
+  const tbody = document.getElementById('tablaUsuarios');
 
-    function renderUsuarios(usuarios) {
-      const tbody = document.getElementById('tablaUsuarios');
-      if (!usuarios.length) {
-        tbody.innerHTML = `<tr><td colspan="11">No hay usuarios registrados.</td></tr>`;
-        return;
-      }
+  if (!usuarios.length) {
+    tbody.innerHTML = `<tr><td colspan="11">No hay usuarios registrados.</td></tr>`;
+    return;
+  }
 
-      tbody.innerHTML = usuarios.map(u => `
-        <tr>
-          <td>${u.nombre ?? ''}</td>
-          <td>${u.apellido ?? ''}</td>
-          <td>${u.documento ?? ''}</td>
-          <td>${u.telefono ?? ''}</td>
-          <td>${u.fecha_nacimiento ?? ''}</td>
-          <td>${u.correo ?? ''}</td>
-          <td>${u.sexo ?? ''}</td>
-          <td>${u.rol ?? 'Cliente'}</td>
-          <td>
-            <button class="btn btn-editar" onclick="editarUsuario(${u.id})">✏️ Editar</button>
-            <button class="btn btn-eliminar" onclick="eliminarUsuario(${u.id})">🗑️ Eliminar</button>
-          </td>
-        </tr>
-      `).join('');
-    }
+  tbody.innerHTML = usuarios.map(u => `
+    <tr>
+      <td>${u.nombre ?? ''}</td>
+      <td>${u.apellido ?? ''}</td>
+      <td>${u.documento ?? ''}</td>
+      <td>${u.telefono ?? ''}</td>
+      <td>${u.fecha_nacimiento ?? ''}</td>
+      <td>${u.correo ?? ''}</td>
+      <td>${u.sexo ?? ''}</td>
+      <td>Cliente</td>
+      <td>
+        <button class="btn btn-editar" onclick="editarUsuario(${u.id})">✏️ Editar</button>
+        <button class="btn btn-eliminar" onclick="eliminarUsuario(${u.id})">🗑️ Eliminar</button>
+      </td>
+    </tr>
+  `).join('');
+}
 
-    function filtrarUsuarios(usuarios, texto) {
-      texto = texto.toLowerCase();
-      const filtrados = usuarios.filter(u =>
-        (u.nombre ?? '').toLowerCase().includes(texto) ||
-        (u.apellido ?? '').toLowerCase().includes(texto) ||
-        (u.documento ?? '').toLowerCase().includes(texto) ||
-        (u.telefono ?? '').toLowerCase().includes(texto) ||
-        (u.fecha_nacimiento ?? '').toLowerCase().includes(texto) ||
-        (u.correo ?? '').toLowerCase().includes(texto)
-      );
-      renderUsuarios(filtrados);
-    }
+function filtrarUsuarios(usuarios, texto) {
+  texto = texto.toLowerCase();
+  const filtrados = usuarios.filter(u =>
+    (u.nombre ?? '').toLowerCase().includes(texto) ||
+    (u.apellido ?? '').toLowerCase().includes(texto) ||
+    (u.documento ?? '').toLowerCase().includes(texto) ||
+    (u.telefono ?? '').toLowerCase().includes(texto) ||
+    (u.correo ?? '').toLowerCase().includes(texto)
+  );
+  renderUsuarios(filtrados);
+}
 
-    function editarUsuario(id) {
-      if (!id) return alert('ID inválido');
-      window.location.href = `Editar_Usuario.php?id=${id}`;
-    }
+function editarUsuario(id) {
+  window.location.href = `Editar_Usuario.php?id=${id}`;
+}
 
-    async function eliminarUsuario(id) {
-      if (!confirm('¿Seguro que deseas eliminar este usuario?')) return;
-      const token = sessionStorage.getItem('userToken');
-      try {
-        const headers = { "Authorization": 'Bearer ' + token };
-        const res = await fetch(`${API_BASE}eliminarUsuario/${id}`, { method: 'DELETE', headers });
-        const json = await res.json();
-        if (res.ok && (json.success || json.message)) {
-          alert('✅ Usuario eliminado correctamente.');
-          cargarUsuarios();
-        } else {
-          alert('⚠️ No se pudo eliminar el usuario.');
-        }
-      } catch (err) {
-        console.error(err);
-        alert('❌ Error al conectar con el servidor.');
-      }
-    }
+async function eliminarUsuario(id) {
+  if (!confirm("¿Eliminar usuario?")) return;
+  await fetch(`${API_BASE}eliminarCliente/${id}`, { method: "DELETE" });
+  cargarUsuarios();
+}
 
-    document.addEventListener('DOMContentLoaded', cargarUsuarios);
-  </script>
+document.addEventListener('DOMContentLoaded', cargarUsuarios);
+</script>
+
 </body>
 </html>

@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================================
 // 📊 FUNCIÓN PRINCIPAL
 // ============================================================
-
 async function ctrGenerarReportes() {
   const tbodyTickets = document.getElementById('tbody-reportes');
   const tbodyEventos = document.getElementById('tbody-eventos');
@@ -24,7 +23,6 @@ async function ctrGenerarReportes() {
 // ============================================================
 // 🎫 TICKETS
 // ============================================================
-
 async function cargarReportesTickets() {
   const tbody = document.getElementById('tbody-reportes');
   const urlAPI = `${ApiConexion}listarTickets`;
@@ -32,11 +30,17 @@ async function cargarReportesTickets() {
   try {
     const res = await fetch(urlAPI);
     const data = await res.json();
-
     tbody.innerHTML = '';
 
-    if (Array.isArray(data) && data.length > 0) {
-      data.forEach(ticket => {
+    // En Laravel, puede venir como array directo o dentro de { success, tickets }
+    const tickets = Array.isArray(data)
+      ? data
+      : Array.isArray(data.tickets)
+      ? data.tickets
+      : [];
+
+    if (tickets.length > 0) {
+      tickets.forEach(ticket => {
         const row = `
           <tr>
             <td>${ticket.evento_titulo ?? '—'}</td>
@@ -62,7 +66,6 @@ async function cargarReportesTickets() {
 // ============================================================
 // 🎭 EVENTOS
 // ============================================================
-
 async function cargarReportesEventos() {
   const tbody = document.getElementById('tbody-eventos');
   const urlAPI = `${ApiConexion}listarEventos`;
@@ -70,11 +73,17 @@ async function cargarReportesEventos() {
   try {
     const res = await fetch(urlAPI);
     const data = await res.json();
-
     tbody.innerHTML = '';
 
-    if (Array.isArray(data) && data.length > 0) {
-      data.forEach(evento => {
+    // Si Laravel devuelve { success, eventos: [...] }
+    const eventos = Array.isArray(data)
+      ? data
+      : Array.isArray(data.eventos)
+      ? data.eventos
+      : [];
+
+    if (eventos.length > 0) {
+      eventos.forEach(evento => {
         const row = `
           <tr>
             <td>${evento.titulo ?? '—'}</td>
@@ -103,7 +112,6 @@ async function cargarReportesEventos() {
 // ============================================================
 // ✏️ FUNCIONES AUXILIARES
 // ============================================================
-
 function editarTicket(id) {
   Swal.fire('Editar Ticket', `Función de edición para ticket ID ${id}`, 'info');
 }
