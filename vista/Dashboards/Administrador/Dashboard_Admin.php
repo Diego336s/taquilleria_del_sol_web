@@ -15,6 +15,9 @@
       <a href="index.php?ruta=mi_perfil_admin" class="btn btn-explore">
         <i class="fas fa-user-circle me-2"></i>Mi Perfil
       </a>
+            <a href="index.php?ruta=Reservas" class="btn btn-explore">
+        <i class="fas fa-user-circle me-2"></i>resevas
+      </a>
       <button class="btn btn-profile" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Reportes.php'">
         <span class="icon-inline">📊</span> Reportes
       </button>

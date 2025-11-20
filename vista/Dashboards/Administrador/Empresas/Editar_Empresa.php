@@ -103,7 +103,7 @@
 <body>
 
   <!-- 🔙 Botón de volver -->
-  <button class="btn btn-back" onclick="window.location.href='Empresas_Registradas.php'">⬅️ Volver</button>
+  <button class="btn btn-back" onclick="window.location.href='Ver_Empresas.php'">⬅️ Volver</button>
 
   <div class="dashboard-container">
     <h1>✏️ Editar Empresa</h1>
@@ -116,7 +116,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    const API_URL = "http://127.0.0.1:8000/api/";
+    const API_URL = ApiConexion + "/api";``
     const params = new URLSearchParams(window.location.search);
     const idEmpresa = params.get("id");
 
