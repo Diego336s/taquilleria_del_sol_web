@@ -289,7 +289,7 @@ async function ctrCambiarCorreoConfigEmpresa() {
         didOpen: () => Swal.showLoading()
     });
 
-    const datos = { email: correo };
+    const datos = { correo: correo };
     const urlAPI = `${ApiConexion}cambiar/correo/empresa/${userId}`;
 
     try {
