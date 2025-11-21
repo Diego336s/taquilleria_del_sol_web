@@ -149,10 +149,13 @@
       <input type="email" id="correo" placeholder="Ej: contacto@empresa.com" required>
 
       <label>Contraseña</label>
-      <div class="password-toggle">
-        <input type="password" id="clave" placeholder="Crea una contraseña segura" required>
-        <button type="button" class="toggle-btn" onclick="togglePassword()">👁️</button>
-      </div>
+     <div class="password-toggle">
+    <input type="password" id="clave" placeholder="Crea una contraseña segura" required>
+    <button type="button" class="toggle-btn" id="toggleClaveBtn">
+        <i class="fas fa-eye" id="toggleClaveIcon"></i>
+    </button>
+</div>
+
 
       <button type="submit" class="btn btn-save" id="btnGuardar">💾 Guardar Empresa</button>
     </form>
