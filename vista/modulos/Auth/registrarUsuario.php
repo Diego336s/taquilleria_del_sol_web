@@ -73,6 +73,13 @@
         </div>
     </div>
 
+    <div class="form-check mb-3 mt-3">
+        <input class="form-check-input" type="checkbox" value="" id="check_terminos">
+        <label class="form-check-label text-white-50 small" for="check_terminos">
+            He leído y acepto los <a href="index.php?ruta=terminos_condiciones">Términos y Condiciones</a>.
+        </label>
+    </div>
+
     <button type="submit" class="btn btn-success w-100 py-2 mt-4">Registrarme</button>
 
     <p class="mt-3 text-center small">

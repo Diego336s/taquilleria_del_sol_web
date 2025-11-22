@@ -464,6 +464,13 @@ async function ctrRegistroUsuario() {
         confirmar_clave: document.getElementById('id_ClaveConfirm')?.value || ''
     };
 
+    // Validación del checkbox de términos y condiciones
+    const terminosAceptados = document.getElementById('check_terminos')?.checked;
+    if (!terminosAceptados) {
+        mostrarAlerta('warning', 'Términos y Condiciones', 'Debes aceptar los términos y condiciones para poder registrarte.');
+        return;
+    }
+
     // Validaciones básicas
     if (!datos.clave || !datos.confirmar_clave || datos.clave.length < 6) {
         mostrarAlerta('error', 'Error', 'Las contraseñas deben tener al menos 6 caracteres.');
@@ -529,6 +536,12 @@ async function ctrLoginUsuario() {
         clave: document.getElementById('id_Password_Usuario')?.value || ''
     };
 
+    //validar formato de correo
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(datos.correo)) {
+        mostrarAlerta('error', 'Error de formato', 'Por favor ingresa un correo válido.');
+    }
+
     Swal.fire({
         title: 'Iniciando Sesión...',
         text: 'Verificando credenciales.',
@@ -585,8 +598,17 @@ async function ctrLoginUsuario() {
 
         } else {
             Swal.close();
-            const mensajeDetallado = data?.message || 'Credenciales incorrectas o solicitud inválida.';
+            let mensajeDetallado = 'Credenciales incorrectas o solicitud inválida.';
+
+            // Si el backend envía un objeto con mensajes de error (Validator::errors())
+            if (data?.message && typeof data.message === 'object') {
+                mensajeDetallado = Object.values(data.message).join("\n");
+            } else if (typeof data.message === 'string') {
+                mensajeDetallado = data.message;
+            }
+
             mostrarAlerta('error', 'Error al iniciar sesión', mensajeDetallado);
+
         }
     } catch (error) {
         Swal.close();

@@ -96,6 +96,11 @@
                         <span class="option-text">Cambiar Correo</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
+                    <a href="index.php?ruta=terminos_condiciones" class="config-option">
+                        <i class="fas fa-file-contract option-icon me-3"></i>
+                        <span class="option-text">Términos y Condiciones</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
                     <a href="#" id="btn-eliminar-cuenta" class="config-option text-danger">
                         <i class="fas fa-trash-alt option-icon me-3"></i>
                         <span class="option-text">Eliminar Cuenta</span>

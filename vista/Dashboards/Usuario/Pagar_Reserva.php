@@ -28,6 +28,12 @@
                             return;
                         }
 
+                        const userData = JSON.parse(sessionStorage.getItem("userData"));
+                        if (!userData || !userData.id) {
+                            Swal.fire('Error', 'No se encontró información del usuario. Por favor, inicia sesión de nuevo.', 'error');
+                            return;
+                        }
+
                         Swal.fire({
                             title: 'Conectando con la pasarela de pago...',
                             text: 'Por favor, espera un momento.',
@@ -48,10 +54,13 @@
                             },
                             body: JSON.stringify({
                                 total: reserva.total,
-                                asientos: reserva.asientos
+                                asientos: reserva.id_asientos,
+                                id_cliente: userData.id,
+                                id_evento: reserva.evento.id
                             })
                         });
 
+                        console.log("ids asientos", reserva.id_asientos);
                         const data = await response.json();
                         Swal.close();
 

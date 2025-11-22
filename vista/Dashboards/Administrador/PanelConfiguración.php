@@ -117,14 +117,6 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label>🔒 Estado</label>
-      <select id="estado" class="form-control">
-        <option value="activo">🟢 Activo</option>
-        <option value="inactivo">🔴 Inactivo</option>
-      </select>
-    </div>
-
     <button type="button" class="btn btn-success" onclick="guardarCambiosEvento()">💾 Guardar Cambios</button>
   </form>
 </div>
@@ -213,7 +205,6 @@ async function cargarDatosEvento() {
     document.getElementById("precio_piso2").value = ev.precio_piso2;
     document.getElementById("precio_piso3").value = ev.precio_piso3;
 
-    document.getElementById("estado").value = ev.estado;
 
   } catch (e) {
     console.error("Error cargando datos del evento:", e);
@@ -236,7 +227,6 @@ async function guardarCambiosEvento() {
     precio_piso1: document.getElementById("precio_piso1").value,
     precio_piso2: document.getElementById("precio_piso2").value,
     precio_piso3: document.getElementById("precio_piso3").value,
-    estado: document.getElementById("estado").value
   };
 
   try {

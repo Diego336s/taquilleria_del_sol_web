@@ -5,6 +5,7 @@
   <title>✏️ Editar Cliente</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
     body {
       background-image: url('../../../css/img/fondo.png');
@@ -27,59 +28,24 @@
       border: 1px solid rgba(255,255,255,0.2);
     }
 
-    h1 {
-      text-align: center;
-      color: #fff;
-      margin-bottom: 30px;
-      letter-spacing: 0.5px;
-      font-weight: 600;
-    }
+    h1 { text-align:center; font-weight:600; margin-bottom:30px; }
 
-    label {
-      color: #ddd;
-      display: block;
-      font-weight: 500;
-      margin-top: 10px;
-    }
+    label { color:#ddd; margin-top:10px; display:block; }
 
     .form-control {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      font-size: 15px;
-      margin-top: 4px;
-      outline: none;
-    }
-
-    .form-control:focus {
-      border-color: #00bcd4;
-      box-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
+      width:100%; padding:10px; margin-top:4px;
+      border-radius:8px; border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.15); color:#fff;
     }
 
     .btn {
-      padding: 10px 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      font-size: 15px;
-      margin-top: 20px;
+      padding:10px 18px; border:none; border-radius:8px;
+      cursor:pointer; font-weight:bold; transition:.3s;
+      font-size:15px; margin-top:20px;
     }
 
-    .btn-success {
-      background-color: #4CAF50;
-      color: #fff;
-      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-    }
-
-    .btn-success:hover {
-      background-color: #43a047;
-      transform: scale(1.05);
-    }
+    .btn-success { background:#4CAF50; color:white; }
+    .btn-success:hover { background:#43a047; transform:scale(1.05); }
 
     .btn-back {
       position: fixed;
@@ -87,7 +53,6 @@
       left: 25px;
       background-color: #ff6b1f;
       color: white;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.4);
     }
 
     .btn-back:hover {
@@ -95,11 +60,7 @@
       background-color: #e65b10;
     }
 
-    .loading {
-      text-align: center;
-      color: #ccc;
-      font-size: 16px;
-    }
+    .loading { text-align:center; color:#ccc; font-size:16px; }
   </style>
 </head>
 <body>
@@ -111,14 +72,16 @@
 
     <form id="formEditar">
       <div id="contenidoFormulario" class="loading">Cargando datos...</div>
-      <button type="submit" class="btn btn-success" style="display:none;" id="btnGuardar">💾 Guardar Cambios</button>
+      <button type="submit" class="btn btn-success" id="btnGuardar" style="display:none;">💾 Guardar Cambios</button>
     </form>
   </div>
 
   <script>
   (function(){
-    const API_BASE = "http://127.0.0.1:8000/api/";
-    const token = sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
+
+    const API_BASE = `${ApiConexion}/listarClientes`
+    const token = sessionStorage.getItem("userToken") || localStorage.getItem("userToken");
+
     const params = new URLSearchParams(window.location.search);
     const idCliente = params.get("id");
 
@@ -126,12 +89,17 @@
     const contenido = document.getElementById("contenidoFormulario");
     const btnGuardar = document.getElementById("btnGuardar");
 
-    function buildHeaders() {
-      const headers = { "Accept": "application/json" };
-      if (token) headers["Authorization"] = "Bearer " + token;
+    // ---- HEADERS CORRECTOS PARA EVITAR ERROR 403 ----
+    function buildHeaders(json = false) {
+      const headers = {
+        "Accept": "application/json",
+        "Authorization": "Bearer " + token
+      };
+      if (json) headers["Content-Type"] = "application/json";
       return headers;
     }
 
+    // ---- LIMPIAR TEXTO ----
     function escapeHtml(str) {
       return String(str || "")
         .replace(/&/g, "&amp;")
@@ -141,41 +109,50 @@
         .replace(/'/g, "&#39;");
     }
 
-    // 🔹 Cargar cliente desde listarClientes
+    // ---- CARGAR CLIENTE ----
     async function cargarCliente() {
-      if (!idCliente) {
-        contenido.innerHTML = "<p>❌ No se proporcionó el ID del cliente.</p>";
-        return;
-      }
-
       try {
-        const res = await fetch(`${API_BASE}listarClientes`, { headers: buildHeaders() });
-        const json = await res.json();
-        if (!res.ok) throw new Error("Error al obtener clientes");
+        const res = await fetch(API_BASE, {
+          headers: buildHeaders()
+        });
 
-        const lista = json.data || json;
-        const cliente = lista.find(c => c.id == idCliente || c.idCliente == idCliente);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
+        const json = await res.json();
+
+        // Detecta automáticamente dónde viene la lista
+        let lista = json.data || json.clientes || json || [];
+
+        if (!Array.isArray(lista)) {
+          lista = Object.values(lista).find(v => Array.isArray(v)) || [];
+        }
+
+        const cliente = lista.find(c =>
+          c.id == idCliente ||
+          c.idCliente == idCliente
+        );
 
         if (!cliente) {
           contenido.innerHTML = "<p>⚠️ No se encontró el cliente solicitado.</p>";
           return;
         }
 
+        // ---- RENDER FORMULARIO ----
         contenido.innerHTML = `
           <label>Nombre</label>
-          <input type="text" name="nombre" value="${escapeHtml(cliente.nombre || '')}" class="form-control" required>
+          <input name="nombre" class="form-control" value="${escapeHtml(cliente.nombre)}">
 
           <label>Apellido</label>
-          <input type="text" name="apellido" value="${escapeHtml(cliente.apellido || '')}" class="form-control" required>
+          <input name="apellido" class="form-control" value="${escapeHtml(cliente.apellido)}">
 
           <label>Documento</label>
-          <input type="text" name="documento" value="${escapeHtml(cliente.documento || '')}" class="form-control" required>
+          <input name="documento" class="form-control" value="${escapeHtml(cliente.documento)}">
 
           <label>Teléfono</label>
-          <input type="text" name="telefono" value="${escapeHtml(cliente.telefono || '')}" class="form-control">
+          <input name="telefono" class="form-control" value="${escapeHtml(cliente.telefono)}">
 
           <label>Fecha de Nacimiento</label>
-          <input type="date" name="fecha_nacimiento" value="${escapeHtml(cliente.fecha_nacimiento || '')}" class="form-control">
+          <input type="date" name="fecha_nacimiento" class="form-control" value="${escapeHtml(cliente.fecha_nacimiento)}">
 
           <label>Sexo</label>
           <select name="sexo" class="form-control">
@@ -183,38 +160,37 @@
             <option value="Femenino" ${cliente.sexo === "Femenino" ? "selected" : ""}>Femenino</option>
           </select>
 
-          <label>Correo Electrónico</label>
-          <input type="email" name="correo" value="${escapeHtml(cliente.correo || '')}" class="form-control" required>
+          <label>Correo</label>
+          <input type="email" name="correo" class="form-control" value="${escapeHtml(cliente.correo)}">
         `;
+
         btnGuardar.style.display = "inline-block";
 
       } catch (err) {
-        contenido.innerHTML = `<p>❌ Error al cargar los datos del cliente.<br><small>${err.message}</small></p>`;
+        contenido.innerHTML = `❌ Error al cargar los datos.<br><small>${err}</small>`;
       }
     }
 
-    // 🔹 Guardar actualización
-    form.addEventListener("submit", async (e) => {
+    // ---- ENVIAR ACTUALIZACIÓN ----
+    form.addEventListener("submit", async e => {
       e.preventDefault();
+
       const data = Object.fromEntries(new FormData(form).entries());
 
       try {
-        const res = await fetch(`${API_BASE}actualizarCliente/${idCliente}`, {
+        const res = await fetch(API_BASE + "actualizarCliente/" + idCliente, {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            ...buildHeaders()
-          },
+          headers: buildHeaders(true),
           body: JSON.stringify(data)
         });
 
         const json = await res.json().catch(() => null);
 
         if (res.ok) {
-          Swal.fire("✅ Éxito", json?.message || "Cliente actualizado correctamente.", "success")
+          Swal.fire("✅ Éxito", "Cliente actualizado correctamente.", "success")
             .then(() => window.location.href = "Ver_Clientes.php");
         } else {
-          Swal.fire("❌ Error", json?.message || "No se pudo actualizar el cliente.", "error");
+          Swal.fire("❌ Error", json?.message || "Error al actualizar.");
         }
 
       } catch (err) {
@@ -223,7 +199,11 @@
     });
 
     document.addEventListener("DOMContentLoaded", cargarCliente);
+
   })();
   </script>
+  <script src='vista/js/ApiConexion.js'></script> <!-- URL base de la API -->
+
+
 </body>
 </html>

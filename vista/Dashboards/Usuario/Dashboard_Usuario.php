@@ -4,7 +4,7 @@
 <div class="dashboard-container" id="dashboard-usuario-body">
   <header class="dashboard-header">
     <div class="user-greeting">
-      <span class="icon-circle">👤</span>
+      <span class="icon-circle"><i class="fas fa-user"></i></span>
       <span class="welcome-text">¡Bienvenido,<strong id="nombreUsuario"></strong></span>
     </div>
     <div class="header-actions">

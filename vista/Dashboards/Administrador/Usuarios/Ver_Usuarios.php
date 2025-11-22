@@ -166,9 +166,11 @@
     </div>
   </div>
 
+
 <script>
-const API_BASE = "http://127.0.0.1:8000/api/";
-const LIST_URL = `${API_BASE}listarClientes`;
+const API_URL = ApiConexion;
+
+const LIST_URL = `vista/js/ApiConexion.js/listarClientes`;
 
 function volverDashboard(){
   window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
@@ -251,6 +253,5 @@ async function eliminarUsuario(id) {
 
 document.addEventListener('DOMContentLoaded', cargarUsuarios);
 </script>
-
 </body>
 </html>

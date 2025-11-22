@@ -1,7 +1,7 @@
 <?php
 
 include_once "vista/modulos/1cabesera.php";
-include_once "controlador/usuarioControlador.php"; 
+include_once "controlador/usuarioControlador.php";
 
 // --- Organización de Rutas por Rol ---
 
@@ -13,17 +13,19 @@ $rutasPublicasYComunes = [
     "restablecer_contraseña" => "vista/modulos/Auth/restablecerContraseña.php",
     "recibir_correo" => "vista/modulos/Auth/recibir_correo.php",
     "404" => "vista/modulos/404.php",
+    "terminos_condiciones" => "vista/Dashboards/Usuario/Policies/Terminos_Condiciones.php",
 ];
 
 // Rutas específicas para el rol de Cliente
 $rutasCliente = [
     "dashboard-usuario" => "vista/Dashboards/Usuario/Dashboard_Usuario.php",
     "mi_perfil" => "vista\Dashboards\Usuario\Mi_Perfil.php",
-    "configuracion_cliente" => "vista/Dashboards/Usuario/Configuracion_Cliente.php",
-    "cambiar_contrasena_cliente" => "vista/Dashboards/Usuario/Cambiar_Contrasena_Cliente.php",
-    "cambiar_correo_cliente" => "vista/Dashboards/Usuario/Cambiar_Correo_Cliente.php",
+    "configuracion_cliente" => "vista/Dashboards/Usuario/Settings/Configuracion_Cliente.php",
+    "cambiar_contrasena_cliente" => "vista/Dashboards/Usuario/Settings/Cambiar_Contrasena_Cliente.php",
+    "cambiar_correo_cliente" => "vista/Dashboards/Usuario/Settings/Cambiar_Correo_Cliente.php",
     "seleccionar_asientos" => "vista/Dashboards/Usuario/Seleccionar_Asientos.php",
     "pagar_reserva" => "vista/Dashboards/Usuario/Pagar_Reserva.php",
+
 ];
 
 // Rutas específicas para el rol de Empresa
@@ -42,6 +44,7 @@ $rutasAdmin = [
     "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
     "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
     "reportes" => "vista/Dashboards/Administrador/Reportes.php",
+    "Reservas" => "vista/Dashboards/Administrador/Resevas.php",
 ];
 
 // Se unifican todas las rutas en un solo array para la validación
