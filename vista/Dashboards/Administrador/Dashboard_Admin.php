@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   usuariosElement.textContent = "—"; // temporal mientras carga
 
   try {
-  const response = await fetch("http://localhost:8000/api/listarClientes", {
+  const response = await fetch(API_BASE + "listarEventos", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       <!-- === SCRIPT DE DATOS DINÁMICOS === -->
       <script>
-        const API_URL = "http://127.0.0.1:8000/api";
+        const API_URL = ApiConexion;
 
         // 🔹 Cargar cantidad de usuarios activos
         async function cargarUsuariosActivos() {
