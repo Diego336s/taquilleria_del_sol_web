@@ -41,6 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+// Event Listener registrar evento
+const form_registrar_evento = document.getElementById('form_registrar_evento');
+if (form_registrar_evento) {
+    form_registrar_evento.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        await ctrRegistrarEvento();
+    });
+}
+
+
+
+
 });
 
 // =========================================================================
@@ -335,3 +347,147 @@ async function ctrCambiarCorreoConfigEmpresa() {
         mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor.');
     }
 }
+
+// =========================================================================
+// FUNCIÓN: Registrar Evento
+// =========================================================================
+async function ctrRegistrarEvento() {
+
+    const token = sessionStorage.getItem('userToken');
+    const userDataString = sessionStorage.getItem('userData');
+
+    if (!token || !userDataString) {
+        mostrarAlerta('error', 'Sesión inválida', 'Por favor inicia sesión nuevamente.');
+        return;
+    }
+
+    // Obtener valores del formulario
+    const titulo = document.getElementById("titulo").value.trim();
+    const descripcion = document.getElementById("descripcion").value.trim();
+    const fecha = document.getElementById("fecha").value;
+
+    const hora_inicio_raw = document.getElementById("hora_inicio").value;
+    const hora_final_raw = document.getElementById("hora_fin").value;
+
+    const hora_inicio = hora_inicio_raw + ":00";
+    const hora_final = hora_final_raw + ":00";
+
+    const precioPrimerPiso = document.getElementById("precio_primer_piso").value;
+    const precioSegundoPiso = document.getElementById("precio_segundo_piso").value;
+    const precioGeneral = document.getElementById("precio_general").value;
+
+    const imagen = document.getElementById("imagen").files[0];
+    const estado = document.getElementById("estado").value;
+    const categoria_id = document.getElementById("categoria_id").value;
+
+    if (!titulo || !descripcion || !fecha || !hora_inicio || !hora_final ||
+        !precioPrimerPiso || !precioSegundoPiso || !precioGeneral ||
+        !estado || !categoria_id || !imagen) {
+
+        mostrarAlerta('error', 'Campos incompletos', 'Por favor, rellena todos los campos.');
+        return;
+    }
+
+    const userData = JSON.parse(userDataString);
+    const empresa_id = userData.id;
+
+    Swal.fire({
+        title: 'Registrando evento...',
+        text: 'Por favor, espera un momento.',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    // FormData
+    const formData = new FormData();
+    formData.append("titulo", titulo);
+    formData.append("descripcion", descripcion);
+    formData.append("fecha", fecha);
+    formData.append("hora_inicio", hora_inicio);
+    formData.append("hora_final", hora_final);
+    formData.append("precio_primer_piso", precioPrimerPiso);
+    formData.append("precio_segundo_piso", precioSegundoPiso);
+    formData.append("precio_general", precioGeneral);
+    formData.append("estado", estado);
+    formData.append("categoria_id", categoria_id);
+    formData.append("empresa_id", empresa_id);
+    formData.append("imagen", imagen);
+
+    try {
+        const response = await fetch(`${ApiConexion}registrarEventos`, {
+            method: "POST",
+            headers: { "Authorization": "Bearer " + token },
+            body: formData
+        });
+
+        const data = await response.json();
+        Swal.close();
+
+        if (response.ok && data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Evento Registrado!',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            document.getElementById("form_registrar_evento").reset();
+            cargarCategorias(); // refrescar categorías si se agregan nuevas
+        } else {
+            mostrarAlerta('error', 'Error al registrar evento', data.message);
+        }
+
+    } catch (error) {
+        Swal.close();
+        mostrarAlerta('error', 'Error de conexión', 'No se pudo comunicar con el servidor.');
+        console.error(error);
+    }
+}
+
+// =========================================================================
+// FUNCIÓN: cargar categorías en el formulario de registro de eventos
+// =========================================================================
+
+document.addEventListener("DOMContentLoaded", cargarCategorias);
+
+
+async function cargarCategorias() {
+    const token = sessionStorage.getItem('userToken');
+    if (!token) return;
+
+    const select = document.getElementById("categoria_id");
+    select.innerHTML = '<option value="">Cargando categorías...</option>';
+
+    try {
+        const respuesta = await fetch('listarCategorias', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        const resultado = await respuesta.json();
+
+        // Verifica si el API devuelve success y data
+        if (resultado.success && Array.isArray(resultado.data)) {
+            select.innerHTML = '<option value="">Seleccione una categoría</option>';
+
+            resultado.data.forEach(categoria => {
+                const option = document.createElement('option');
+                option.value = categoria.id;   // ajusta según tu campo
+                option.textContent = categoria.nombre; // ajusta según tu campo
+                select.appendChild(option);
+            });
+        } else {
+            console.error("Formato inesperado de la API:", resultado);
+            select.innerHTML = '<option value="">No se pudieron cargar las categorías</option>';
+        }
+    } catch (error) {
+        console.error("Error cargando categorías:", error);
+        select.innerHTML = '<option value="">Error cargando categorías</option>';
+    }
+}
+
+
+
+
