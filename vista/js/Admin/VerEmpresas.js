@@ -67,7 +67,7 @@ async function ctrListarEmpresas() {
             empresas.forEach(emp => {
                 const row = `
                     <tr id="empresa-${emp.id}">
-                        <td><a href="#" onclick="ctrVerEmpresa(${emp.id})">${emp.nombre_empresa}</a></td>
+                        <td>${emp.nombre_empresa}</td>
                         <td>${emp.nit}</td>
                         <td>${emp.representante_legal}</td>
                         <td>${emp.documento_representante}</td>

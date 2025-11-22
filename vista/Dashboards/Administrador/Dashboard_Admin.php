@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         }
 
-        // 🔹 Cargar cantidad total de empresas
+        //  Cargar cantidad total de empresas
         async function cargarTotalEmpresas() {
           try {
             const response = await fetch(`${API_URL}/listarEmpresas`);
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         }
 
-        // 🚀 Ejecutar todo al cargar la página
+        //  Ejecutar todo al cargar la página
         document.addEventListener("DOMContentLoaded", () => {
           cargarUsuariosActivos();
           cargarTotalEmpresas();
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="billboard-header"></div>
       <div class="widget recent-reservations-card">
         <div class="widget-header">
-          <h3 class="section-title" style="margin: 0; color: #fff;">📌 Actividad Reciente del Sistema</h3>
+          <h3 class="section-title" style="margin: 0; color: #fff;"> Actividad Reciente del Sistema</h3>
           <button class="btn btn-confirm">Ver Todo</button>
         </div>
 

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>👥 Usuarios Registrados</title>
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
 
   <!-- ✅ FontAwesome sin errores CORS -->
-  <link rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
     body {
@@ -85,7 +86,9 @@
       transition: transform 0.3s ease;
     }
 
-    .table-container { overflow-x: auto; }
+    .table-container {
+      overflow-x: auto;
+    }
 
     table {
       width: 100%;
@@ -93,7 +96,7 @@
       text-align: center;
       border-radius: 15px;
       overflow: hidden;
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0, 0, 0, 0.4);
       color: #fff;
     }
 
@@ -104,44 +107,55 @@
       text-transform: uppercase;
     }
 
-    th, td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
     tbody tr:hover {
-      background-color: rgba(255,255,255,0.06);
+      background-color: rgba(255, 255, 255, 0.06);
       transition: all 0.2s ease;
     }
 
     .btn-back {
       position: fixed;
-      top:25px;
-      left:25px;
-      background-color:#9c4012e6;
-      color:#fff;
-      border:none;
-      border-radius:8px;
-      padding:10px 16px;
-      cursor:pointer;
-      font-weight:bold;
-      box-shadow:0 10px 20px rgba(255,107,31,0.5);
-      z-index:999;
+      top: 25px;
+      left: 25px;
+      background-color: #9c4012e6;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+      z-index: 999;
     }
 
     .btn {
-      border:none;
-      border-radius:6px;
-      padding:6px 12px;
-      cursor:pointer;
-      font-weight:bold;
-      transition:all .2s ease;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all .2s ease;
     }
 
-    .btn-editar { background:#ffc107; color:#000; }
-    .btn-eliminar { background:#dc3545; color:#fff; }
+    .btn-editar {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .btn-eliminar {
+      background: #dc3545;
+      color: #fff;
+    }
   </style>
 </head>
 
 <body>
-  <button class="btn-back" onclick="volverDashboard()">⬅️ Volver al Dashboard</button>
+  <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
 
   <div class="dashboard-container">
     <h1>👥 Usuarios Registrados</h1>
@@ -155,63 +169,73 @@
       <table>
         <thead>
           <tr>
-            <th>Nombre</th><th>Apellido</th><th>Documento</th><th>Teléfono</th>
-            <th>Fecha nacimiento</th><th>Correo</th><th>Sexo</th><th>Rol</th><th>Acciones</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Documento</th>
+            <th>Teléfono</th>
+            <th>Fecha nacimiento</th>
+            <th>Correo</th>
+            <th>Sexo</th>
+            <th>Rol</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody id="tablaUsuarios">
-          <tr><td colspan="11">Cargando usuarios...</td></tr>
+          <tr>
+            <td colspan="11">Cargando usuarios...</td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 
+<script src="../../../js/ApiConexion.js"></script>
 
-<script>
-const API_URL = ApiConexion;
+  <script>
+    const API_BASE = ApiConexion;
 
-const LIST_URL = `vista/js/ApiConexion.js/listarClientes`;
+    const LIST_URL = ApiConexion + "listarClientes";
 
-function volverDashboard(){
-  window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
-}
+    function volverDashboard() {
+      window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
+    }
 
-function normalizeUsersResponse(json) {
-  if (!json) return [];
-  if (Array.isArray(json)) return json;
-  if (json.clientes && Array.isArray(json.clientes)) return json.clientes;
-  return [];
-}
+    function normalizeUsersResponse(json) {
+      if (!json) return [];
+      if (Array.isArray(json)) return json;
+      if (json.clientes && Array.isArray(json.clientes)) return json.clientes;
+      return [];
+    }
 
-async function cargarUsuarios() {
-  const tbody = document.getElementById('tablaUsuarios');
-  tbody.innerHTML = `<tr><td colspan="11">Cargando usuarios...</td></tr>`;
+    async function cargarUsuarios() {
+      const tbody = document.getElementById('tablaUsuarios');
+      tbody.innerHTML = '<tr><td colspan="11">Cargando usuarios...</td></tr>';
 
-  try {
-    const res = await fetch(LIST_URL);
-    const json = await res.json();
+      try {
+        const res = await fetch(LIST_URL);
+        const json = await res.json();
 
-    const usuarios = normalizeUsersResponse(json);
-    renderUsuarios(usuarios);
+        const usuarios = normalizeUsersResponse(json);
+        renderUsuarios(usuarios);
 
-    document.getElementById("buscador")
-      .addEventListener("input", e => filtrarUsuarios(usuarios, e.target.value));
+        document.getElementById("buscador")
+          .addEventListener("input", e => filtrarUsuarios(usuarios, e.target.value));
 
-  } catch (err) {
-    console.error(err);
-    tbody.innerHTML = `<tr><td colspan="11">Error al cargar usuarios.</td></tr>`;
-  }
-}
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML = '<tr><td colspan="11">Error al cargar usuarios.</td></tr>';
+      }
+    }
 
-function renderUsuarios(usuarios) {
-  const tbody = document.getElementById('tablaUsuarios');
+    function renderUsuarios(usuarios) {
+      const tbody = document.getElementById('tablaUsuarios');
 
-  if (!usuarios.length) {
-    tbody.innerHTML = `<tr><td colspan="11">No hay usuarios registrados.</td></tr>`;
-    return;
-  }
+      if (!usuarios.length) {
+        tbody.innerHTML = '<tr><td colspan="11">No hay usuarios registrados.</td></tr>';
+        return;
+      }
 
-  tbody.innerHTML = usuarios.map(u => `
+      tbody.innerHTML = usuarios.map(u => `
     <tr>
       <td>${u.nombre ?? ''}</td>
       <td>${u.apellido ?? ''}</td>
@@ -222,36 +246,38 @@ function renderUsuarios(usuarios) {
       <td>${u.sexo ?? ''}</td>
       <td>Cliente</td>
       <td>
-        <button class="btn btn-editar" onclick="editarUsuario(${u.id})">✏️ Editar</button>
-        <button class="btn btn-eliminar" onclick="eliminarUsuario(${u.id})">🗑️ Eliminar</button>
+        <button class="btn btn-editar" onclick="editarUsuario(${u.id})">✏ Editar</button>
+        <button class="btn btn-eliminar" onclick="eliminarUsuario(${u.id})">🗑 Eliminar</button>
       </td>
     </tr>
   `).join('');
-}
+    }
 
-function filtrarUsuarios(usuarios, texto) {
-  texto = texto.toLowerCase();
-  const filtrados = usuarios.filter(u =>
-    (u.nombre ?? '').toLowerCase().includes(texto) ||
-    (u.apellido ?? '').toLowerCase().includes(texto) ||
-    (u.documento ?? '').toLowerCase().includes(texto) ||
-    (u.telefono ?? '').toLowerCase().includes(texto) ||
-    (u.correo ?? '').toLowerCase().includes(texto)
-  );
-  renderUsuarios(filtrados);
-}
+    function filtrarUsuarios(usuarios, texto) {
+      texto = texto.toLowerCase();
+      const filtrados = usuarios.filter(u =>
+        (u.nombre ?? '').toLowerCase().includes(texto) ||
+        (u.apellido ?? '').toLowerCase().includes(texto) ||
+        (u.documento ?? '').toLowerCase().includes(texto) ||
+        (u.telefono ?? '').toLowerCase().includes(texto) ||
+        (u.correo ?? '').toLowerCase().includes(texto)
+      );
+      renderUsuarios(filtrados);
+    }
 
-function editarUsuario(id) {
-  window.location.href = `Editar_Usuario.php?id=${id}`;
-}
+    function editarUsuario(id) {
+      window.location.href = `Editar_Usuario.php?id=${id}`;
+    }
 
-async function eliminarUsuario(id) {
-  if (!confirm("¿Eliminar usuario?")) return;
-  await fetch(`${API_BASE}eliminarCliente/${id}`, { method: "DELETE" });
-  cargarUsuarios();
-}
+    async function eliminarUsuario(id) {
+      if (!confirm("¿Eliminar usuario?")) return;
+      await fetch(`${API_BASE}eliminarCliente/${id}`, {
+        method: "DELETE"
+      });
+      cargarUsuarios();
+    }
 
-document.addEventListener('DOMContentLoaded', cargarUsuarios);
-</script>
+    document.addEventListener('DOMContentLoaded', cargarUsuarios);
+  </script>
 </body>
 </html>

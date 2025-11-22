@@ -191,7 +191,7 @@
 
 <body>
   <!-- 🔙 Botón volver -->
-  <button class="btn-back" onclick="volverDashboard()">⬅️ Volver</button>
+  <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
 
   <!-- ➕ Botón crear nueva empresa -->
   <button class="btn-add" onclick="window.location.href='Crear_Empresa.php'">➕ Nueva Empresa</button>
