@@ -56,7 +56,9 @@
         <div class="widget-content">
           <span class="widget-title h3 centrar">Acciones Rápidas</span>
           <div class="header-actions">
+            <a href="index.php?ruta=Reservar_funciones" class="btn btn-profile">
             <button class="btn btn-confirm">Reservar función</button>
+            </a>
             <button class="btn btn-profile"><span class="icon-inline">🧾</span> Ver Calendario</button>
             <button class="btn btn-profile"><span class="icon-inline">⚙️</span> Facturación</button>
           </div>
