@@ -45,7 +45,7 @@
                             }
                         });
 
-                        const urlApi = `${ApiConexion}pago/stripe`;
+                        const urlApi = `${ApiConexion}pago/stripe-web`;
 
                         const response = await fetch(urlApi, {
                             method: "POST",

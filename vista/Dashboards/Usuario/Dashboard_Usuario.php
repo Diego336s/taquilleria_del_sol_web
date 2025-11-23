@@ -8,6 +8,9 @@
       <span class="welcome-text">¡Bienvenido,<strong id="nombreUsuario"></strong></span>
     </div>
     <div class="header-actions">
+      <a href="index.php?ruta=mis_tickets" class="btn btn-explore">
+        <i class="fas fa-ticket-alt me-2"></i>Mis Tickets
+      </a>
       <a href="index.php?ruta=mi_perfil" class="btn btn-explore">
         <i class="fas fa-user-circle me-2"></i>Mi Perfil
       </a>
@@ -28,7 +31,7 @@
       <div class="widget">
         <div class="widget-icon">🗓️</div>
         <div class="widget-content">
-          <span class="widget-number">5</span>
+          <span id="obras_vistas" class="widget-number"></span>
           <span class="widget-title">Obras Vistas</span>
         </div>
       </div>
@@ -36,9 +39,8 @@
       <div class="widget">
         <div class="widget-icon">🕒</div>
         <div class="widget-content">
-          <span class="widget-number">1</span>
+          <span id="proxima_funcion" class="widget-number"></span>
           <span class="widget-title">Próxima Función</span>
-          <button class="btn btn-confirm">Cancelar</button>
         </div>
       </div>
 
@@ -104,20 +106,20 @@
             </div>
           </div>
 
-                  <div class="area-label centrar" style="grid-column: 1 / -1;">PALCOS TRASEROS</div>
+          <div class="area-label centrar" style="grid-column: 1 / -1;">PALCOS TRASEROS</div>
 
-                  <!-- Asientos Traseros -->
-                  <div style="grid-column: 1 / -1;">
-                    <div class="seat-row">
-                      <span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot booked"></span><span class="seat-dot booked"></span><span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot available"></span>
-                    </div>
-                    <div class="seat-row">
-                      <span class="seat-dot booked"></span><span class="seat-dot booked"></span><span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot booked"></span><span class="seat-dot booked"></span>
-                  </div>
+          <!-- Asientos Traseros -->
+          <div style="grid-column: 1 / -1;">
+            <div class="seat-row">
+              <span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot booked"></span><span class="seat-dot booked"></span><span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot available"></span>
+            </div>
+            <div class="seat-row">
+              <span class="seat-dot booked"></span><span class="seat-dot booked"></span><span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot available"></span><span class="seat-dot booked"></span><span class="seat-dot booked"></span>
+            </div>
 
 
-        </div><!-- seat-map-container -->
-      </div>
+          </div><!-- seat-map-container -->
+        </div>
 
 
     </aside>
@@ -125,17 +127,23 @@
     <!-- ======= Columna Derecha ======= -->
     <section class="content-area">
       <div class="featured-function orange-bg">
-        <div class="featured-content-wrapper">
+        <div id="proxima-funcion-container" class="featured-content-wrapper">
           <span class="featured-label">Su Próxima Función</span>
-          <h2 class="featured-title">Don Juan Tenorio</h2>
-          <div class="featured-details">
-            <span class="detail-item"><i class="fas fa-calendar-alt me-2"></i>12 Enero</span>
-            <span class="detail-item"><i class="fas fa-clock me-2"></i>8:30 PM</span>
-            <span class="detail-item"><i class="fas fa-chair me-2"></i>Palco A12, A13</span>
-          </div>
+
+          <!-- Este título será llenado por el JS -->
+          <h2 class="featured-title"></h2>
+
+          <!-- Aquí se insertarán fecha, hora y asientos -->
+          <div class="featured-details"></div>
+
+          <!-- Mensaje para cuando no hay función -->
+          <p id="noEventsMessage" style="display:none; color:white; margin-top:8px;">
+            No tienes funciones próximas.
+          </p>
         </div>
-        <a href="#" class="btn btn-white-border" id="btnVerDetalles">Ver Detalles</a>
+
       </div>
+
 
       <div class="billboard-header">
         <h3 class="section-title">Cartelera Actual</h3>
@@ -153,6 +161,22 @@
 </div>
 
 
+<!-- Modal detalles -->
+<div id="modalDetalles" class="modal-detalles" style="display:none;">
+  <div class="modal-contenido">
+    <span id="cerrarModalDetalles" class="cerrar-modal">&times;</span>
+
+    <h3 id="detalleTitulo"></h3>
+
+    <p><strong>Fecha:</strong> <span id="detalleFecha"></span></p>
+    <p><strong>Hora:</strong> <span id="detalleHora"></span></p>
+    <p><strong>Asientos:</strong></p>
+    <ul id="detalleAsientos"></ul>
+
+  </div>
+</div>
+
+ <!-- Bot Asistente -->
 <script src="https://cdn.botpress.cloud/webchat/v3.3/inject.js"></script>
 <script src="https://files.bpcontent.cloud/2025/11/13/03/20251113033729-E31KFIHZ.js" defer></script>
 

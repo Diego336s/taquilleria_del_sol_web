@@ -1,12 +1,12 @@
 /* Fondo general */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('img/fondo.png'); /* Nueva imagen de fondo */
+    background-image: url('img/fondo.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    position: relative; 
+    position: relative;
     min-height: 100vh;
 }
 
@@ -25,8 +25,8 @@ body::before {
 /* Tarjeta principal */
 .login-card {
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.1); 
-    backdrop-filter: blur(10px); 
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
@@ -38,25 +38,25 @@ body::before {
 
 /* Logo/Imagen en la tarjeta */
 .login-logo {
-    width: 120px; 
+    width: 120px;
     height: 120px;
-    object-fit: cover; 
-    border-radius: 50%; 
-    border: 2px solid rgba(255, 255, 255, 0.3); 
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); 
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
 }
 
 /* Título */
 .login-card h1 {
     font-weight: 600;
     font-size: 2rem;
-    color: #fff; 
+    color: #fff;
 }
 
 /* Texto debajo del título */
 .login-card p {
     font-size: 0.95rem;
-    color: #e9ecef !important; 
+    color: #e9ecef !important;
 }
 
 /* Pestañas */
@@ -83,23 +83,23 @@ body::before {
 .login-card .form-control {
     background: transparent !important;
     border: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3); 
-    border-radius: 0; 
-    color: #fff !important; 
-    transition: border-color 0.3s ease; 
-    padding-left: 0; 
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0;
+    color: #fff !important;
+    transition: border-color 0.3s ease;
+    padding-left: 0;
     padding-right: 0;
 }
 
 /* Estilo del input cuando está en foco */
 .login-card .form-control:focus {
-    border-bottom-color: #fff; 
-    box-shadow: none; 
+    border-bottom-color: #fff;
+    box-shadow: none;
 }
 
 /* Estilo de las etiquetas */
 .login-card .form-label {
-    color: #fff; 
+    color: #fff;
     opacity: 0.85;
 }
 
@@ -114,7 +114,8 @@ body::before {
     font-weight: 600;
     font-size: 1rem;
     transition: all 0.3s ease;
-    color: #fff !important; /* Asegurar texto blanco */
+    color: #fff !important;
+    /* Asegurar texto blanco */
 }
 
 .btn-primary:hover,
@@ -125,23 +126,49 @@ body::before {
 }
 
 /* Colores específicos si se quiere diferenciar sutilmente */
-.btn-danger { background: #dc3545 !important; }
-.btn-danger:hover { background: #c82333 !important; }
-.btn-success { background: #198754 !important; }
-.btn-success:hover { background: #157347 !important; }
+.btn-danger {
+    background: #dc3545 !important;
+}
+
+.btn-danger:hover {
+    background: #c82333 !important;
+}
+
+.btn-success {
+    background: #198754 !important;
+}
+
+.btn-success:hover {
+    background: #157347 !important;
+}
 
 
 /* Botón Usuario*/
-.btn_usuario { background: #ec9c63 !important; }
-.btn_usuario:hover { background: #ce855e !important; }
+.btn_usuario {
+    background: #ec9c63 !important;
+}
+
+.btn_usuario:hover {
+    background: #ce855e !important;
+}
 
 /* Botón Empresa (Azul - Corporativo) */
-.btn_empresa { background: #8144ba !important; }
-.btn_empresa:hover { background: #431a56 !important; }
+.btn_empresa {
+    background: #8144ba !important;
+}
+
+.btn_empresa:hover {
+    background: #431a56 !important;
+}
 
 /* Botón Admin*/
-.btn_admin { background: #47939f !important; }
-.btn_admin:hover { background: #376f78 !important; }
+.btn_admin {
+    background: #47939f !important;
+}
+
+.btn_admin:hover {
+    background: #376f78 !important;
+}
 
 .login-card a {
     color: #fbfbff;
@@ -164,7 +191,8 @@ body::before {
     transition: border-color 0.3s ease;
     padding-left: 0;
     padding-right: 0;
-    appearance: none; /* Quita la flecha por defecto */
+    appearance: none;
+    /* Quita la flecha por defecto */
     -webkit-appearance: none;
     -moz-appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6'/%3E%3C/svg%3E");

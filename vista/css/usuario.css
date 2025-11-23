@@ -203,6 +203,13 @@
     line-height: 1;
 }
 
+.widget-numbes {
+    font-size: 3em;
+    font-weight: bold;
+    display: block;
+    line-height: 1;
+}
+
 .widget-title {
     color: var(--secondary-text);
     display: block;
@@ -686,8 +693,75 @@
     font-size: 1.1rem;
     color: #ffffff;
 }
+/* Fondo del modal */
+.modal-detalles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* importante para cuando hay scroll */
+    z-index: 9999;
+}
 
+/* Tarjeta del modal */
+.modal-contenido {
+    background: linear-gradient(145deg, #1d1d1d, #2b2b2b);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 400px;
+    max-height: 80vh;  /* Evita que crezca demasiado */
+    overflow-y: auto;  /* Scroll interno elegante */
+    box-shadow: 0 0 20px rgba(255,255,255,0.15);
+    position: relative;
+}
 
+/* Botón cerrar */
+.cerrar-modal {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    color: #ff5b5b;
+}
+
+/* ESTILO DE ASIENTOS */
+#detalleAsientos {
+    margin: 10px 0 0 0;
+    padding: 0;
+    list-style: none;
+
+    /* Asientos en cuadrícula */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+}
+
+/* Cada asiento */
+#detalleAsientos li {
+    background: rgba(255,255,255,0.1);
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Scroll bonito dentro del modal */
+.modal-contenido::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-contenido::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 5px;
+}
 
 
 /* ===== Scroll horizontal solo para la cartelera ===== */
