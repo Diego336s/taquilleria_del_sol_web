@@ -1,0 +1,176 @@
+/* ===========================
+   FONDO GENERAL
+=========================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('../img/fondo.png') no-repeat center center fixed;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===========================
+   CONTENEDOR GENERAL
+=========================== */
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 950px;
+
+    /* 🎨 EFECTO GLASS – transparente elegante */
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    padding: 40px;
+    border-radius: 18px;
+
+    /* Borde fino tipo vidrio */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    /* Sombra suave */
+    box-shadow: 0 0 25px rgba(0,0,0,0.45);
+}
+
+/* ===========================
+   TÍTULOS
+=========================== */
+h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    text-shadow: 1px 2px 4px #000;
+}
+
+.form-subtitle {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #e8e8e8;
+    text-shadow: 1px 2px 3px #000;
+}
+
+/* ===========================
+   GRID DEL FORMULARIO
+=========================== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.form-full {
+    grid-column: span 2;
+}
+
+/* ===========================
+   GRUPOS DE INPUTS
+=========================== */
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.form-control,
+.form-select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+
+    /* Inputs semi–transparentes */
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+
+    border: 1px solid rgba(255, 255, 255, 0.40);
+
+    /* Para placeholder blanco */
+    caret-color: #fff;
+
+    transition: 0.25s;
+}
+
+/* Placeholder blanco */
+::placeholder {
+    color: #f2f2f2;
+}
+
+/* Select arrow blanco */
+.form-select {
+    color: #fff;
+}
+
+/* Focus efecto glow verde */
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+    border-color: #00d26a;
+    box-shadow: 0 0 10px rgba(0, 210, 106, 0.7);
+    outline: none;
+}
+
+/* Texto de ayuda */
+small {
+    color: #fff;
+    opacity: 0.9;
+}
+
+/* ===========================
+   BOTONES
+=========================== */
+.btn-success {
+    background: #0e7f3b !important;
+    border: none !important;
+    padding: 14px;
+    font-size: 17px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    background: #0a5e2c !important;
+    transform: scale(1.02);
+}
+
+.btn-volver {
+    display: inline-block;
+    margin-top: 18px;
+    text-decoration: none;
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+    transition: 0.3s;
+}
+
+.btn-volver:hover {
+    color: #c5ffc5;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 768px) {
+    .form-card {
+        padding: 25px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-full {
+        grid-column: span 1;
+    }
+}

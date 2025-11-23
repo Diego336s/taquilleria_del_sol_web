@@ -122,7 +122,7 @@
 </div>
 
 <script>
-const API = "http://127.0.0.1:8000/api";
+const API = ApiConexion;
 
 function volverDashboard() {
   window.location.href = "/taquilleria_del_sol_web/index.php?ruta=dashboard-admin";

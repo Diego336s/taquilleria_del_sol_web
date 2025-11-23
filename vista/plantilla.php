@@ -36,6 +36,7 @@ $rutasEmpresa = [
     "mi_perfil_empresa" => "vista/Dashboards/Empresa/Mi_Perfil_Empresa.php",
     "Configuracion_empresa" => "vista\Dashboards\Empresa\Configuraciones_Empresa.php",
     "Reportes_empresa" => "vista/Dashboards/Empresa/Reportes_Empresa.php",
+    "Reservar_funciones" => "vista/Dashboards/Empresa/Reservar_Funciones.php",
 ];
 
 // Rutas específicas para el rol de Administrador
@@ -46,6 +47,10 @@ $rutasAdmin = [
     "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
     "reportes" => "vista/Dashboards/Administrador/Reportes.php",
     "Reservas" => "vista/Dashboards/Administrador/Resevas.php",
+    "Reportes" => "vista/Dashboards/Administrador/Reportes.php",
+    "Ver_Usuarios" => "vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php",
+    "verEmpresas" => "vista/Dashboards/Administrador/Empresas/Ver_Empresas.php",
+    "PanelConfiguración" => "vista/Dashboards/Administrador/Configuracion/PanelConfiguración.php",
 ];
 
 // Se unifican todas las rutas en un solo array para la validación

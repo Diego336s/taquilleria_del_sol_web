@@ -15,12 +15,12 @@
       <a href="index.php?ruta=mi_perfil_admin" class="btn btn-explore">
         <i class="fas fa-user-circle me-2"></i>Mi Perfil
       </a>
-            <a href="index.php?ruta=Reservas" class="btn btn-explore">
+      <a href="index.php?ruta=Reservas" class="btn btn-explore">
         <i class="fas fa-user-circle me-2"></i>resevas
       </a>
-      <button class="btn btn-profile" onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Reportes.php'">
-        <span class="icon-inline">📊</span> Reportes
-      </button>
+      <a href="index.php?ruta=Reportes" class="btn btn-explore">
+        <i class="fas fa-user-circle me-2"></i>Reportes
+      </a>
       <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutAdmin()">
         <span class="icon-inline">🚪</span> Cerrar Sesión
       </button>
@@ -53,28 +53,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   usuariosElement.textContent = "—"; // temporal mientras carga
 
   try {
-    const response = await fetch("http://localhost:8000/api/listarClientes", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${
-          localStorage.getItem("tokenCliente") || localStorage.getItem("token")
-        }`,
-      },
-    });
+  const response = await fetch(API_BASE + "listarEventos", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${
+        localStorage.getItem("tokenCliente") || localStorage.getItem("token")
+      }`,
+    },
+  });
 
-    if (!response.ok) throw new Error(`Servidor respondió con ${response.status}`);
+  if (!response.ok) throw new Error(`Servidor respondió con ${response.status}`);
 
-    const data = await response.json();
+  const data = await response.json();
 
-    // ⬇️⬇️ ESTA ES LA CLAVE — TU API DEVUELVE "clientes"
-    let totalUsuarios = Array.isArray(data.clientes) ? data.clientes.length : 0;
+  // ⬇️ Aquí tu API devuelve "clientes"
+  let totalUsuarios = Array.isArray(data.clientes) ? data.clientes.length : 0;
 
-    usuariosElement.textContent = totalUsuarios.toLocaleString();
-  } catch (error) {
-    console.error("❌ Error al obtener usuarios:", error);
-    usuariosElement.textContent = "—";
-  }
+  usuariosElement.textContent = totalUsuarios.toLocaleString();
+
+} catch (error) {
+  console.error("❌ Error al obtener usuarios:", error);
+  usuariosElement.textContent = "—";
+}
+
 });
 </script>
 
@@ -95,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       <!-- === SCRIPT DE DATOS DINÁMICOS === -->
       <script>
-        const API_URL = "http://127.0.0.1:8000/api";
+        const API_URL = ApiConexion;
 
         // 🔹 Cargar cantidad de usuarios activos
         async function cargarUsuariosActivos() {

@@ -9,15 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    body {
-      background-image: url('../../css/img/fondo.png');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
 
     .dashboard-container {
       backdrop-filter: blur(10px);
