@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>✏️ Editar Cliente</title>
+
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -14,6 +15,8 @@
       background-position: center;
       font-family: 'Poppins', sans-serif;
       color: #fff;
+      margin:0;
+      padding:0;
     }
 
     .dashboard-container {
@@ -29,19 +32,25 @@
     }
 
     h1 { text-align:center; font-weight:600; margin-bottom:30px; }
-
-    label { color:#ddd; margin-top:10px; display:block; }
+    label { display:block; margin-top:10px; color:#f0f0f0; }
 
     .form-control {
-      width:100%; padding:10px; margin-top:4px;
-      border-radius:8px; border:1px solid rgba(255,255,255,0.2);
-      background:rgba(255,255,255,0.15); color:#fff;
+      width:100%; padding:10px; margin-top:5px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.15);
+      color:white;
     }
 
     .btn {
-      padding:10px 18px; border:none; border-radius:8px;
-      cursor:pointer; font-weight:bold; transition:.3s;
-      font-size:15px; margin-top:20px;
+      padding:10px 18px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:bold;
+      transition:.3s;
+      font-size:15px;
+      margin-top:20px;
     }
 
     .btn-success { background:#4CAF50; color:white; }
@@ -55,14 +64,12 @@
       color: white;
     }
 
-    .btn-back:hover {
-      transform: scale(1.05);
-      background-color: #e65b10;
-    }
+    .btn-back:hover { transform: scale(1.05); background-color: #e65b10; }
 
-    .loading { text-align:center; color:#ccc; font-size:16px; }
+    .loading { text-align:center; color:#ddd; }
   </style>
 </head>
+
 <body>
 
   <button class="btn btn-back" onclick="window.location.href='Ver_Usuarios.php'">⬅️ Volver</button>
@@ -76,11 +83,14 @@
     </form>
   </div>
 
-  <script>
-  (function(){
+  <!-- API BASE -->
+  <script src="../../../js/ApiConexion.js"></script>
 
-    const API_BASE = `${ApiConexion}/listarClientes`
-    const token = sessionStorage.getItem("userToken") || localStorage.getItem("userToken");
+  <script>
+  (function () {
+
+    const LIST_URL = ApiConexion + "listarClientes";
+    const UPDATE_URL = ApiConexion + "actualizarCliente/"; // ← CORRECTO
 
     const params = new URLSearchParams(window.location.search);
     const idCliente = params.get("id");
@@ -89,17 +99,7 @@
     const contenido = document.getElementById("contenidoFormulario");
     const btnGuardar = document.getElementById("btnGuardar");
 
-    // ---- HEADERS CORRECTOS PARA EVITAR ERROR 403 ----
-    function buildHeaders(json = false) {
-      const headers = {
-        "Accept": "application/json",
-        "Authorization": "Bearer " + token
-      };
-      if (json) headers["Content-Type"] = "application/json";
-      return headers;
-    }
-
-    // ---- LIMPIAR TEXTO ----
+    // ---- Convertir caracteres especiales ----
     function escapeHtml(str) {
       return String(str || "")
         .replace(/&/g, "&amp;")
@@ -109,35 +109,25 @@
         .replace(/'/g, "&#39;");
     }
 
-    // ---- CARGAR CLIENTE ----
+    // ---- Cargar datos del cliente ----
     async function cargarCliente() {
       try {
-        const res = await fetch(API_BASE, {
-          headers: buildHeaders()
-        });
+        const res = await fetch(LIST_URL);
+        const data = await res.json();
 
-        if (!res.ok) throw new Error("HTTP " + res.status);
-
-        const json = await res.json();
-
-        // Detecta automáticamente dónde viene la lista
-        let lista = json.data || json.clientes || json || [];
+        let lista = data.clientes || data.data || data;
 
         if (!Array.isArray(lista)) {
           lista = Object.values(lista).find(v => Array.isArray(v)) || [];
         }
 
-        const cliente = lista.find(c =>
-          c.id == idCliente ||
-          c.idCliente == idCliente
-        );
+        const cliente = lista.find(c => c.id == idCliente);
 
         if (!cliente) {
-          contenido.innerHTML = "<p>⚠️ No se encontró el cliente solicitado.</p>";
+          contenido.innerHTML = "<p>No se encontró el cliente.</p>";
           return;
         }
 
-        // ---- RENDER FORMULARIO ----
         contenido.innerHTML = `
           <label>Nombre</label>
           <input name="nombre" class="form-control" value="${escapeHtml(cliente.nombre)}">
@@ -151,7 +141,7 @@
           <label>Teléfono</label>
           <input name="telefono" class="form-control" value="${escapeHtml(cliente.telefono)}">
 
-          <label>Fecha de Nacimiento</label>
+          <label>Fecha Nacimiento</label>
           <input type="date" name="fecha_nacimiento" class="form-control" value="${escapeHtml(cliente.fecha_nacimiento)}">
 
           <label>Sexo</label>
@@ -167,34 +157,34 @@
         btnGuardar.style.display = "inline-block";
 
       } catch (err) {
-        contenido.innerHTML = `❌ Error al cargar los datos.<br><small>${err}</small>`;
+        contenido.innerHTML = "❌ Error cargando datos.";
       }
     }
 
-    // ---- ENVIAR ACTUALIZACIÓN ----
+    // ---- Guardar Cambios ----
     form.addEventListener("submit", async e => {
       e.preventDefault();
 
       const data = Object.fromEntries(new FormData(form).entries());
 
       try {
-        const res = await fetch(API_BASE + "actualizarCliente/" + idCliente, {
+        const res = await fetch(UPDATE_URL + idCliente, {
           method: "PUT",
-          headers: buildHeaders(true),
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
 
         const json = await res.json().catch(() => null);
 
         if (res.ok) {
-          Swal.fire("✅ Éxito", "Cliente actualizado correctamente.", "success")
-            .then(() => window.location.href = "Ver_Clientes.php");
+          Swal.fire("✔️ Éxito", "Cliente actualizado correctamente.", "success")
+            .then(() => window.location.href = "Ver_Usuarios.php");
         } else {
           Swal.fire("❌ Error", json?.message || "Error al actualizar.");
         }
 
       } catch (err) {
-        Swal.fire("❌ Error", "No se pudo conectar con el servidor.", "error");
+        Swal.fire("❌ Error", "No se pudo conectar con el servidor.");
       }
     });
 
@@ -202,8 +192,6 @@
 
   })();
   </script>
-  <script src='vista/js/ApiConexion.js'></script> <!-- URL base de la API -->
-
 
 </body>
 </html>

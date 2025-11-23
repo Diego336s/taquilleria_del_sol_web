@@ -43,7 +43,6 @@ $rutasAdmin = [
     "mi_perfil_admin" => "vista\Dashboards\Administrador\Mi_Perfil.php",
     "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
     "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
-    "reportes" => "vista/Dashboards/Administrador/Reportes.php",
     "Reservas" => "vista/Dashboards/Administrador/Resevas.php",
     "Reportes" => "vista/Dashboards/Administrador/Reportes.php",
     "Ver_Usuarios" => "vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php",
@@ -80,3 +79,31 @@ if (array_key_exists($ruta, $rutasValidas)) {
 }
 
 include_once "vista/modulos/zpie.php";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -87,3 +87,4 @@
         }
     });
 </script>
+<script src='./vista/js/Admin/Mi_Perfil.js'></script>
