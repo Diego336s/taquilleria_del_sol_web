@@ -12,7 +12,6 @@ $rutasPublicasYComunes = [
     "verificar_codigo" => "vista/modulos/Auth/verificar_codigo.php",
     "restablecer_contraseña" => "vista/modulos/Auth/restablecerContraseña.php",
     "recibir_correo" => "vista/modulos/Auth/recibir_correo.php",
-    "404" => "vista/modulos/404.php",
     "terminos_condiciones" => "vista/Dashboards/Usuario/Policies/Terminos_Condiciones.php",
 ];
 
@@ -25,6 +24,9 @@ $rutasCliente = [
     "cambiar_correo_cliente" => "vista/Dashboards/Usuario/Settings/Cambiar_Correo_Cliente.php",
     "seleccionar_asientos" => "vista/Dashboards/Usuario/Seleccionar_Asientos.php",
     "pagar_reserva" => "vista/Dashboards/Usuario/Pagar_Reserva.php",
+    "pago-exitoso" => "vista/Dashboards/Usuario/pago-exitoso.php",
+    "mis_tickets" => "vista/Dashboards/Usuario/Mis_Tickets.php",
+
 
 ];
 
@@ -71,7 +73,6 @@ $usuarioControlador->ctrIngresoUsuario();
 if (array_key_exists($ruta, $rutasValidas)) {
     include_once $rutasValidas[$ruta];
 } else {
-    include_once $rutasValidas["404"];
 }
 
 include_once "vista/modulos/zpie.php";

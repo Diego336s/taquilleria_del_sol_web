@@ -182,11 +182,7 @@ function checkAuthAndRedirect() {
     }
 
     // 🔹 CASO 2: Ruta no válida → 404 (antes de cualquier otro flujo)
-    if (!validRoutes.includes(ruta)) {
-        log("Ruta inválida:", ruta, "→ Enviando a 404");
-        window.location.replace("index.php?ruta=404");
-        return;
-    }
+
 
     const isProtected = protectedRoutes.includes(ruta);
     const isPublic = publicRoutes.includes(ruta);
