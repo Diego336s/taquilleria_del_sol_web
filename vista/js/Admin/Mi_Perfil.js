@@ -34,11 +34,11 @@ async function ctrupdatePerfil() {
         nombre: document.getElementById('profile_nombre')?.value.trim(),
         apellido: document.getElementById('profile_apellido')?.value.trim(),
         telefono: document.getElementById('profile_telefono')?.value.trim(),
-        sexo: document.getElementById('profile_sexo')?.value,
+       
     };
 
     // Validación simple de campos
-    if (!datos.nombre || !datos.apellido || !datos.telefono || !datos.sexo) {
+    if (!datos.nombre || !datos.apellido || !datos.telefono ) {
         mostrarAlerta('error', 'Campos incompletos', 'Por favor, rellena todos los campos requeridos.');
         return;
     }
