@@ -9,7 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-
     .dashboard-container {
       backdrop-filter: blur(10px);
       background-color: rgba(255, 255, 255, 0.1);
@@ -105,6 +104,39 @@
       text-align: center;
       width: 90%;
     }
+
+    /* Buscador elegante */
+    .search-box {
+      position: relative;
+      width: 220px;
+      margin-bottom: 10px;
+      float: right;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 8px 35px 8px 12px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: #ffd27f;
+    }
+
+    .search-box i {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ffd27f;
+    }
+
   </style>
 </head>
 <body>
@@ -113,6 +145,12 @@
 
   <div class="dashboard-container">
     <h1>💰 Reportes de Ventas (Tickets)</h1>
+
+    <!-- Buscador tickets -->
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="buscador-tickets" placeholder="Buscar tickets...">
+    </div>
 
     <table id="tabla-reportes">
       <thead>
@@ -130,6 +168,12 @@
     </table>
 
     <h1>🎭 Reporte de Eventos</h1>
+
+    <!-- Buscador eventos -->
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="buscador-eventos" placeholder="Buscar eventos...">
+    </div>
 
     <table id="tabla-eventos">
       <thead>
@@ -149,7 +193,7 @@
     </table>
   </div>
 
- <script>
+<script>
 const ApiConexion = "http://127.0.0.1:8000/api/";
 
 let empresasMap = {};
@@ -160,124 +204,106 @@ document.addEventListener('DOMContentLoaded', async () => {
   await cargarCategorias();
   await cargarReportesTickets();
   await cargarReportesEventos();
+
+  // Buscador tickets
+  const buscadorTickets = document.getElementById('buscador-tickets');
+  buscadorTickets.addEventListener('keyup', () => {
+    const filtro = buscadorTickets.value.toLowerCase();
+    const filas = document.querySelectorAll('#tbody-reportes tr');
+    filas.forEach(fila => {
+      fila.style.display = fila.textContent.toLowerCase().includes(filtro) ? '' : 'none';
+    });
+  });
+
+  // Buscador eventos
+  const buscadorEventos = document.getElementById('buscador-eventos');
+  buscadorEventos.addEventListener('keyup', () => {
+    const filtro = buscadorEventos.value.toLowerCase();
+    const filas = document.querySelectorAll('#tbody-eventos tr');
+    filas.forEach(fila => {
+      fila.style.display = fila.textContent.toLowerCase().includes(filtro) ? '' : 'none';
+    });
+  });
 });
 
-/* =============================
-   📌 CARGAR EMPRESAS
-   ============================= */
 async function cargarEmpresas() {
   try {
     const res = await fetch(ApiConexion + 'listarEmpresas');
     const data = await res.json();
-
     empresasMap = {};
-
-    // Backend devuelve "data": []
-    (data.data || []).forEach(e => {
-      empresasMap[e.id] = e.nombre_empresa;
-    });
-
-  } catch (e) {
-    console.error("Error cargando empresas", e);
-  }
+    (data.data || []).forEach(e => { empresasMap[e.id] = e.nombre_empresa; });
+  } catch (e) { console.error("Error cargando empresas", e); }
 }
 
-/* =============================
-   📌 CARGAR CATEGORÍAS
-   ============================= */
 async function cargarCategorias() {
   try {
     const res = await fetch(ApiConexion + 'listarCategorias');
     const data = await res.json();
-
     categoriasMap = {};
+    (data.data || []).forEach(c => { categoriasMap[c.id] = c.nombre; });
+  } catch (e) { console.error("Error cargando categorías", e); }
+}
 
-    (data.data || []).forEach(c => {
-      categoriasMap[c.id] = c.nombre;
-    });
-
-  } catch (e) {
-    console.error("Error cargando categorías", e);
+async function cargarReportesTickets() {
+  const tbody = document.getElementById('tbody-reportes');
+  tbody.innerHTML = '<tr><td colspan="6" class="loading">Cargando tickets...</td></tr>';
+  try {
+    const res = await fetch(ApiConexion + 'listarTickets');
+    const tickets = await res.json();
+    tbody.innerHTML = '';
+    if (Array.isArray(tickets) && tickets.length > 0) {
+      for (const ticket of tickets) {
+        const eventoNombre = await obtenerEventoNombre(ticket.evento_id);
+        const clienteNombre = await obtenerClienteNombre(ticket.cliente_id);
+        const fechaCompra = ticket.fecha_compra ? ticket.fecha_compra.split('T')[0] : '—';
+        tbody.innerHTML += `
+          <tr>
+            <td>${eventoNombre}</td>
+            <td>${clienteNombre}</td>
+            <td><input type="number" class="input-precio" value="${ticket.precio ?? 0}" readonly></td>
+            <td>${ticket.estado ?? '—'}</td>
+            <td>${fechaCompra}</td>
+          </tr>`;
+      }
+    } else {
+      tbody.innerHTML = '<tr><td colspan="6" class="loading">No hay tickets registrados</td></tr>';
+    }
+  } catch (error) {
+    console.error("Error cargando tickets:", error);
+    tbody.innerHTML = '<tr><td colspan="6" class="loading">Error cargando tickets</td></tr>';
   }
 }
 
-    // =============================
-    // 🎫 CARGAR TICKETS
-    // =============================
-    async function cargarReportesTickets() {
-      const tbody = document.getElementById('tbody-reportes');
-      tbody.innerHTML = '<tr><td colspan="6" class="loading">Cargando tickets...</td></tr>';
+async function obtenerEventoNombre(id) {
+  try {
+    const res = await fetch(`${ApiConexion}listarEventos`);
+    const data = await res.json();
+    const evento = data.eventos?.find(e => e.id === id);
+    return evento ? evento.titulo : 'Sin evento';
+  } catch { return 'Sin evento'; }
+}
 
-      try {
-        const res = await fetch(ApiConexion + 'listarTickets');
-        const tickets = await res.json();
-        tbody.innerHTML = '';
+async function obtenerClienteNombre(id) {
+  try {
+    const res = await fetch(`${ApiConexion}listarClientes`);
+    const data = await res.json();
+    const cliente = data.clientes?.find(c => c.id === id);
+    return cliente ? `${cliente.nombre} ${cliente.apellido}` : 'Sin cliente';
+  } catch { return 'Sin cliente'; }
+}
 
-        if (Array.isArray(tickets) && tickets.length > 0) {
-          for (const ticket of tickets) {
-            const eventoNombre = await obtenerEventoNombre(ticket.evento_id);
-            const clienteNombre = await obtenerClienteNombre(ticket.cliente_id);
-
-            tbody.innerHTML += `
-              <tr>
-                <td>${eventoNombre}</td>
-                <td>${clienteNombre}</td>
-                <td><input type="number" class="input-precio" value="${ticket.precio ?? 0}" readonly></td>
-                <td>${ticket.estado ?? '—'}</td>
-                <td>${ticket.fecha_compra ?? '—'}</td>
-              </tr>`;
-          }
-        } else {
-          tbody.innerHTML = '<tr><td colspan="6" class="loading">No hay tickets registrados</td></tr>';
-        }
-      } catch (error) {
-        console.error("❌ Error cargando tickets:", error);
-        tbody.innerHTML = '<tr><td colspan="6" class="loading">Error cargando tickets</td></tr>';
-      }
-    }
-
-    async function obtenerEventoNombre(id) {
-      try {
-        const res = await fetch(`${ApiConexion}listarEventos`);
-        const data = await res.json();
-        const evento = data.eventos?.find(e => e.id === id);
-        return evento ? evento.titulo : 'Sin evento';
-      } catch {
-        return 'Sin evento';
-      }
-    }
-
-    async function obtenerClienteNombre(id) {
-      try {
-        const res = await fetch(`${ApiConexion}listarClientes`);
-        const data = await res.json();
-        const cliente = data.clientes?.find(c => c.id === id);
-        return cliente ? `${cliente.nombre} ${cliente.apellido}` : 'Sin cliente';
-      } catch {
-        return 'Sin cliente';
-      }
-    }
-
-/* =============================
-   🎭 CARGAR EVENTOS
-   ============================= */
 async function cargarReportesEventos() {
   const tbody = document.getElementById('tbody-eventos');
   tbody.innerHTML = '<tr><td colspan="9" class="loading">Cargando eventos...</td></tr>';
-
   try {
     const res = await fetch(ApiConexion + 'listarEventos');
     const data = await res.json();
     const eventos = Array.isArray(data.eventos) ? data.eventos : [];
-
     tbody.innerHTML = '';
-
     if (eventos.length > 0) {
       eventos.forEach(evento => {
-
         const empresaNombre = empresasMap[evento.empresa_id] || "—";
         const categoriaNombre = categoriasMap[evento.categoria_id] || "—";
-
         tbody.innerHTML += `
           <tr>
             <td>${evento.titulo ?? '—'}</td>
@@ -293,7 +319,7 @@ async function cargarReportesEventos() {
       tbody.innerHTML = '<tr><td colspan="9" class="loading">No hay eventos registrados</td></tr>';
     }
   } catch (error) {
-    console.error("❌ Error cargando eventos:", error);
+    console.error("Error cargando eventos:", error);
     tbody.innerHTML = '<tr><td colspan="9" class="loading">Error cargando eventos</td></tr>';
   }
 }

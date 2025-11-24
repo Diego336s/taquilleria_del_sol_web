@@ -106,7 +106,7 @@
         <div class="widget">
           <div class="widget-icon">💲</div>
           <div class="widget-content">
-            <span id="totalEntradas" class="widget-number">—</span>
+            <span id="totalEntradas" class="widget-number">0</span>
             <span class="widget-title">Ingresos mes</span>
           </div>
         </div>
@@ -115,7 +115,7 @@
         <div class="widget">
           <div class="widget-icon">👁️</div>
           <div class="widget-content">
-            <span id="totalTickets" class="widget-number">—</span>
+            <span id="totalTickets" class="widget-number">0</span>
             <span class="widget-title">Entradas vendidas</span>
           </div>
         </div>
@@ -124,7 +124,7 @@
         <div class="widget">
           <div class="widget-icon">📈</div>
           <div class="widget-content">
-            <span id="totalEventos" class="widget-number">—</span>
+            <span id="totalEventos" class="widget-number">0</span>
             <span class="widget-title">Funciones</span>
           </div>
         </div>
@@ -133,7 +133,7 @@
         <div class="widget">
           <div class="widget-icon">📊</div>
           <div class="widget-content">
-            <span id="ocupacionPromedio" class="widget-number">—</span>
+            <span id="ocupacionPromedio" class="widget-number">0</span>
             <span class="widget-title">Ocupación</span>
           </div>
         </div>
