@@ -30,12 +30,11 @@
     h1 {
       text-align: center;
       color: #fff;
-      margin-bottom: 20px;
+      margin-top: 20px;
       text-transform: uppercase;
       font-weight: 700;
     }
 
-    /* TABLA */
     table {
       width: 100%;
       background-color: rgba(0, 0, 0, 0.4);
@@ -65,102 +64,287 @@
       font-weight: bold;
     }
 
-    .btn-aprobar { background: #8b0000; color: #fff; }
-    .btn-rechazar { background: #ff7b00; color: #fff; }
+    .btn-aprobar { background: #008000; color: #fff; }
+    .btn-rechazar { background: #ff0000; color: #fff; }
+
+    .event-thumb {
+      width: 110px;
+      height: 70px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 2px solid #ff6b1f;
+      cursor: pointer;
+    }
+
+    /* 🔸 Diseño de descripción corta */
+    td.descripcion-corta {
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      color: #ffd27f;
+      font-weight: bold;
+    }
+
+    /* 🔸 MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-box {
+      width: 400px;
+      background: #ffffff;
+      padding: 20px 25px;
+      border-radius: 12px;
+      position: relative;
+      color: #000;
+    }
+
+    .modal-close-x {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
 
     .calendar-wrapper {
       width: 300px;
     }
 
-    /* FECHAS OCUPADAS ROJAS */
     .flatpickr-day.ocupada {
       background: #ff0000 !important;
       color: white !important;
       border-radius: 8px;
     }
-
-    .flatpickr-day.ocupada:hover {
-      background: #cc0000 !important;
-    }
-
   </style>
-
 </head>
 
 <body>
 
-  <h1>Gestión de Reservas</h1>
+<h1>Gestión de Reservas</h1>
 
-  <div class="dashboard-container">
+<script src="vista/js/ApiConexion.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- TABLA -->
-    <div class="table-container">
-      <table>
-        <thead>
+<div class="dashboard-container">
+  <div style="flex:1;">
+    <table>
+      <thead>
         <tr>
-            <th>Título</th>
-            <th>Descripción</th>
-            <th>Fecha</th>
-            <th>Inicio</th>
-            <th>Fin</th>
-            <th>Empresa</th>
-            <th>Categoría</th>
-            <th>Imagen</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th>Inicio</th>
+          <th>Fin</th>
+          <th>Empresa</th>
+          <th>Categoría</th>
+          <th>Imagen</th>
+          <th>Estado</th>
+          <th>Acciones</th>
         </tr>
-        </thead>
+      </thead>
+      <tbody id="tablaReservas"></tbody>
+    </table>
 
-        <tbody>
-          <tr>
-            <td>Evento Prueba</td>
-            <td>Descripción demo</td>
-            <td>2025-11-24</td>
-            <td>08:00</td>
-            <td>10:00</td>
-            <td>3</td>
-            <td>2</td>
-            <td><img src="/uploads/demo.jpg" width="60"></td>
-            <td>Pendiente</td>
-            <td>
-              <button class="btn btn-aprobar">Aprobar</button>
-              <button class="btn btn-rechazar">Rechazar</button>
-            </td>
-          </tr>
-        </tbody>
-
-      </table>
+    <div id="sinPendientes" style="display:none; color:white; text-align:center; margin-top:10px;">
+      No hay eventos pendientes.
     </div>
-
-    <!-- CALENDARIO ESTÁTICO -->
-    <div class="calendar-wrapper">
-      <div id="calendarioStatic"></div>
-    </div>
-
   </div>
 
-  <script>
-    /* EJEMPLO de fechas ocupadas (CÁMBIALAS por las de tu BD) */
-    const fechasOcupadas = [
-      "2025-11-24",
-      "2025-11-25",
-      "2025-11-30"
-    ];
+  <div class="calendar-wrapper">
+    <div id="calendarioStatic"></div>
+  </div>
+</div>
 
-    flatpickr("#calendarioStatic", {
-      inline: true,            // ← Hace que el calendario sea estático/visible
-      locale: "es",
-      dateFormat: "Y-m-d",
+<!-- ============================================
+     🔸 MODAL PARA DESCRIPCIÓN COMPLETA
+     ============================================ -->
+<div class="modal-overlay" id="modalDescripcion">
+  <div class="modal-box">
+    <button class="modal-close-x" onclick="cerrarModal()">×</button>
+    <h3 style="text-align:center; color:#ff6b1f;">Descripción completa</h3>
+    <p id="modalTexto" style="white-space:pre-wrap;"></p>
+  </div>
+</div>
 
-      onDayCreate: function(dObj, dStr, fp, dayElem) {
-        const fecha = dayElem.dateObj.toISOString().split("T")[0];
+<script>
+/* ================================================
+   🔸 MOSTRAR MODAL
+   ================================================ */
+function abrirModal(texto) {
+  document.getElementById("modalTexto").innerText = texto;
+  document.getElementById("modalDescripcion").style.display = "flex";
+}
 
-        if (fechasOcupadas.includes(fecha)) {
-          dayElem.classList.add("ocupada");
+function cerrarModal() {
+  document.getElementById("modalDescripcion").style.display = "none";
+}
+
+/* ================================================
+   🔸 MAPAS DE EMPRESAS / CATEGORÍAS
+   ================================================ */
+let empresasMap = {};
+let categoriasMap = {};
+let fpInstance = null;
+
+async function cargarEmpresas() {
+  const res = await fetch(ApiConexion + "listarEmpresas");
+  const data = await res.json();
+
+  (data.data || data.empresas || []).forEach(e => {
+    empresasMap[e.id ?? e.id_empresa] = e.nombre_empresa ?? e.nombre;
+  });
+}
+
+async function cargarCategorias() {
+  const res = await fetch(ApiConexion + "listarCategorias");
+  const data = await res.json();
+
+  (data.data || data.categorias || []).forEach(c => {
+    categoriasMap[c.id ?? c.id_categoria] = c.nombre ?? c.nombre_categoria;
+  });
+}
+
+/* ================================================
+   🔥 CAMBIAR ESTADO (FUNCIONAL)
+   ================================================ */
+async function cambiarEstado(id, nuevoEstado) {
+
+    Swal.fire({
+        title: `¿Cambiar estado a ${nuevoEstado}?`,
+        icon: "question",
+        confirmButtonText: "Sí",
+        showCancelButton: true
+    }).then(async (res) => {
+
+        if (!res.isConfirmed) return;
+
+        try {
+
+            const respuesta = await fetch(ApiConexion + `cambiar/estado/evento/${id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ estado: nuevoEstado })
+            });
+
+            const data = await respuesta.json();
+
+            if (!respuesta.ok) {
+                Swal.fire("Error", data.message ?? "No se pudo cambiar el estado", "error");
+                return;
+            }
+
+            Swal.fire("Éxito", "Estado actualizado", "success");
+            cargarReservas();
+
+        } catch (e) {
+            Swal.fire("Error", "No se pudo conectar con el servidor", "error");
         }
-      }
+
     });
-  </script>
+
+}
+
+/* ================================================
+   📌 CARGAR RESERVAS + MODAL DESCRIPCIÓN
+   ================================================ */
+async function cargarReservas() {
+  const res = await fetch(ApiConexion + "listarEventos");
+  const data = await res.json();
+
+  const eventos = data.eventos || data.data || [];
+  const tbody = document.getElementById("tablaReservas");
+  tbody.innerHTML = "";
+
+  let fechasActivas = [];
+  let pendientes = 0;
+
+  eventos.forEach(ev => {
+    const desc = ev.descripcion ?? "Sin descripción";
+
+    if (ev.estado === "activo") {
+      fechasActivas.push(ev.fecha.split("T")[0]);
+    }
+
+    if (ev.estado === "pendiente") {
+      pendientes++;
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${ev.titulo}</td>
+
+          <!-- 🔸 Descripción corta con modal -->
+          <td class="descripcion-corta" onclick='abrirModal(${JSON.stringify(desc)})'>
+            ${desc}
+          </td>
+
+          <td>${ev.fecha.split("T")[0]}</td>
+          <td>${ev.hora_inicio}</td>
+          <td>${ev.hora_final}</td>
+          <td>${empresasMap[ev.empresa_id] ?? "Empresa"}</td>
+          <td>${categoriasMap[ev.categoria_id] ?? "Categoria"}</td>
+
+          <td><img src="${ev.imagen}" class="event-thumb"></td>
+
+          <td>${ev.estado}</td>
+
+          <td>
+            <button class="btn btn-aprobar" onclick="cambiarEstado(${ev.id}, 'activo')">Aprobar</button>
+            <button class="btn btn-rechazar" onclick="cambiarEstado(${ev.id}, 'cancelar')">Rechazar</button>
+          </td>
+        </tr>
+      `;
+    }
+  });
+
+  document.getElementById("sinPendientes").style.display = pendientes === 0 ? "block" : "none";
+
+  iniciarCalendario([...new Set(fechasActivas)]);
+}
+
+/* ================================================
+   📅 CALENDARIO
+   ================================================ */
+function iniciarCalendario(fechas) {
+  if (fpInstance) fpInstance.destroy();
+
+  fpInstance = flatpickr("#calendarioStatic", {
+    inline: true,
+    locale: "es",
+    dateFormat: "Y-m-d",
+    onDayCreate: (a, b, c, dayElem) => {
+      const fecha = dayElem.dateObj.toISOString().split("T")[0];
+      if (fechas.includes(fecha)) {
+        dayElem.classList.add("ocupada");
+      }
+    }
+  });
+}
+
+/* ================================================
+   🔄 INICIALIZACIÓN
+   ================================================ */
+async function init() {
+  await cargarEmpresas();
+  await cargarCategorias();
+  await cargarReservas();
+}
+
+init();
+</script>
 
 </body>
 </html>
