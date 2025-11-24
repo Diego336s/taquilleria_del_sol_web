@@ -90,7 +90,7 @@
   (function () {
 
     const LIST_URL = ApiConexion + "listarClientes";
-    const UPDATE_URL = ApiConexion + "actualizarCliente/"; // ← CORRECTO
+    const UPDATE_URL = ApiConexion + "actualizarCliente/"; 
 
     const params = new URLSearchParams(window.location.search);
     const idCliente = params.get("id");
@@ -143,12 +143,6 @@
 
           <label>Fecha Nacimiento</label>
           <input type="date" name="fecha_nacimiento" class="form-control" value="${escapeHtml(cliente.fecha_nacimiento)}">
-
-          <label>Sexo</label>
-          <select name="sexo" class="form-control">
-            <option value="Masculino" ${cliente.sexo === "Masculino" ? "selected" : ""}>Masculino</option>
-            <option value="Femenino" ${cliente.sexo === "Femenino" ? "selected" : ""}>Femenino</option>
-          </select>
 
           <label>Correo</label>
           <input type="email" name="correo" class="form-control" value="${escapeHtml(cliente.correo)}">

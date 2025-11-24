@@ -80,7 +80,6 @@
                 document.getElementById('profile_documento').value = userData.documento || '';
                 document.getElementById('profile_correo').value = userData.correo || '';
                 document.getElementById('profile_telefono').value = userData.telefono || '';
-                document.getElementById('profile_sexo').value = userData.sexo || '';
             } catch (e) {
                 console.error('Error al cargar datos del perfil:', e);
             }

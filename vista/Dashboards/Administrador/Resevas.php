@@ -14,25 +14,84 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
   <style>
-    .dashboard-container {
-      backdrop-filter: blur(10px);
-      background-color: rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      padding: 30px;
-      margin: 40px auto;
-      width: 95%;
-      max-width: 1500px;
-      box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
-      display: flex;
-      gap: 40px;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .btn-back {
+      background: #ff6b1f;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 20px;
+      box-shadow: 0 4px 12px rgba(255, 107, 31, 0.4);
+      transition: all 0.3s ease;
     }
 
     h1 {
       text-align: center;
       color: #fff;
-      margin-top: 20px;
+      margin-top: 10px;
       text-transform: uppercase;
       font-weight: 700;
+    }
+
+    .dashboard-container {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px auto;
+      width: 95%;
+      max-width: 1500px;
+      box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
+      display: flex;
+      gap: 20px;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+    }
+
+    /* Buscador elegante */
+    .search-box {
+      position: relative;
+      width: 220px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 8px 35px 8px 12px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: #ffd27f;
+    }
+
+    .search-box i {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ffd27f;
+    }
+
+    /* Contenedor de tabla */
+    .tabla-container {
+      flex: 1;
+      overflow-x: auto;
     }
 
     table {
@@ -76,7 +135,6 @@
       cursor: pointer;
     }
 
-    /* 🔸 Diseño de descripción corta */
     td.descripcion-corta {
       max-width: 200px;
       white-space: nowrap;
@@ -87,7 +145,6 @@
       font-weight: bold;
     }
 
-    /* 🔸 MODAL */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -122,6 +179,7 @@
 
     .calendar-wrapper {
       width: 300px;
+      flex-shrink: 0;
     }
 
     .flatpickr-day.ocupada {
@@ -129,18 +187,31 @@
       color: white !important;
       border-radius: 8px;
     }
+
+    #sinPendientes {
+      color: #fff;
+      text-align: center;
+      margin-top: 10px;
+    }
   </style>
 </head>
 
 <body>
-
+<button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver a Inicio</button>
 <h1>Gestión de Reservas</h1>
 
-<script src="vista/js/ApiConexion.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <div class="dashboard-container">
-  <div style="flex:1;">
+  <!-- Tabla + buscador -->
+  <div class="tabla-container">
+    <!-- Buscador arriba a la derecha -->
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="buscador" placeholder="Buscar reserva...">
+      </div>
+    </div>
+
+    <!-- Tabla de reservas -->
     <table>
       <thead>
         <tr>
@@ -159,19 +230,15 @@
       <tbody id="tablaReservas"></tbody>
     </table>
 
-    <div id="sinPendientes" style="display:none; color:white; text-align:center; margin-top:10px;">
-      No hay eventos pendientes.
-    </div>
+    <div id="sinPendientes" style="display:none;">No hay eventos pendientes.</div>
   </div>
 
+  <!-- Calendario a la derecha -->
   <div class="calendar-wrapper">
     <div id="calendarioStatic"></div>
   </div>
 </div>
 
-<!-- ============================================
-     🔸 MODAL PARA DESCRIPCIÓN COMPLETA
-     ============================================ -->
 <div class="modal-overlay" id="modalDescripcion">
   <div class="modal-box">
     <button class="modal-close-x" onclick="cerrarModal()">×</button>
@@ -180,22 +247,15 @@
   </div>
 </div>
 
+<script src="vista/js/ApiConexion.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-/* ================================================
-   🔸 MOSTRAR MODAL
-   ================================================ */
 function abrirModal(texto) {
   document.getElementById("modalTexto").innerText = texto;
   document.getElementById("modalDescripcion").style.display = "flex";
 }
+function cerrarModal() { document.getElementById("modalDescripcion").style.display = "none"; }
 
-function cerrarModal() {
-  document.getElementById("modalDescripcion").style.display = "none";
-}
-
-/* ================================================
-   🔸 MAPAS DE EMPRESAS / CATEGORÍAS
-   ================================================ */
 let empresasMap = {};
 let categoriasMap = {};
 let fpInstance = null;
@@ -203,7 +263,6 @@ let fpInstance = null;
 async function cargarEmpresas() {
   const res = await fetch(ApiConexion + "listarEmpresas");
   const data = await res.json();
-
   (data.data || data.empresas || []).forEach(e => {
     empresasMap[e.id ?? e.id_empresa] = e.nombre_empresa ?? e.nombre;
   });
@@ -212,59 +271,41 @@ async function cargarEmpresas() {
 async function cargarCategorias() {
   const res = await fetch(ApiConexion + "listarCategorias");
   const data = await res.json();
-
   (data.data || data.categorias || []).forEach(c => {
     categoriasMap[c.id ?? c.id_categoria] = c.nombre ?? c.nombre_categoria;
   });
 }
 
-/* ================================================
-   🔥 CAMBIAR ESTADO (FUNCIONAL)
-   ================================================ */
 async function cambiarEstado(id, nuevoEstado) {
-
-    Swal.fire({
-        title: `¿Cambiar estado a ${nuevoEstado}?`,
-        icon: "question",
-        confirmButtonText: "Sí",
-        showCancelButton: true
-    }).then(async (res) => {
-
-        if (!res.isConfirmed) return;
-
-        try {
-
-            const respuesta = await fetch(ApiConexion + `cambiar/estado/evento/${id}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ estado: nuevoEstado })
-            });
-
-            const data = await respuesta.json();
-
-            if (!respuesta.ok) {
-                Swal.fire("Error", data.message ?? "No se pudo cambiar el estado", "error");
-                return;
-            }
-
-            Swal.fire("Éxito", "Estado actualizado", "success");
-            cargarReservas();
-
-        } catch (e) {
-            Swal.fire("Error", "No se pudo conectar con el servidor", "error");
-        }
-
-    });
-
+  Swal.fire({
+      title: `¿Cambiar estado a ${nuevoEstado}?`,
+      icon: "question",
+      confirmButtonText: "Sí",
+      showCancelButton: true
+  }).then(async (res) => {
+      if (!res.isConfirmed) return;
+      try {
+          const respuesta = await fetch(ApiConexion + `cambiar/estado/evento/${id}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ estado: nuevoEstado })
+          });
+          const data = await respuesta.json();
+          if (!respuesta.ok) {
+              Swal.fire("Error", data.message ?? "No se pudo cambiar el estado", "error");
+              return;
+          }
+          Swal.fire("Éxito", "Estado actualizado", "success");
+          cargarReservas();
+      } catch (e) {
+          Swal.fire("Error", "No se pudo conectar con el servidor", "error");
+      }
+  });
 }
 
-/* ================================================
-   📌 CARGAR RESERVAS + MODAL DESCRIPCIÓN
-   ================================================ */
 async function cargarReservas() {
   const res = await fetch(ApiConexion + "listarEventos");
   const data = await res.json();
-
   const eventos = data.eventos || data.data || [];
   const tbody = document.getElementById("tablaReservas");
   tbody.innerHTML = "";
@@ -274,33 +315,20 @@ async function cargarReservas() {
 
   eventos.forEach(ev => {
     const desc = ev.descripcion ?? "Sin descripción";
-
-    if (ev.estado === "activo") {
-      fechasActivas.push(ev.fecha.split("T")[0]);
-    }
-
+    if (ev.estado === "activo") fechasActivas.push(ev.fecha.split("T")[0]);
     if (ev.estado === "pendiente") {
       pendientes++;
-
       tbody.innerHTML += `
         <tr>
           <td>${ev.titulo}</td>
-
-          <!-- 🔸 Descripción corta con modal -->
-          <td class="descripcion-corta" onclick='abrirModal(${JSON.stringify(desc)})'>
-            ${desc}
-          </td>
-
+          <td class="descripcion-corta" onclick='abrirModal(${JSON.stringify(desc)})'>${desc}</td>
           <td>${ev.fecha.split("T")[0]}</td>
           <td>${ev.hora_inicio}</td>
           <td>${ev.hora_final}</td>
           <td>${empresasMap[ev.empresa_id] ?? "Empresa"}</td>
           <td>${categoriasMap[ev.categoria_id] ?? "Categoria"}</td>
-
           <td><img src="${ev.imagen}" class="event-thumb"></td>
-
           <td>${ev.estado}</td>
-
           <td>
             <button class="btn btn-aprobar" onclick="cambiarEstado(${ev.id}, 'activo')">Aprobar</button>
             <button class="btn btn-rechazar" onclick="cambiarEstado(${ev.id}, 'cancelar')">Rechazar</button>
@@ -311,40 +339,41 @@ async function cargarReservas() {
   });
 
   document.getElementById("sinPendientes").style.display = pendientes === 0 ? "block" : "none";
-
   iniciarCalendario([...new Set(fechasActivas)]);
 }
 
-/* ================================================
-   📅 CALENDARIO
-   ================================================ */
 function iniciarCalendario(fechas) {
   if (fpInstance) fpInstance.destroy();
-
   fpInstance = flatpickr("#calendarioStatic", {
     inline: true,
     locale: "es",
     dateFormat: "Y-m-d",
     onDayCreate: (a, b, c, dayElem) => {
       const fecha = dayElem.dateObj.toISOString().split("T")[0];
-      if (fechas.includes(fecha)) {
-        dayElem.classList.add("ocupada");
-      }
+      if (fechas.includes(fecha)) dayElem.classList.add("ocupada");
     }
   });
 }
 
-/* ================================================
-   🔄 INICIALIZACIÓN
-   ================================================ */
+const buscador = document.getElementById('buscador');
+buscador.addEventListener('keyup', () => {
+  const filtro = buscador.value.toLowerCase();
+  const filas = document.querySelectorAll('#tablaReservas tr');
+  filas.forEach(fila => {
+    fila.style.display = fila.textContent.toLowerCase().includes(filtro) ? '' : 'none';
+  });
+});
+
 async function init() {
   await cargarEmpresas();
   await cargarCategorias();
   await cargarReservas();
 }
-
 init();
-</script>
 
+function volverDashboard() {
+  window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
+}
+</script>
 </body>
 </html>
