@@ -112,7 +112,8 @@
         left: -11px;
         width: 20px;
         height: 20px;
-        background: #121212; /* Debe coincidir con el fondo del contenedor principal */
+        background: #121212;
+        /* Debe coincidir con el fondo del contenedor principal */
         border-radius: 50%;
     }
 
@@ -146,6 +147,58 @@
         border: 1px solid rgba(255, 215, 0, 0.2);
     }
 
+
+
+    /* --- MODAL OSCURO ELEGANTE --- */
+    .modal-detalles {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(5px);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .modal-detalles-content {
+        background: #1f2937;
+        padding: 25px;
+        width: 450px;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 15px;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+        border: 1px solid #374151;
+    }
+
+    .modal-title {
+        color: #fbbf24;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .modal-subtitle {
+        margin-top: 20px;
+        color: #93c5fd;
+    }
+
+    .modal-detalles-info p {
+        color: #e5e7eb;
+        font-size: 15px;
+        margin: 6px 0;
+    }
+
+    .modal-detalles-info strong {
+        color: #60a5fa;
+    }
+
+    .modal-detalles-close {
+        float: right;
+        font-size: 26px;
+        cursor: pointer;
+        color: #fbbf24;
+    }
 </style>
 
 <div class="tickets-container">
@@ -193,6 +246,29 @@
         </a>
     </p>
 </div>
+
+<!-- MODAL DETALLES TICKET -->
+<div id="ticketModal" class="modal-detalles">
+    <div class="modal-detalles-content">
+
+        <span class="modal-detalles-close" onclick="cerrarModalDetalles()">&times;</span>
+
+        <h2 class="modal-title">Detalles del Ticket</h2>
+
+        <div class="modal-detalles-info">
+            <p><strong>Evento:</strong> <span id="detEvento"></span></p>
+            <p><strong>Cliente:</strong> <span id="detCliente"></span></p>
+            <p><strong>Correo Electrónico:</strong> <span id="CorreoCliente"></span></p>
+            <p><strong>Fecha:</strong> <span id="detFecha"></span></p>
+            <p><strong>Horario:</strong> <span id="detHora"></span></p>
+            <p><strong>Total Pagado:</strong> <span id="detTotal"></span></p>
+
+            <h3 class="modal-subtitle">Asientos</h3>
+            <ul id="detAsientos"></ul>
+        </div>
+    </div>
+</div>
+
 
 <script>
     // Aquí podrías agregar la lógica para cargar dinámicamente los tickets del usuario desde la API.

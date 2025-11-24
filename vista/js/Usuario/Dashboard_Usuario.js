@@ -684,54 +684,54 @@ async function cargarFuncionesVistas() {
 
 async function cargarProximasFunciones() {
 
-const token = sessionStorage.getItem('userToken');
-const userDataString = sessionStorage.getItem('userData');
+    const token = sessionStorage.getItem('userToken');
+    const userDataString = sessionStorage.getItem('userData');
 
-if (!token || !userDataString) {
-    console.warn("No hay sesión activa.");
-    return;
-}
-
-const userData = JSON.parse(userDataString);
-const userId = userData.id;
-
-const numeroWidget = document.querySelector("#proxima_funcion");
-
-if (!numeroWidget) {
-    console.warn("No se encontró el elemento #proxima_funcion");
-    return;
-}
-
-// Spinner
-numeroWidget.innerHTML =
-    `<i class="fas fa-spinner fa-spin" style="font-size: 24px; opacity: 0.7;"></i>`;
-
-try {
-    const response = await fetch(`${ApiConexion}contador/proxima-funcion/${userId}`, {
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
-        }
-    });
-
-    const data = await response.json();
-
-    console.log("Respuesta API:", data);
-
-    // Si no viene éxito
-    if (!data.success) {
-        numeroWidget.textContent = "0";
+    if (!token || !userDataString) {
+        console.warn("No hay sesión activa.");
         return;
     }
 
-    // Mostrar el número devuelto por la API
-    numeroWidget.textContent = data.proximas_funciones ?? "0";
+    const userData = JSON.parse(userDataString);
+    const userId = userData.id;
 
-} catch (e) {
-    console.error("Error cargando próximas funciones:", e);
-    numeroWidget.textContent = "0";
-}
+    const numeroWidget = document.querySelector("#proxima_funcion");
+
+    if (!numeroWidget) {
+        console.warn("No se encontró el elemento #proxima_funcion");
+        return;
+    }
+
+    // Spinner
+    numeroWidget.innerHTML =
+        `<i class="fas fa-spinner fa-spin" style="font-size: 24px; opacity: 0.7;"></i>`;
+
+    try {
+        const response = await fetch(`${ApiConexion}contador/proxima-funcion/${userId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await response.json();
+
+        console.log("Respuesta API:", data);
+
+        // Si no viene éxito
+        if (!data.success) {
+            numeroWidget.textContent = "0";
+            return;
+        }
+
+        // Mostrar el número devuelto por la API
+        numeroWidget.textContent = data.proximas_funciones ?? "0";
+
+    } catch (e) {
+        console.error("Error cargando próximas funciones:", e);
+        numeroWidget.textContent = "0";
+    }
 
 
 }
@@ -835,61 +835,50 @@ function setupBillboardNav() {
 // =========================================================================
 // FUNCION: ELIMINAR CUENTA DE CLIENTE
 // =========================================================================
-
 async function ctrEliminarCuenta() {
-    // 1. Obtener token y datos de sesión
-    const token = sessionStorage.getItem('userToken');
-    const userDataString = sessionStorage.getItem('userData');
+    const token = sessionStorage.getItem("userToken");
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
 
-    if (!token || !userDataString) {
-        mostrarAlerta('error', 'Sesión inválida', 'No se puede realizar esta acción sin una sesión activa.');
+    if (!token || !userData?.id) {
+        Swal.fire("Error", "No hay sesión activa.", "error");
         return;
     }
 
-    // 2. Mostrar alerta de "cargando"
-    Swal.fire({
-        title: 'Eliminando tu cuenta...',
-        text: 'Este proceso puede tardar unos segundos. No cierres esta ventana.',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
+    const url = `${ApiConexion}cliente/eliminar-cuenta/${userData.id}`;
 
-    // 3. Preparar y ejecutar la llamada a la API
     try {
-        const userData = JSON.parse(userDataString);
-        const userId = userData.id;
-        const urlAPI = `${ApiConexion}eliminar/cliente/${userId}`;
-
-        const respuesta = await fetch(urlAPI, {
-            method: 'DELETE',
+        const resp = await fetch(url, {
+            method: "DELETE",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
+                "Authorization": "Bearer " + token,
+                "Accept": "application/json"
             }
         });
 
-        const data = await respuesta.json();
-
-        if (data.success === true) {
-            // 4. Limpiar sesión y redirigir
-            sessionStorage.clear();
-            Swal.fire({
-                icon: 'success',
-                title: 'Cuenta Eliminada',
-                text: data.message || 'Tu cuenta ha sido eliminada con éxito. Esperamos verte de nuevo.',
-                showConfirmButton: false,
-                timer: 2500
-            }).then(() => {
-                window.location.replace("index.php?ruta=login");
-            });
-        } else {
-            mostrarAlerta('error', 'Error al eliminar', data.message || 'No se pudo completar la eliminación de la cuenta.');
+        let data;
+        try {
+            data = await resp.json();
+        } catch (e) {
+            Swal.fire("Error", "Error inesperado del servidor.", "error");
+            return;
         }
+
+        if (!resp.ok || !data.success) {
+            Swal.fire("Error", data.message || "No se pudo eliminar la cuenta.", "error");
+            return;
+        }
+
+        Swal.fire({
+            title: "Cuenta Eliminada",
+            text: "Tu cuenta ha sido eliminada permanentemente.",
+            icon: "success"
+        }).then(() => {
+            sessionStorage.clear();
+            window.location.href = "index.php?ruta=inicio";
+        });
+
     } catch (error) {
-        Swal.close();
-        console.error("Error al eliminar cuenta:", error);
-        mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor para eliminar la cuenta.');
+        console.error("Error eliminando cuenta:", error);
+        Swal.fire("Error", "Hubo un problema al eliminar la cuenta.", "error");
     }
 }
