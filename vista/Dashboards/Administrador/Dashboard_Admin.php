@@ -64,7 +64,7 @@
             <span class="widget-title">Clientes registrados</span>
 
             <a href="index.php?ruta=Ver_Usuarios_Admin" class="btn btn-explore btn btn-confirm btn-full-width">
-              👥 Ver todos los clientes
+              👥 Gestionar Clientes
             </a>
           </div>
         </div>
@@ -76,20 +76,20 @@
             <span id="totalEmpresas" class="widget-number">0</span>
             <span class="widget-title">Empresas registradas</span>
             <a href="index.php?ruta=Ver_Empresas_Admin" class="btn btn-explore btn btn-confirm btn-full-width">
-              🏢 Ver todas las empresas
+              🏢 Gestionar Empresas
             </a>
           </div>
         </div>
 
         <!-- CONFIGURACIÓN -->
         <div class="widget">
+          <div class="widget-icon">🏷️</div>
           <div class="widget-content">
-            <span class="widget-title h3 centrar">⚙️ Configuración del sistema</span>
-
-            <button class="btn btn-confirm btn-full-width orange-bg"
-              onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/PanelConfiguración.php'">
-              ⚙️ Panel de Configuración
-            </button>
+            <span id="totalCategorías" class="widget-number">0</span>
+            <span class="widget-title">Categorías registradas</span>
+            <a href="index.php?ruta=Ver_Empresas_Admin" class="btn btn-explore btn btn-confirm btn-full-width">
+              🏷️ Gestionar Categorías 
+            </a>
           </div>
         </div>
 
