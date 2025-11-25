@@ -96,7 +96,7 @@
                         <span class="option-text">Cambiar Correo</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="index.php?ruta=terminos_condiciones" class="config-option">
+                    <a href="index.php?ruta=terminos_condiciones_cliente" class="config-option">
                         <i class="fas fa-file-contract option-icon me-3"></i>
                         <span class="option-text">Términos y Condiciones</span>
                         <i class="fas fa-chevron-right"></i>
