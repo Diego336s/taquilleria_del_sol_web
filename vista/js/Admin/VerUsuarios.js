@@ -135,96 +135,7 @@ async function ctrListarUsuarios() {
     }
 }
 
-// =========================================================================
-// 📊 FUNCIÓN: RENDERIZAR DATOS SIMULADOS DE USUARIOS
-// =========================================================================
 
-function renderTablaUsuariosSimulados() {
-    const tbody = document.getElementById('tbody-usuarios');
-    tbody.innerHTML = "";
-
-    const usuariosSimulados = [
-        { id: 1, nombre: "Juan", apellido: "Pérez", correo: "juanp@gmail.com", telefono: "3201234567", rol: "Cliente", estado: "Activo" },
-        { id: 2, nombre: "Ana", apellido: "García", correo: "ana@test.com", telefono: "3109876543", rol: "Empresa", estado: "Inactivo" },
-        { id: 3, nombre: "Carlos", apellido: "López", correo: "carlos@test.com", telefono: "3004567890", rol: "Cliente", estado: "Activo" }
-    ];
-
-    usuariosSimulados.forEach(user => {
-        const estadoIcono = user.estado === 'Activo' ? '🟢' : '🔴';
-        const row = `
-            <tr id="usuario-${user.id}">
-                <td>${user.id}</td>
-                <td>${user.nombre}</td>
-                <td>${user.apellido}</td>
-                <td>${user.correo}</td>
-                <td>${user.telefono}</td>
-                <td>${user.rol}</td>
-                <td>${estadoIcono} ${user.estado}</td>
-                <td>
-                    <button class="btn btn-edit" onclick="ctrCambiarEstadoUsuario(${user.id}, '${user.estado}')">
-                        🔄 Cambiar Estado
-                    </button>
-                    <button class="btn btn-delete" onclick="ctrEliminarUsuario(${user.id})">
-                        🗑️ Eliminar
-                    </button>
-                </td>
-            </tr>
-        `;
-        tbody.insertAdjacentHTML("beforeend", row);
-    });
-}
-
-// =========================================================================
-// 🔄 FUNCIÓN: CAMBIAR ESTADO DEL USUARIO
-// =========================================================================
-
-async function ctrCambiarEstadoUsuario(id, estadoActual) {
-    const token = sessionStorage.getItem('userToken');
-    const nuevoEstado = estadoActual === 'Activo' || estadoActual === 'activo' ? 'Inactivo' : 'Activo';
-
-    if (!token) {
-        mostrarAlerta('error', 'Sesión inválida', 'No se encontró token de sesión.');
-        return;
-    }
-
-    const result = await Swal.fire({
-        title: '¿Cambiar estado?',
-        text: `¿Deseas cambiar el estado del usuario a ${nuevoEstado}?`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, cambiar',
-        cancelButtonText: 'Cancelar'
-    });
-
-    if (!result.isConfirmed) {
-        return;
-    }
-
-    const urlAPI = `${ApiConexion}usuarios/${id}/estado`;
-
-    try {
-        const respuesta = await fetch(urlAPI, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify({ estado: nuevoEstado })
-        });
-
-        const data = await respuesta.json();
-
-        if (respuesta.ok && data.success === true) {
-            mostrarAlerta('success', 'Estado actualizado', `El estado del usuario ha sido cambiado a ${nuevoEstado}.`);
-            ctrListarUsuarios(); // Recargar la tabla
-        } else {
-            mostrarAlerta('error', 'Error al cambiar estado', data.message || 'No se pudo cambiar el estado del usuario.');
-        }
-    } catch (error) {
-        console.error("Error al cambiar estado del usuario:", error);
-        mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor.');
-    }
-}
 
 // =========================================================================
 // 🗑️ FUNCIÓN: ELIMINAR USUARIO
@@ -308,14 +219,6 @@ async function ctrEliminarUsuario(id) {
     }
 }
 
-// =========================================================================
-// ✏️ FUNCIÓN: EDITAR USUARIO
-// =========================================================================
-
-function ctrEditarUsuario(id) {
-    // Redirigir a la página de edición
-    window.location.href = `Editar_Usuario.php?id=${id}`;
-}
 
 // =========================================================================
 // 🔙 FUNCIÓN: VOLVER AL DASHBOARD

@@ -63,10 +63,9 @@
             <span id="totalClientes" class="widget-number">0</span>
             <span class="widget-title">Clientes registrados</span>
 
-            <button class="btn btn-confirm btn-full-width orange-bg"
-              onclick="window.location.href='/taquilleria_del_sol_web/vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php'">
-              👥 Ver Todos los Clientes
-            </button>
+            <a href="index.php?ruta=Ver_Usuarios_Admin" class="btn btn-explore btn btn-confirm btn-full-width">
+              👥 Ver todos los clientes
+            </a>
           </div>
         </div>
 

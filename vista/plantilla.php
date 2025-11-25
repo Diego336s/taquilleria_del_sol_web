@@ -44,7 +44,7 @@ $rutasAdmin = [
     //Dashboard 
     "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php",
     "Ver_Empresas_Admin" => "vista/Dashboards/Administrador/Empresas/Ver_Empresas.php",
-    "Ver_Usuarios" => "vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php",
+    "Ver_Usuarios_Admin" => "vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php",
     "Reservas" => "vista/Dashboards/Administrador/Resevas.php",
     "Reportes" => "vista/Dashboards/Administrador/Reportes.php",
     "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
@@ -53,6 +53,10 @@ $rutasAdmin = [
     //Configuracion
     "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
     "PanelConfiguración" => "vista/Dashboards/Administrador/Configuracion/PanelConfiguración.php",
+    //Gestion Usuarios/Clientes
+    "Crear_Usuario" => "vista/Dashboards/Administrador/Usuarios/Crear_Usuario.php",
+    "Editar_Usuario" => "vista/Dashboards/Administrador/Usuarios/Editar_Usuario.php",
+
     //Gestion Empresas
     "Crear_Empresa" => "vista/Dashboards/Administrador/Empresas/Crear_Empresa.php",
     "Editar_Empresa" => "vista/Dashboards/Administrador/Empresas/Editar_Empresa.php",

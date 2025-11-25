@@ -4,22 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <title>👥 Usuarios Registrados</title>
-  <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
+  <link rel="stylesheet" href="vista/css/admin.css?v=1.0">
 
-  <!-- ✅ FontAwesome sin errores CORS -->
+  <!-- FontAwesome -->
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    body {
-      background-image: url('../../../css/img/fondo.png');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #fff;
+    /* === CORTINA OSCURA DE FONDO === */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
     }
 
     .dashboard-container {
@@ -31,7 +32,6 @@
       width: 95%;
       max-width: 1200px;
       box-shadow: 0 10px 25px rgba(255, 107, 31, 0.6);
-      position: relative;
     }
 
     h1 {
@@ -54,13 +54,6 @@
       border-radius: 30px;
       padding: 6px 14px;
       box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
-      transition: all 0.3s ease;
-    }
-
-    .search-container:hover {
-      box-shadow: 0 0 20px rgba(255, 174, 66, 0.8);
-      background: rgba(255, 255, 255, 0.25);
-      transform: scale(1.02);
     }
 
     .search-input {
@@ -71,19 +64,10 @@
       font-size: 15px;
       padding: 8px;
       width: 200px;
-      transition: width 0.4s ease;
     }
 
     .search-input::placeholder {
       color: #eee;
-      font-style: italic;
-    }
-
-    .search-container i {
-      color: #ffb347;
-      font-size: 18px;
-      margin-left: 8px;
-      transition: transform 0.3s ease;
     }
 
     .table-container {
@@ -115,7 +99,6 @@
 
     tbody tr:hover {
       background-color: rgba(255, 255, 255, 0.06);
-      transition: all 0.2s ease;
     }
 
     .btn-back {
@@ -140,25 +123,35 @@
       cursor: pointer;
       font-weight: bold;
       transition: all .2s ease;
+      min-width: 100px;
     }
 
     .btn-editar {
-      background: #ffc107;
-      color: #000;
+      background-color: #00872b8a;
+    }
+
+    .btn-editar:hover {
+      background-color: #00872b33;
+      transform: scale(1.05);
     }
 
     .btn-eliminar {
-      background: #dc3545;
-      color: #fff;
+      background-color: #be0c0cff;
+    }
+
+    .btn-eliminar:hover {
+      background-color: #a1482b;
+      transform: scale(1.05);
     }
   </style>
 </head>
 
 <body>
+
   <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
 
   <div class="dashboard-container">
-    <h1> Usuarios Registrados</h1>
+    <h1>Usuarios Registrados</h1>
 
     <div class="search-container">
       <input type="text" id="buscador" class="search-input" placeholder="Buscar usuario...">
@@ -180,24 +173,25 @@
             <th>Acciones</th>
           </tr>
         </thead>
+
         <tbody id="tablaUsuarios">
           <tr>
             <td colspan="11">Cargando usuarios...</td>
           </tr>
         </tbody>
+
       </table>
     </div>
   </div>
 
-<script src="../../../js/ApiConexion.js"></script>
+  <script src="vista/js/ApiConexion.js"></script>
 
   <script>
     const API_BASE = ApiConexion;
-
-    const LIST_URL = ApiConexion + "listarClientes";
+    const LIST_URL = API_BASE + "listarClientes";
 
     function volverDashboard() {
-      window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
+      window.location.href = "index.php?ruta=dashboard-admin";
     }
 
     function normalizeUsersResponse(json) {
@@ -236,21 +230,26 @@
       }
 
       tbody.innerHTML = usuarios.map(u => `
-    <tr>
-      <td>${u.nombre ?? ''}</td>
-      <td>${u.apellido ?? ''}</td>
-      <td>${u.documento ?? ''}</td>
-      <td>${u.telefono ?? ''}</td>
-      <td>${u.fecha_nacimiento ?? ''}</td>
-      <td>${u.correo ?? ''}</td>
-      <td>${u.sexo ?? ''}</td>
-      <td>Cliente</td>
-      <td>
-        <button class="btn btn-editar" onclick="editarUsuario(${u.id})">✏ Editar</button>
-        <button class="btn btn-eliminar" onclick="eliminarUsuario(${u.id})">🗑 Eliminar</button>
-      </td>
-    </tr>
-  `).join('');
+        <tr>
+          <td>${u.nombre ?? ''}</td>
+          <td>${u.apellido ?? ''}</td>
+          <td>${u.documento ?? ''}</td>
+          <td>${u.telefono ?? ''}</td>
+          <td>${u.fecha_nacimiento ?? ''}</td>
+          <td>${u.correo ?? ''}</td>
+          <td>${u.sexo ?? ''}</td>
+          <td>Cliente</td>
+          <td>
+            <button class="btn btn-editar" onclick="editarUsuario(${u.id})">
+              <i class="fas fa-pencil-alt"></i> Editar
+            </button>
+
+            <button class="btn btn-eliminar mt-2" onclick="eliminarUsuario(${u.id})">
+              <i class="fas fa-trash"></i> Eliminar
+            </button>
+          </td>
+        </tr>
+      `).join('');
     }
 
     function filtrarUsuarios(usuarios, texto) {
@@ -265,19 +264,61 @@
       renderUsuarios(filtrados);
     }
 
+    /* ✅ ESTA ES LA FUNCIÓN CORRECTA */
     function editarUsuario(id) {
-      window.location.href = `Editar_Usuario.php?id=${id}`;
+      window.location.href = `index.php?ruta=Editar_Usuario&id=${id}`;
     }
 
     async function eliminarUsuario(id) {
-      if (!confirm("¿Eliminar usuario?")) return;
-      await fetch(`${API_BASE}eliminarCliente/${id}`, {
-        method: "DELETE"
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción eliminará al usuario permanentemente.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+      }).then(async (result) => {
+        if (!result.isConfirmed) return;
+
+        // Mostrar cargando
+        Swal.fire({
+          title: "Eliminando...",
+          text: "Por favor espera",
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading()
+        });
+
+        try {
+          const res = await fetch(`${API_BASE}eliminarCliente/${id}`, {
+            method: "DELETE"
+          });
+
+          const json = await res.json().catch(() => null);
+
+          if (res.ok) {
+            Swal.fire({
+              icon: "success",
+              title: "Usuario eliminado",
+              showConfirmButton: false,
+              timer: 1400
+            }).then(() => cargarUsuarios());
+
+          } else {
+            Swal.fire("Error", json?.message || "No se pudo eliminar el usuario.", "error");
+          }
+
+        } catch (error) {
+          Swal.fire("Error", "Error al conectar con el servidor", "error");
+        }
       });
-      cargarUsuarios();
     }
+
 
     document.addEventListener('DOMContentLoaded', cargarUsuarios);
   </script>
+
 </body>
+
 </html>
