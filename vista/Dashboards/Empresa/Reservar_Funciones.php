@@ -19,8 +19,8 @@
                 <!-- CATEGORÍA (SELECT CARGADO DESDE LA API) -->
                 <div class="form-group">
                     <label>Categoría</label>
-                    <select name="categoria_id" id="categoria_id" class="form-select" required>
-                        <option value="">Cargando categorías...</option>
+                    <select name="select_categoria" id="select_categoria" class="form-select" required>
+
                     </select>
                 </div>
 
@@ -30,11 +30,6 @@
                     <textarea name="descripcion" id="descripcion" class="form-control" rows="3"></textarea>
                 </div>
 
-                <!-- EMPRESA -->
-                <div class="form-group">
-                    <label>Empresa</label>
-                    <input type="text" name="empresa" id="empresa" class="form-control">
-                </div>
 
                 <!-- FECHA -->
                 <div class="form-group">
@@ -57,55 +52,46 @@
                 <div class="form-group">
                     <label>Precio Primer Piso</label>
                     <input type="number"
-                           name="precio_primer_piso"
-                           id="precio_primer_piso"
-                           class="form-control"
-                           min="0"
-                           required>
+                        name="precio_primer_piso"
+                        id="precio_primer_piso"
+                        class="form-control"
+                        min="0"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label>Precio Segundo Piso</label>
                     <input type="number"
-                           name="precio_segundo_piso"
-                           id="precio_segundo_piso"
-                           class="form-control"
-                           min="0"
-                           required>
+                        name="precio_segundo_piso"
+                        id="precio_segundo_piso"
+                        class="form-control"
+                        min="0"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label>Precio General</label>
                     <input type="number"
-                           name="precio_general"
-                           id="precio_general"
-                           class="form-control"
-                           min="0"
-                           required>
+                        name="precio_general"
+                        id="precio_general"
+                        class="form-control"
+                        min="0"
+                        required>
                 </div>
 
                 <!-- IMAGEN -->
                 <div class="form-group form-full">
                     <label>Imagen</label>
                     <input type="file"
-                           name="imagen"
-                           id="imagen"
-                           class="form-control"
-                           accept="image/*">
+                        name="imagen"
+                        id="imagen"
+                        class="form-control"
+                        accept="image/*">
                     <small>Formatos permitidos: JPG, PNG.</small>
                 </div>
 
-                <!-- ESTADO -->
-                <div class="form-group">
-                    <label>Estado</label>
-                    <select name="estado" id="estado" class="form-select" required>
-                        <option value="">Selecciona estado</option>
-                        <option value="activo">Activo</option>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="cancelado">Cancelado</option>
-                        <option value="finalizado">Finalizado</option>
-                    </select>
-                </div>
+
+
 
             </div>
 
@@ -123,70 +109,31 @@
     </div>
 </div>
 
-<!-- Script para cargar categorías desde la API -->
+
 <script>
-async function cargarCategorias() {
-    const token = sessionStorage.getItem('userToken');
-    const select = document.getElementById("categoria_id");
+    const ahora = new Date();
 
-    if (!token) {
-        console.warn("No hay token disponible.");
-        select.innerHTML = '<option value="">No autorizado</option>';
-        return;
-    }
+    // Convertir a hora de Colombia (UTC-5)
+    const opciones = {
+        timeZone: "America/Bogota",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    };
+    const formato = new Intl.DateTimeFormat("en-CA", opciones); // en-CA = formato YYYY-MM-DD
+    const fechaColombia = formato.format(ahora); // Ej: 2025-11-24
 
-    select.innerHTML = '<option value="">Cargando categorías...</option>';
+    // Convertir esa fecha en objeto de Date
+    const hoyColombia = new Date(fechaColombia);
 
-    try {
-        const respuesta = await fetch('https://tu-dominio.com/api/categorias', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json'
-            },
-            mode: 'cors', // explícito para CORS
-            credentials: 'include' // si necesitas cookies
-        });
+    // Sumar un día
+    hoyColombia.setDate(hoyColombia.getDate() + 1);
 
-        // Revisar HTTP status
-        if (!respuesta.ok) {
-            console.error("Error HTTP:", respuesta.status, respuesta.statusText);
-            select.innerHTML = `<option value="">Error cargando categorías (${respuesta.status})</option>`;
-            return;
-        }
+    // Convertir nuevamente a yyyy-mm-dd
+    const minFecha = hoyColombia.toISOString().split("T")[0];
 
-        const texto = await respuesta.text();
-
-        let resultado;
-        try {
-            resultado = JSON.parse(texto);
-        } catch (e) {
-            console.error("Respuesta no es JSON válido, probablemente HTML:", texto);
-            select.innerHTML = '<option value="">Error cargando categorías (respuesta inválida)</option>';
-            return;
-        }
-
-        if (resultado.success && Array.isArray(resultado.data)) {
-            select.innerHTML = '<option value="">Seleccione una categoría</option>';
-
-            resultado.data.forEach(categoria => {
-                const option = document.createElement('option');
-                option.value = categoria.id;           // Ajusta según tu API
-                option.textContent = categoria.nombre; // Ajusta según tu API
-                select.appendChild(option);
-            });
-        } else {
-            console.error("Formato inesperado de la API:", resultado);
-            select.innerHTML = '<option value="">No se pudieron cargar las categorías</option>';
-        }
-
-    } catch (error) {
-        console.error("Error cargando categorías (fetch):", error);
-        select.innerHTML = '<option value="">Error cargando categorías</option>';
-    }
-}
-
-document.addEventListener("DOMContentLoaded", cargarCategorias);
+    // Colocar restricción
+    document.getElementById("fecha").setAttribute("min", minFecha);
 </script>
 
-<script src="./vista/js/Empresa/Dashboard_Empresa.js"></script>
+<script src="vista\js\Empresa\Registro_Evento.js"></script>

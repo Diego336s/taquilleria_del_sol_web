@@ -12,22 +12,22 @@
     </div>
     <div class="header-actions">
 
-        <a href="index.php?ruta=Reportes_empresa" class="btn btn-explore">
-          <span class="icon-inline">📈</span> Reportes
-        </a>
+      <a href="index.php?ruta=Reportes_empresa" class="btn btn-explore">
+        <span class="icon-inline">📈</span> Reportes
+      </a>
 
 
 
-        <a href="index.php?ruta=Configuracion_empresa" class="btn btn-explore">
-          <i class="fas fa-cog me-2"></i> Mi Equipo
-        </a>
+      <a href="index.php?ruta=Configuracion_empresa" class="btn btn-explore">
+        <i class="fas fa-cog me-2"></i> Mi Equipo
+      </a>
 
 
 
 
-        <a href="index.php?ruta=mi_perfil_empresa" class="btn btn-explore">
-          <i class="fas fa-user-circle me-2"></i> Mi Perfil
-        </a>
+      <a href="index.php?ruta=mi_perfil_empresa" class="btn btn-explore">
+        <i class="fas fa-user-circle me-2"></i> Mi Perfil
+      </a>
 
 
       <button class="btn btn-profile" id="btnLogoutEmpresa" onclick="confirmLogoutEmpresas()">
@@ -43,7 +43,12 @@
       <div class="widget">
         <div class="widget-icon">💰</div>
         <div class="widget-content">
-          <span class="widget-number">85</span>
+          <div id="loaderEventosActivos" class="loader-wrapper">
+            <div class="custom-loader"></div>
+          </div>
+          <div id="contendorCantidadCantidadEventosActivos"></div>
+
+
           <span class="widget-title">Reservas Activas</span>
           <div class="progress-bar-container">
             <div class="progress-bar-fill orange-bg" style="width: 80%;"></div>
@@ -56,10 +61,8 @@
         <div class="widget-content">
           <span class="widget-title h3 centrar">Acciones Rápidas</span>
           <div class="header-actions">
-            <a href="index.php?ruta=Reservar_funciones" class="btn btn-profile">
-            <button class="btn btn-confirm">Reservar función</button>
-            </a>
-            <button class="btn btn-profile"><span class="icon-inline">🧾</span> Ver Calendario</button>
+            <a href="index.php?ruta=Reservar_funciones" class="btn btn-Reservar"><span class="icon-inline">📋</span> Reservar función</a>
+            <a href="index.php?ruta=Calendario"class="btn btn-profile"><span class="icon-inline">📆</span> Ver Calendario</a>
             <button class="btn btn-profile"><span class="icon-inline">⚙️</span> Facturación</button>
           </div>
         </div>
@@ -72,31 +75,34 @@
         <div class="widget">
           <div class="widget-icon">💸</div>
           <div class="widget-content">
-            <span class="widget-number">$156k</span>
-            <span class="widget-title">Gastado este año</span>
+            <div id="loaderTotalVendido" >
+              <div class="custom-loader-estadistica"></div>
+            </div>
+            <div id="contendorTotalVendido"></div>
+            <span class="widget-title">Total vendido este año</span>
           </div>
         </div>
         <div class="widget">
           <div class="widget-icon">🗓️</div>
           <div class="widget-content">
-            <span class="widget-number">23</span>
-            <span class="widget-title">Eventos Asistidos</span>
+             <div id="loaderEventosRealizados" >
+              <div class="custom-loader-estadistica"></div>
+            </div>
+            <div id="contendorEventosRealizados"></div>
+            <span class="widget-title">Eventos Realizados</span>
           </div>
         </div>
         <div class="widget">
           <div class="widget-icon">🪑</div>
           <div class="widget-content">
-            <span class="widget-number">456</span>
+           <div id="loaderAsientosVendidos" >
+              <div class="custom-loader-estadistica"></div>
+            </div>
+            <div id="contendorAsientosVendidos"></div>
             <span class="widget-title">Asientos Totales</span>
           </div>
         </div>
-        <div class="widget">
-          <div class="widget-icon">📈</div>
-          <div class="widget-content">
-            <span class="widget-number">+28%</span>
-            <span class="widget-title">Crecimiento</span>
-          </div>
-        </div>
+       
       </div>
 
       <div class="featured-function orange-bg">
@@ -145,33 +151,10 @@
 
         </div>
 
-        <div class="widget recent-reservations-card">
-          <div class="widget-header">
-            <h3 class="section-title" style="margin: 0; color: #fff;">Análisis Corporativo</h3>
-          </div>
-
-          <div class="reservation-list">
-            <div class="reservation-item">
-              <div class="item-details">
-                <span class="item-title">Costo promedio por evento</span>
-              </div>
-              <span class="status-badge status-count">$35.000</span>
-            </div>
-
-            <div class="reservation-item">
-              <div class="item-details">
-                <span class="item-title">Tasa de Asistencia</span>
-              </div>
-              <span class="status-badge status-count">92%</span>
-            </div>
-          </div>
-
-          <button class="btn btn-confirm btn-full-width orange-bg">
-            <span class="icon-inline"></span> Ver Reporte Completo
-          </button>
-        </div>
+        
 
       </div>
     </section>
   </main>
-</div>}
+</div>
+<script src="vista\js\Empresa\EstadisticasEmpresa.js"></script>

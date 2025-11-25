@@ -90,12 +90,12 @@ textarea {
 
     /* Inputs semi–transparentes */
     background: rgba(255, 255, 255, 0.25);
-    color: #fff;
+    color: #ffffff;
 
     border: 1px solid rgba(255, 255, 255, 0.40);
 
     /* Para placeholder blanco */
-    caret-color: #fff;
+    caret-color: #fdfdfd;
 
     transition: 0.25s;
 }
@@ -107,7 +107,7 @@ textarea {
 
 /* Select arrow blanco */
 .form-select {
-    color: #fff;
+    color: #000000;
 }
 
 /* Focus efecto glow verde */
