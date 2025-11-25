@@ -44,7 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // Aquí pasaríamos los datos del evento dinámicamente en un futuro
             mostrarDetallesEvento();
         });
-    }    
+    }
+
+    //Cargar la proxima funncion del usuario
+    cargarProximaFuncion();
+
+    //Cargar el numero  de funciones vistas por el usuario
+    cargarFuncionesVistas();
+
+    //cargar el numero de próximas funciones del usuario
+    cargarProximasFunciones();
 
     // Inicializar navegación de cartelera (flechas y estados)
     setupBillboardNav();
@@ -439,54 +448,294 @@ async function ctrListarEventos() {
 // FUNCION: MOSTRAR MODAL CON DETALLES DEL EVENTO
 // =========================================================================
 
-function mostrarDetallesEvento(evento) {
-    // Datos de ejemplo (en un futuro, estos vendrían del objeto 'evento')
-    const datosEvento = {
-        titulo: "Don Juan Tenorio",
-        imagenUrl: "https://www.clasicostelemundo.com/images/2019/10/29/don-juan-tenorio.jpg",
-        descripcion: "La clásica obra de José Zorrilla sobre el seductor más famoso de la literatura española. Una historia de amor, arrepentimiento y redención que desafía las barreras entre la vida y la muerte. Vive una noche de pasión y drama en el Teatro del Sol.",
-        fecha: "12 de Enero",
-        hora: "8:30 PM",
-        asientos: "Palco A12, A13"
+function mostrarDetallesEvento(dataFuncion) {
+
+    const evento = dataFuncion.evento;
+    const asientos = dataFuncion.asientos || [];
+
+    // Elementos del modal
+    const modal = document.getElementById("modalDetalles");
+    const detalleTitulo = document.getElementById("detalleTitulo");
+    const detalleFecha = document.getElementById("detalleFecha");
+    const detalleHora = document.getElementById("detalleHora");
+    const detalleAsientos = document.getElementById("detalleAsientos");
+
+    // Poner datos
+    detalleTitulo.textContent = evento.titulo;
+
+    // Fecha
+    detalleFecha.textContent = new Date(evento.fecha_evento).toLocaleDateString("es-ES", {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    // Hora
+    detalleHora.textContent = new Date(`1970-01-01T${evento.hora_inicio}`).toLocaleTimeString(
+        'es-ES',
+        { hour: '2-digit', minute: '2-digit', hour12: true }
+    );
+
+    // Asientos
+    detalleAsientos.innerHTML = "";
+    if (asientos.length === 0) {
+        detalleAsientos.innerHTML = `<li>Sin asientos reservados</li>`;
+    } else {
+        asientos.forEach(a => {
+            detalleAsientos.innerHTML += `
+                <li>${a.fila}${a.numero} (${a.ubicacion})</li>
+            `;
+        });
+    }
+
+    // Mostrar modal
+    modal.style.display = "flex";
+
+    // Cerrar modal
+    document.getElementById("cerrarModalDetalles").onclick = () => {
+        modal.style.display = "none";
     };
 
-    Swal.fire({
-        title: '',
-        html: `
-            <div style="color: #fff; text-align: left;">
-                <img src="${datosEvento.imagenUrl}" alt="${datosEvento.titulo}" style="width: 100%; border-radius: 15px; margin-bottom: 1.5rem;">
-                <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">${datosEvento.titulo}</h2>
-                <p style="color: #e0e0e0; margin-bottom: 2rem;">${datosEvento.descripcion}</p>
-                
-                <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
-                    <h4 style="border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5rem; margin-bottom: 1rem;">Detalles de tu Reserva</h4>
-                    <div style="display: flex; justify-content: space-around; font-size: 1.1rem;">
-                        <span><i class="fas fa-calendar-alt me-2"></i> ${datosEvento.fecha}</span>
-                        <span><i class="fas fa-clock me-2"></i> ${datosEvento.hora}</span>
-                        <span><i class="fas fa-chair me-2"></i> ${datosEvento.asientos}</span>
-                    </div>
+    window.onclick = (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+}
+
+
+
+// =========================================================================
+// FUNCION: CARGAR LA PRÓXIMA FUNCIÓN DEL USUARIO
+// =========================================================================
+async function cargarProximaFuncion() {
+
+    // 1. Verificar sesión
+    const token = sessionStorage.getItem('userToken');
+    const userDataString = sessionStorage.getItem('userData');
+
+    if (!token || !userDataString) {
+        console.warn("No hay sesión activa para cargar la próxima función.");
+        return;
+    }
+
+    const userData = JSON.parse(userDataString);
+    const userId = userData.id;
+
+    // 2. Contenedor donde se mostrarán los datos
+    const container = document.getElementById('proxima-funcion-container');
+    if (!container) {
+        console.warn("No se encontró el contenedor #proxima-funcion-container");
+        return;
+    }
+
+    // Mostrar loader
+    container.innerHTML = `
+        <div style="text-align:center; padding:10px; opacity:.6;">
+            <i class="fas fa-spinner fa-spin"></i> Cargando próxima función...
+        </div>
+    `;
+
+    // 3. Consumir el endpoint
+    const urlAPI = `${ApiConexion}proxima-funcion/${userId}`;
+
+    try {
+        const respuesta = await fetch(urlAPI, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await respuesta.json();
+
+        // Si no hay función
+        if (!data.success || !data.proxima_funcion) {
+            container.innerHTML = `
+                <div class="next-show-empty">
+                    <h5>No tienes funciones programadas</h5>
+                    <p>Cuando reserves una función, aparecerá aquí 📅🎭</p>
+                </div>
+            `;
+            return;
+        }
+
+        // ==========================
+        // 4. Extraer datos
+        // ==========================
+        const funcion = data.proxima_funcion.evento;
+
+        const titulo = funcion.titulo || "Evento sin nombre";
+
+        // Fecha corregida
+        const fecha = funcion.fecha_evento
+            ? new Date(funcion.fecha_evento).toLocaleDateString("es-ES", {
+                day: 'numeric',
+                month: 'long'
+            })
+            : "Sin fecha";
+
+        // Hora corregida
+        const hora = funcion.hora_inicio
+            ? new Date(`1970-01-01T${funcion.hora_inicio}`).toLocaleTimeString(
+                'es-ES',
+                { hour: '2-digit', minute: '2-digit', hour12: true }
+            )
+            : "Sin hora";
+
+        // Mostrar asientos REALMENTE devueltos
+        const asientos = data.proxima_funcion.asientos?.length
+            ? data.proxima_funcion.asientos
+                .map(a => `${a.fila}${a.numero}`)
+                .join(", ")
+            : "Sin asientos asignados";
+
+        // Imagen (si después agregas campo)
+
+        // ==========================
+        // 5. Render HTML
+        // ==========================
+        container.innerHTML = `
+            <div class="next-show-card">
+                <div class="next-show-content">
+                    <h4>${titulo}</h4>
+
+                    <p>
+                        <strong>Fecha:</strong> ${fecha}<br>
+                        <strong>Hora:</strong> ${hora}<br>
+                        <strong>Asientos:</strong> ${asientos}
+                    </p>
+
+                    <button id="btnVerDetalles" class="btn btn-confirm" style="border: 1px solid rgba(255, 255, 255, 0.4);">
+                        Ver detalles
+                    </button>
                 </div>
             </div>
-        `,
-        background: 'var(--card-background)',
-        backdrop: `
-            rgba(0,0,0,0.4)
-            url("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2l2b2dnbWJ1dGk5c3JjYjd0Y2w5c244bXlrc3J2Z2tndmRkdjZpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/l3q2zbskZp2j8wniE/giphy.gif")
-            center top
-            no-repeat
-        `,
-        background: 'rgba(10, 10, 10, 0.8)', // Fondo más oscuro y sólido
-        backdrop: `rgba(0,0,0,0.7)`, // Fondo exterior más oscuro sin GIF
-        showCloseButton: true,
-        showConfirmButton: false,
-        width: '800px',
-        padding: '2em',
-        customClass: {
-            popup: 'swal2-glass-popup',
-            closeButton: 'swal2-close-button-custom'
+        `;
+
+        // ==========================
+        // 6. Botón detalles
+        // ==========================
+        const btn = document.getElementById('btnVerDetalles');
+        if (btn) {
+            btn.addEventListener('click', () => {
+                mostrarDetallesEvento(data.proxima_funcion);
+            });
         }
-    });
+
+    } catch (error) {
+        console.error("Error al cargar próxima función:", error);
+        container.innerHTML = `
+            <div class="next-show-error">
+                <p>Error al cargar la información. Intenta más tarde.</p>
+            </div>
+        `;
+    }
 }
+
+
+async function cargarFuncionesVistas() {
+
+    const token = sessionStorage.getItem('userToken');
+    const userDataString = sessionStorage.getItem('userData');
+
+    if (!token || !userDataString) {
+        console.warn("No hay sesión activa.");
+        return;
+    }
+
+    const userData = JSON.parse(userDataString);
+    const userId = userData.id;
+
+    const numeroWidget = document.querySelector("#obras_vistas");
+
+    if (!numeroWidget) {
+        console.warn("No se encontró el elemento #obras_vistas");
+        return;
+    }
+
+    // Mostrar cargando mientras consulta
+    numeroWidget.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size: 24px; opacity: 0.7;"></i>`;
+
+    try {
+        const respuesta = await fetch(`${ApiConexion}contador/funciones-vistas/${userId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await respuesta.json();
+
+        if (!data.success) {
+            numeroWidget.textContent = "0";
+            return;
+        }
+
+        numeroWidget.textContent = data.funciones_vistas;
+
+    } catch (error) {
+        console.error("Error al cargar funciones vistas:", error);
+        numeroWidget.textContent = "0";
+    }
+}
+
+async function cargarProximasFunciones() {
+
+    const token = sessionStorage.getItem('userToken');
+    const userDataString = sessionStorage.getItem('userData');
+
+    if (!token || !userDataString) {
+        console.warn("No hay sesión activa.");
+        return;
+    }
+
+    const userData = JSON.parse(userDataString);
+    const userId = userData.id;
+
+    const numeroWidget = document.querySelector("#proxima_funcion");
+
+    if (!numeroWidget) {
+        console.warn("No se encontró el elemento #proxima_funcion");
+        return;
+    }
+
+    // Spinner
+    numeroWidget.innerHTML =
+        `<i class="fas fa-spinner fa-spin" style="font-size: 24px; opacity: 0.7;"></i>`;
+
+    try {
+        const response = await fetch(`${ApiConexion}contador/proxima-funcion/${userId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await response.json();
+
+        console.log("Respuesta API:", data);
+
+        // Si no viene éxito
+        if (!data.success) {
+            numeroWidget.textContent = "0";
+            return;
+        }
+
+        // Mostrar el número devuelto por la API
+        numeroWidget.textContent = data.proximas_funciones ?? "0";
+
+    } catch (e) {
+        console.error("Error cargando próximas funciones:", e);
+        numeroWidget.textContent = "0";
+    }
+
+
+}
+
 
 // =========================================================================
 // FUNCION: LISTAR SILLAS DEL TEATRO
@@ -586,61 +835,50 @@ function setupBillboardNav() {
 // =========================================================================
 // FUNCION: ELIMINAR CUENTA DE CLIENTE
 // =========================================================================
-
 async function ctrEliminarCuenta() {
-    // 1. Obtener token y datos de sesión
-    const token = sessionStorage.getItem('userToken');
-    const userDataString = sessionStorage.getItem('userData');
+    const token = sessionStorage.getItem("userToken");
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
 
-    if (!token || !userDataString) {
-        mostrarAlerta('error', 'Sesión inválida', 'No se puede realizar esta acción sin una sesión activa.');
+    if (!token || !userData?.id) {
+        Swal.fire("Error", "No hay sesión activa.", "error");
         return;
     }
 
-    // 2. Mostrar alerta de "cargando"
-    Swal.fire({
-        title: 'Eliminando tu cuenta...',
-        text: 'Este proceso puede tardar unos segundos. No cierres esta ventana.',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
+    const url = `${ApiConexion}cliente/eliminar-cuenta/${userData.id}`;
 
-    // 3. Preparar y ejecutar la llamada a la API
     try {
-        const userData = JSON.parse(userDataString);
-        const userId = userData.id;
-        const urlAPI = `${ApiConexion}eliminar/cliente/${userId}`;
-
-        const respuesta = await fetch(urlAPI, {
-            method: 'DELETE',
+        const resp = await fetch(url, {
+            method: "DELETE",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
+                "Authorization": "Bearer " + token,
+                "Accept": "application/json"
             }
         });
 
-        const data = await respuesta.json();
-
-        if (data.success === true) {
-            // 4. Limpiar sesión y redirigir
-            sessionStorage.clear();
-            Swal.fire({
-                icon: 'success',
-                title: 'Cuenta Eliminada',
-                text: data.message || 'Tu cuenta ha sido eliminada con éxito. Esperamos verte de nuevo.',
-                showConfirmButton: false,
-                timer: 2500
-            }).then(() => {
-                window.location.replace("index.php?ruta=login");
-            });
-        } else {
-            mostrarAlerta('error', 'Error al eliminar', data.message || 'No se pudo completar la eliminación de la cuenta.');
+        let data;
+        try {
+            data = await resp.json();
+        } catch (e) {
+            Swal.fire("Error", "Error inesperado del servidor.", "error");
+            return;
         }
+
+        if (!resp.ok || !data.success) {
+            Swal.fire("Error", data.message || "No se pudo eliminar la cuenta.", "error");
+            return;
+        }
+
+        Swal.fire({
+            title: "Cuenta Eliminada",
+            text: "Tu cuenta ha sido eliminada permanentemente.",
+            icon: "success"
+        }).then(() => {
+            sessionStorage.clear();
+            window.location.href = "index.php?ruta=inicio";
+        });
+
     } catch (error) {
-        Swal.close();
-        console.error("Error al eliminar cuenta:", error);
-        mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor para eliminar la cuenta.');
+        console.error("Error eliminando cuenta:", error);
+        Swal.fire("Error", "Hubo un problema al eliminar la cuenta.", "error");
     }
 }

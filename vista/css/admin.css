@@ -178,6 +178,134 @@
     margin-bottom: 25px;
 }
 
+/* === Large Widgets Grid === */
+.large-widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.large-widget {
+    background: var(--card-background);
+    backdrop-filter: var(--card-blur);
+    border: var(--card-border);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: var(--text-color);
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.large-widget:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.large-widget .widget-header {
+    margin-bottom: 20px;
+}
+
+.large-widget .widget-header h3 {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.large-widget .widget-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.large-number-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.large-number {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.large-label {
+    font-size: 1.5em;
+    color: var(--secondary-text);
+}
+
+.widget-description {
+    font-size: 0.9em;
+    color: var(--secondary-text);
+    margin: 0;
+}
+
+/* === Circular Progress === */
+.circular-progress-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.circular-progress {
+    position: relative;
+}
+
+.progress-circle {
+    transform: rotate(-90deg);
+}
+
+.progress-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 8;
+}
+
+.progress-fill {
+    fill: none;
+    stroke: var(--primary-orange);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 314; /* 2 * π * 50 */
+    stroke-dashoffset: 314;
+    transition: stroke-dashoffset 1s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.progress-label {
+    font-size: 1.2em;
+    color: var(--secondary-text);
+    display: block;
+}
+
+/* === Ingresos Widget === */
+.ingresos-widget .large-number {
+    color: #28a745;
+}
+
+.ingresos-widget .money-icon {
+    font-size: 2em;
+}
+
 /* === Featured Function === */
 .featured-function {
     padding: 25px;
@@ -319,7 +447,16 @@
 }
 
 /* Actividad Reciente */
-.recent-activity-widget .activity-list {
+.actividad-reciente-widget {
+    background: var(--card-background);
+    backdrop-filter: var(--card-blur);
+    border: var(--card-border);
+    box-shadow: var(--card-shadow);
+    border-radius: var(--border-radius);
+    padding: 25px;
+}
+
+.actividad-list {
     max-height: 400px;
     overflow-y: auto;
 }
@@ -330,6 +467,11 @@
     gap: 15px;
     padding: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.activity-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .activity-item:last-child {
@@ -344,6 +486,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2em;
+    flex-shrink: 0;
 }
 
 .activity-icon.success {
@@ -361,6 +504,11 @@
     color: #ffc107;
 }
 
+.activity-icon.error {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
 .activity-content {
     flex: 1;
 }
@@ -368,11 +516,19 @@
 .activity-title {
     font-weight: 500;
     margin-bottom: 5px;
+    color: var(--text-color);
 }
 
 .activity-time {
     font-size: 0.8em;
     color: var(--secondary-text);
+}
+
+.loading-activity {
+    text-align: center;
+    color: var(--secondary-text);
+    padding: 20px;
+    font-style: italic;
 }
 
 /* Servicios Externos */
@@ -481,6 +637,20 @@
 @media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .large-widgets-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .large-widget {
+        padding: 20px;
+        min-height: 200px;
+    }
+
+    .large-number {
+        font-size: 2.5em;
     }
 
     .chart-row {

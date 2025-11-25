@@ -158,7 +158,7 @@
   <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
 
   <div class="dashboard-container">
-    <h1>👥 Usuarios Registrados</h1>
+    <h1> Usuarios Registrados</h1>
 
     <div class="search-container">
       <input type="text" id="buscador" class="search-input" placeholder="Buscar usuario...">
