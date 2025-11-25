@@ -1,31 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Registrar Nueva Empresa</title>
-  <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
+  <link rel="stylesheet" href="vista/css/admin.css?v=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
+    /* === CORTINA OSCURA DE FONDO === */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Tinte oscuro */
+      /* Desenfoque del fondo */
+      inset: 0;
+      z-index: 998;
+    }
+
     body {
-      background-image: url('../../../css/img/fondo.png');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
-      font-family: 'Poppins', sans-serif;
+      font-family: Arial, sans-serif;
+      background-color: #121212 !important;
+      color: #fff;
       margin: 0;
       padding: 0;
-      color: #fff;
     }
 
     .form-container {
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 40px;
-      margin: 60px auto;
+      margin: 70px auto;
       width: 90%;
       max-width: 700px;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 999;
     }
 
     h1 {
@@ -72,25 +87,15 @@
     }
 
     .btn-save {
-      background-color: #ff6b1f;
+      background-color: rgba(6, 111, 43, 1);
       color: #fff;
-      box-shadow: 0 5px 15px rgba(255, 107, 31, 0.5);
       width: 100%;
     }
 
     .btn-save:hover {
-      background-color: #ff853d;
+      background-color: rgba(6, 111, 43, 1);
       transform: scale(1.03);
-    }
-
-    .btn-back {
-      position: fixed;
-      top: 25px;
-      left: 25px;
-      background-color: #9c4012e6;
       color: #fff;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-      z-index: 999;
     }
 
     .btn-back:hover {
@@ -104,12 +109,13 @@
     .toggle-btn {
       position: absolute;
       right: 15px;
-      top: 35px;
+      top: 44%;
       background: none;
       border: none;
       color: #fff;
       cursor: pointer;
       font-size: 16px;
+      transform: translateY(-50%);
     }
 
     .message {
@@ -117,11 +123,14 @@
       margin-top: 15px;
       font-weight: bold;
     }
+
+    .form-container .small a {
+      color: #fff;
+    }
   </style>
 </head>
 
 <body>
-  <button class="btn btn-back" onclick="volverEmpresas()">⬅️ Volver</button>
 
   <div class="form-container">
     <h1>Registrar Nueva Empresa</h1>
@@ -149,36 +158,59 @@
       <input type="email" id="correo" placeholder="Ej: contacto@empresa.com" required>
 
       <label>Contraseña</label>
-     <div class="password-toggle">
-    <input type="password" id="clave" placeholder="Crea una contraseña segura" required>
-    <button type="button" class="toggle-btn" id="toggleClaveBtn">
-        <i class="fas fa-eye" id="toggleClaveIcon"></i>
-    </button>
-</div>
+      <div class="password-toggle">
+        <input type="password" id="clave" placeholder="Crea una contraseña segura" required>
+        <button type="button" class="toggle-btn" id="toggleClaveBtn">
+          <i class="fas fa-eye" id="toggleClaveIcon"></i>
+        </button>
+      </div>
 
 
-      <button type="submit" class="btn btn-save" id="btnGuardar">💾 Guardar Empresa</button>
+      <button type="submit" class="btn btn-save" id="btnGuardar"> <i class="fas fa-save me-2"></i>Guardar Empresa</button>
+
+      <p class="mt-4 text-center small">
+        <a href="index.php?ruta=Ver_Empresas_Admin" style="color: #fff;">
+          <i class="fas fa-arrow-left me-1"></i> Volver
+        </a>
+      </p>
     </form>
 
     <p id="mensaje" class="message"></p>
   </div>
 
-  <script src="../../../js/ApiConexion.js"></script>
+  <script src="vista/js/ApiConexion.js"></script>
   <script>
-    function volverEmpresas() {
-      window.location.href = "Ver_Empresas.php";
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleClaveBtn = document.getElementById("toggleClaveBtn");
+      const claveInput = document.getElementById("clave");
+      const toggleIcon = document.getElementById("toggleClaveIcon");
 
-    function togglePassword() {
-      const passInput = document.getElementById("clave");
-      passInput.type = passInput.type === "password" ? "text" : "password";
-    }
+      toggleClaveBtn.addEventListener("click", function() {
+        if (claveInput.type === "password") {
+          claveInput.type = "text";
+          toggleIcon.classList.remove("fa-eye");
+          toggleIcon.classList.add("fa-eye-slash");
+        } else {
+          claveInput.type = "password";
+          toggleIcon.classList.remove("fa-eye-slash");
+          toggleIcon.classList.add("fa-eye");
+        }
+      });
 
-    document.getElementById("btnGuardar").addEventListener("click", ctrRegistrarEmpresa);
+      document.getElementById("btnGuardar").addEventListener("click", ctrRegistrarEmpresa);
+    });
 
     async function ctrRegistrarEmpresa() {
       const mensaje = document.getElementById("mensaje");
-      mensaje.textContent = "Registrando empresa...";
+
+      Swal.fire({
+        title: 'Creando Empresa...',
+        text: 'Espera un momento.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       mensaje.style.color = "#ffcc00";
 
       const token = sessionStorage.getItem("userToken");
@@ -211,7 +243,9 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ...(token ? { "Authorization": "Bearer " + token } : {})
+            ...(token ? {
+              "Authorization": "Bearer " + token
+            } : {})
           },
           body: JSON.stringify(data)
         });
@@ -248,7 +282,7 @@
         document.getElementById("formEmpresa").reset();
 
         setTimeout(() => {
-          window.location.href = "Ver_Empresas.php";
+          window.location.href = "index.php?ruta=Ver_Empresas_Admin";
         }, 1800);
 
       } catch (error) {
@@ -264,4 +298,5 @@
     }
   </script>
 </body>
+
 </html>

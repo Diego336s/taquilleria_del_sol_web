@@ -75,8 +75,8 @@ async function ctrListarEmpresas() {
                         <td>${emp.telefono || ''}</td>
                         <td>${emp.correo}</td>
                         <td>
-                            <button class="btn btn-edit" onclick="ctrEditarEmpresa(${emp.id})">✏️ Editar</button>
-                            <button class="btn btn-delete" onclick="ctrEliminarEmpresa(${emp.id})">🗑️ Eliminar</button>
+                            <button class="btn-action btn-edit" onclick="ctrEditarEmpresa(${emp.id})"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+                            <button class="btn-action btn-delete" onclick="ctrEliminarEmpresa(${emp.id})"><i class="fa-solid fa-trash"></i> Eliminar</button>
                         </td>
                     </tr>
                 `;
@@ -144,7 +144,7 @@ async function ctrRegistrarEmpresa() {
 // ✏️ EDITAR EMPRESA
 // ======================================================
 function ctrEditarEmpresa(id) {
-    window.location.href = `Editar_Empresa.php?id=${id}`;
+    window.location.href = `index.php?ruta=Editar_Empresa&id=${id}`;
 }
 
 // ======================================================
@@ -153,7 +153,20 @@ function ctrEditarEmpresa(id) {
 async function ctrEliminarEmpresa(id) {
     const token = sessionStorage.getItem('userToken');
 
-    if (!confirm('¿Eliminar empresa? Esta acción no se puede deshacer.')) return;
+    const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Esta acción no se puede deshacer. ¿Deseas eliminar esta empresa?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) {
+        return;
+    }
 
     try {
         const respuesta = await fetch(`${ApiConexion}eliminarEmpresa/${id}`, {
@@ -164,21 +177,37 @@ async function ctrEliminarEmpresa(id) {
         const data = await respuesta.json();
 
         if (respuesta.ok && data.message) {
-            mostrarAlerta('Empresa eliminada correctamente.');
+            Swal.fire({
+                icon: 'success',
+                title: '¡Eliminada!',
+                text: 'La empresa ha sido eliminada correctamente.',
+                timer: 2000,
+                showConfirmButton: false
+            });
             ctrListarEmpresas();
         } else {
-            mostrarAlerta(data.message || 'No se pudo eliminar la empresa.');
+            mostrarAlerta('error', 'Error al eliminar', data.message || 'No se pudo eliminar la empresa.');
         }
     } catch (error) {
         console.error(error);
-        mostrarAlerta('Error de conexión. Inténtalo más tarde.');
+        mostrarAlerta('error', 'Error de Conexión', 'No se pudo conectar con el servidor. Inténtalo más tarde.');
     }
 }
 
 // ======================================================
 // ⚠️ ALERTAS (Solo alert)
 // ======================================================
-function mostrarAlerta(mensaje) {
-    alert(mensaje);
+function mostrarAlerta(icon, title, text) {
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            html: text,
+            showConfirmButton: true,
+            confirmButtonText: "Aceptar"
+        });
+    } else {
+        // Fallback por si SweetAlert no está disponible
+        alert(`${title} (${icon}): ${text}`);
+    }
 }
-

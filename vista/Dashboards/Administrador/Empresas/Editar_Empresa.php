@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>✏️ Editar Empresa</title>
@@ -8,15 +9,25 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
+    /* === CORTINA OSCURA GLOBAL === */
     body {
-      background-image: url('../../../css/img/fondo.png');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #fff;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Asegurar que el contenedor quede encima */
+    .dashboard-container {
+      position: relative;
+      z-index: 999;
     }
 
     .dashboard-container {
@@ -28,7 +39,7 @@
       width: 90%;
       max-width: 700px;
       box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     h1 {
@@ -49,15 +60,15 @@
       padding: 10px;
       margin-top: 4px;
       border-radius: 8px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
       font-size: 15px;
     }
 
     .form-control:focus {
       border-color: #d9b76f;
-      background: rgba(255,255,255,0.25);
+      background: rgba(255, 255, 255, 0.25);
       outline: none;
     }
 
@@ -72,9 +83,17 @@
       font-size: 15px;
     }
 
+    .btn-save:hover {
+      background-color: rgba(6, 111, 43, 1);
+      transform: scale(1.03);
+      color: #fff;
+    }
+
+
     .btn-success {
       background-color: #3fa76d;
       color: white;
+      width: 100%;
     }
 
     .btn-success:hover {
@@ -82,49 +101,39 @@
       transform: scale(1.05);
     }
 
-    .btn-back {
-      position: fixed;
-      top: 25px;
-      left: 25px;
-      background-color: #cda664;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(205,166,100,0.4);
-      font-weight: bold;
-    }
-
-    .btn-back:hover {
-      background-color: #b89256;
-      transform: scale(1.05);
-    }
-
     .loading {
       text-align: center;
       color: #ddd;
+    }
+
+    .dashboard-container .small a {
+      color: #fff;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- 🔙 Botón de volver -->
-  <button class="btn-back" onclick="window.location.href='Ver_Empresas.php'">⬅ Volver</button>
-
   <div class="dashboard-container">
-    <h1>✏️ Editar Empresa</h1>
+    <h1>Editar Empresa</h1>
 
     <form id="formEditar">
       <div id="contenidoFormulario" class="loading">Cargando datos...</div>
 
       <button type="submit" class="btn btn-success" id="btnGuardar" style="display:none;">
-        💾 Guardar Cambios
+        <i class="fas fa-save me-2"></i>Guardar Cambios
       </button>
+
+
+      <p class="mt-4 text-center small">
+        <a href="index.php?ruta=Ver_Empresas_Admin">
+          <i class="fas fa-arrow-left me-1"></i> Volver
+        </a>
+      </p>
     </form>
   </div>
 
-  <script src="../../../js/ApiConexion.js"></script>
+  <script src="vista/js/ApiConexion.js"></script>
 
   <script>
     const LIST_URL = ApiConexion + "listarEmpresas";
@@ -209,9 +218,20 @@
       const datos = Object.fromEntries(new FormData(form).entries());
 
       try {
+
+        Swal.fire({
+          title: 'Editando Empresa...',
+          text: 'Espera un momento.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
         const res = await fetch(UPDATE_URL + idEmpresa, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify(datos)
         });
 
@@ -224,7 +244,7 @@
             showConfirmButton: false,
             timer: 1400
           }).then(() => {
-            window.location.href = "Ver_Empresas.php";
+            window.location.href = "index.php?ruta=Ver_Empresas_Admin";
           });
 
         } else {
@@ -238,4 +258,5 @@
   </script>
 
 </body>
+
 </html>

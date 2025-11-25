@@ -41,15 +41,23 @@ $rutasEmpresa = [
 
 // Rutas específicas para el rol de Administrador
 $rutasAdmin = [
+    //Dashboard 
     "dashboard-admin" => "vista/Dashboards/Administrador/Dashboard_Admin.php",
-    "mi_perfil_admin" => "vista\Dashboards\Administrador\Mi_Perfil.php",
-    "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
-    "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
+    "Ver_Empresas_Admin" => "vista/Dashboards/Administrador/Empresas/Ver_Empresas.php",
+    "Ver_Usuarios" => "vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php",
     "Reservas" => "vista/Dashboards/Administrador/Resevas.php",
     "Reportes" => "vista/Dashboards/Administrador/Reportes.php",
-    "Ver_Usuarios" => "vista/Dashboards/Administrador/Usuarios/Ver_Usuarios.php",
-    "verEmpresas" => "vista/Dashboards/Administrador/Empresas/Ver_Empresas.php",
+    "estado_sistema" => "vista/Dashboards/Administrador/Estado_Sistema.php",
+    //Perfil
+    "mi_perfil_admin" => "vista\Dashboards\Administrador\Mi_Perfil.php",
+    //Configuracion
+    "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
     "PanelConfiguración" => "vista/Dashboards/Administrador/Configuracion/PanelConfiguración.php",
+    //Gestion Empresas
+    "Crear_Empresa" => "vista/Dashboards/Administrador/Empresas/Crear_Empresa.php",
+    "Editar_Empresa" => "vista/Dashboards/Administrador/Empresas/Editar_Empresa.php",
+
+
 ];
 
 // Se unifican todas las rutas en un solo array para la validación
@@ -80,31 +88,3 @@ if (array_key_exists($ruta, $rutasValidas)) {
 }
 
 include_once "vista/modulos/zpie.php";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
