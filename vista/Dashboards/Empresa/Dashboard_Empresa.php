@@ -13,8 +13,8 @@
     </div>
     <div class="header-actions">
 
-      <a href="index.php?ruta=Reportes_empresa" class="btn btn-explore">
-        <span class="icon-inline">📈</span> Reportes
+      <a href="index.php?ruta=analisis_corporativo" class="btn btn-explore">
+        <span class="icon-inline">📈</span> Analizis corporativo
       </a>
 
 
@@ -63,7 +63,7 @@
           <span class="widget-title h3 centrar">Acciones Rápidas</span>
           <div class="header-actions">
             <a href="index.php?ruta=Reservar_funciones" class="btn btn-Reservar"><span class="icon-inline">📋</span> Reservar función</a>
-            <a href="index.php?ruta=Calendario" class="btn btn-profile"><span class="icon-inline">📆</span>Historial funciones</a>
+            <a href="index.php?ruta=Eventos_realizados" class="btn btn-profile"><span class="icon-inline">📆</span>Eventos realizados</a>
          
           </div>
         </div>
@@ -88,7 +88,7 @@ aspect-square w-8 flex justify-center items-center text-yellow-700">$</div>
         <div class="widget">
           <div class="widget-icon">🗓️</div>
           <div class="widget-content">
-            <div id="loaderEventosRealizados">
+            <div id="loaderEventosRealizados" >
               <div class="custom-loader-estadistica"></div>
             </div>
             <div id="contendorEventosRealizados"></div>
@@ -102,7 +102,7 @@ aspect-square w-8 flex justify-center items-center text-yellow-700">$</div>
               <div class="custom-loader-estadistica"></div>
             </div>
             <div id="contendorAsientosVendidos"></div>
-            <span class="widget-title">Total de asientos vendidos</span>
+            <span class="widget-title">Asientos vendidos</span>
           </div>
         </div>
 
@@ -117,7 +117,7 @@ aspect-square w-8 flex justify-center items-center text-yellow-700">$</div>
           <span id="asistentes" class="detail-item">👥 -- Asistentes</span>
         </div>
 
-        <button class="btn btn-white-border" onclick="verReporte()">Ver Reporte Detallado</button>
+       
       </div>
 
 

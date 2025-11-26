@@ -16,9 +16,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         return
     }
 
+    const loaderUltimosEventos = document.getElementById('loaderUltimosEventos');
+    const loaderEntradasMesuales = document.getElementById('loaderEntradasMesuales');
+    const loaderIngresosTotales = document.getElementById('loaderIngresosTotales');
+    loaderUltimosEventos.style.display = "block";
+    loaderEntradasMesuales.style.display = "block";
+    loaderIngresosTotales.style.display = "block";
     await cargarEntradasMensuales(empresa_id);
+    loaderEntradasMesuales.style.display = "none";
     await cargarTotalVendido(empresa_id);
+    loaderIngresosTotales.style.display = "none";
     await cargarUltimosEventos(empresa_id);
+    loaderUltimosEventos.style.display = "none";
 });
 
 async function cargarTotalVendido(empresaId) {
@@ -27,8 +36,8 @@ async function cargarTotalVendido(empresaId) {
 
     console.log("TOTAL AÑO:", data);
 
-    
-        document.getElementById("contenedorIngresosTotales").innerHTML = `     
+
+    document.getElementById("contenedorIngresosTotales").innerHTML = `     
             <div class="progress-group">
                 <p>Total vendido en el año:</p>
                 <div class="bar">
@@ -37,15 +46,15 @@ async function cargarTotalVendido(empresaId) {
                 
             </div>
             <h4>Total <span class="total">$${Number(data.total_vendido).toLocaleString("es-CO")}</span></h4>`;
-    
+
 }
 
 
 async function cargarEntradasMensuales(empresaId) {
+
     const res = await fetch(ApiConexion + `entradas-mensuales/${empresaId}`);
     const data = await res.json();
 
-    console.log("ENTRADAS MENSUALES:", data.estradasMensuales);
     const contenedor = document.getElementById("contenedorEntradasMensuales");
     let mesTexto = "";
     data.estradasMensuales.forEach(m => {
@@ -91,10 +100,13 @@ async function cargarEntradasMensuales(empresaId) {
                 mesTexto = "Mes no reconocido";
                 break;
         }
+
+
         contenedor.innerHTML = `<p> ${mesTexto} <span>$${Number(m.total).toLocaleString("es-CO")}</span></p>
                 <div class="bar">
                     <div class="fill" style="width:100%"></div>
                 </div>`;
+
 
     });
 }
@@ -110,7 +122,9 @@ async function cargarUltimosEventos(empresaId) {
     // Pintar en HTML
     const cont = document.getElementById("contenedorUltimosEventos");
     cont.innerHTML = "";
-
+    if (data.ultimosEventos.length === 0) {
+        cont.innerHTML = "<h4>No hay enventos finalizados</h4>"
+    }
     data.ultimosEventos.forEach(e => {
         cont.innerHTML += `         
           <div class="evento-row">
