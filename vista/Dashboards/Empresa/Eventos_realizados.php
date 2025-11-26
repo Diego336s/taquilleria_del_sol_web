@@ -39,7 +39,7 @@
   
 
     <div class="header-section">
-        <h1><i class="fa-solid fa-building"></i>Eventos Finalizados</h1>
+        <h1><i class="fa-solid fa-building"></i> Eventos Finalizados</h1>
 
         <!-- 🔍 Buscador -->
         <div class="search-box">

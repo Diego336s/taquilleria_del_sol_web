@@ -9,14 +9,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     const buscador = document.getElementById('buscador');
     buscador.addEventListener('keyup', () => {
         const filtro = buscador.value.toLowerCase();
-        const filas = document.querySelectorAll('#tbody-empresas tr');
+        const filas = document.querySelectorAll('#tablaEventos tr');
 
         filas.forEach(fila => {
             const textoFila = fila.textContent.toLowerCase();
             fila.style.display = textoFila.includes(filtro) ? '' : 'none';
         });
     });
+
 });
+
+function verReporte(eventoId) {
+    window.location.href = ApiConexion + `reporte-evento/${eventoId}`;
+}
+
 
 // ======================================================
 // 🏢 LISTAR EVENTOS REALIZADOS
@@ -49,7 +55,7 @@ async function ctrListarEmpresas() {
         return;
     }
 
-   
+
     try {
         const respuesta = await fetch(`${ApiConexion}eventos-realizados-empresa/${empresa_id}`, {
             method: 'GET',
@@ -63,7 +69,7 @@ async function ctrListarEmpresas() {
 
 
 
-   
+
         if (!data.success) {
             tbody.innerHTML = `<tr><td colspan='6' class='loading'>${data.message}</td></tr>`;
             return;
@@ -81,7 +87,8 @@ async function ctrListarEmpresas() {
                 <td>${ev.porcentaje_ocupacion}%</td>
                 <td>
                     <button class="btn-reporte" onclick="verReporte(${ev.id})">
-                        Ver Reporte
+                     <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="icon">
+                     Reporte
                     </button>
                 </td>
             </tr>

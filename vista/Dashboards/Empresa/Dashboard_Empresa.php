@@ -14,7 +14,7 @@
     <div class="header-actions">
 
       <a href="index.php?ruta=analisis_corporativo" class="btn btn-explore">
-        <span class="icon-inline">📈</span> Analizis corporativo
+        <span class="icon-inline">📈</span> Analisis corporativo
       </a>
 
 

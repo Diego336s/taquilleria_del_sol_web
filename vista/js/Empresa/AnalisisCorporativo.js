@@ -49,65 +49,40 @@ async function cargarTotalVendido(empresaId) {
 
 }
 
-
 async function cargarEntradasMensuales(empresaId) {
 
     const res = await fetch(ApiConexion + `entradas-mensuales/${empresaId}`);
     const data = await res.json();
 
     const contenedor = document.getElementById("contenedorEntradasMensuales");
-    let mesTexto = "";
-    data.estradasMensuales.forEach(m => {
-        switch (m.mes) {
-            case 1:
-                mesTexto = "Enero";
-                break;
-            case 2:
-                mesTexto = "Febrero";
-                break;
-            case 3:
-                mesTexto = "Marzo";
-                break;
-            case 4:
-                mesTexto = "Abril";
-                break;
-            case 5:
-                mesTexto = "Mayo";
-                break;
-            case 6:
-                mesTexto = "Junio";
-                break;
-            case 7:
-                mesTexto = "Julio";
-                break;
-            case 8:
-                mesTexto = "Agosto";
-                break;
-            case 9:
-                mesTexto = "Septiembre";
-                break;
-            case 10:
-                mesTexto = "Octubre";
-                break;
-            case 11:
-                mesTexto = "Noviembre";
-                break;
-            case 12:
-                mesTexto = "Diciembre";
-                break;
 
-            default:
-                mesTexto = "Mes no reconocido";
-                break;
+    contenedor.innerHTML = ""; // limpiar primero
+
+    data.estradasMensuales.forEach(m => {
+        let mesTexto = "";
+
+        switch (m.mes) {
+            case 1: mesTexto = "Enero"; break;
+            case 2: mesTexto = "Febrero"; break;
+            case 3: mesTexto = "Marzo"; break;
+            case 4: mesTexto = "Abril"; break;
+            case 5: mesTexto = "Mayo"; break;
+            case 6: mesTexto = "Junio"; break;
+            case 7: mesTexto = "Julio"; break;
+            case 8: mesTexto = "Agosto"; break;
+            case 9: mesTexto = "Septiembre"; break;
+            case 10: mesTexto = "Octubre"; break;
+            case 11: mesTexto = "Noviembre"; break;
+            case 12: mesTexto = "Diciembre"; break;
+            default: mesTexto = "Mes no reconocido";
         }
 
-
-        contenedor.innerHTML = `<p> ${mesTexto} <span>$${Number(m.total).toLocaleString("es-CO")}</span></p>
-                <div class="bar">
-                    <div class="fill" style="width:100%"></div>
-                </div>`;
-
-
+        contenedor.innerHTML += `
+            <p>${mesTexto} <span>$${Number(m.total).toLocaleString("es-CO")}</span></p>
+            <div class="bar">
+                <div class="fill" style="width:100%"></div>
+            </div>
+        `;
     });
 }
 
