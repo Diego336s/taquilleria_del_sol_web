@@ -80,12 +80,13 @@ async function ctrupdatePerfil() {
     const datos = {
         nombre: document.getElementById('profile_nombre')?.value.trim(),
         apellido: document.getElementById('profile_apellido')?.value.trim(),
+        documento: document.getElementById('profile_documento')?.value.trim(),
         telefono: document.getElementById('profile_telefono')?.value.trim(),
         sexo: document.getElementById('profile_sexo')?.value,
     };
 
     // Validación simple de campos
-    if (!datos.nombre || !datos.apellido || !datos.telefono || !datos.sexo) {
+    if (!datos.nombre || !datos.apellido || !datos.documento || !datos.telefono || !datos.sexo) {
         mostrarAlerta('error', 'Campos incompletos', 'Por favor, rellena todos los campos requeridos.');
         return;
     }
@@ -385,7 +386,6 @@ async function ctrListarEventos() {
                     <div class="card-image-container">
                         <img src="${imageUrl}" alt="${evento.titulo}" class="card-image">
                         <span class="genre-tag tag-drama">Categoría: ${evento.categoria?.nombre || 'General'}</span>
-                        <span class="popularity-badge">⭐ 95%</span>
                     </div>
                     <div class="card-content">
                         <h4 class="card-title">${evento.titulo}</h4>
@@ -402,12 +402,6 @@ async function ctrListarEventos() {
                             <span>🕒 ${new Date('1970-01-01T' + evento.hora_inicio)
                         .toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}
                             </span>
-                        </div>
-                        <div class="card-footer">
-                            <span class="popularity-text">Popularidad</span>
-                            <div class="progress-bar-container small">
-                                <div class="progress-bar-fill orange-bg" style="width: 95%;"></div>
-                            </div>
                         </div>
                         <div class="card-booking">
                             <a href="index.php?ruta=seleccionar_asientos&eventoid=${evento.id}" class="btn btn-confirm">Reservar</a>
@@ -584,12 +578,9 @@ async function cargarProximaFuncion() {
             )
             : "Sin hora";
 
-        // Mostrar asientos REALMENTE devueltos
-        const asientos = data.proxima_funcion.asientos?.length
-            ? data.proxima_funcion.asientos
-                .map(a => `${a.fila}${a.numero}`)
-                .join(", ")
-            : "Sin asientos asignados";
+        // Contar los asientos comprados
+        const numeroAsientos = data.proxima_funcion.asientos?.length || 0;
+        const textoAsientos = `Total Asientos: ${numeroAsientos}`;
 
         // Imagen (si después agregas campo)
 
@@ -604,7 +595,7 @@ async function cargarProximaFuncion() {
                     <p>
                         <strong>Fecha:</strong> ${fecha}<br>
                         <strong>Hora:</strong> ${hora}<br>
-                        <strong>Asientos:</strong> ${asientos}
+                        <strong>Total Asientos:</strong> ${numeroAsientos}
                     </p>
 
                     <button id="btnVerDetalles" class="btn btn-confirm" style="border: 1px solid rgba(255, 255, 255, 0.4);">

@@ -309,12 +309,22 @@
       const evento = resultadoEvento.evento || resultadoEvento;
       const eventName = evento.titulo || 'Mapa de Asientos';
       const eventDescripcion = evento.descripcion_corta || evento.descripcion || 'Selecciona tus lugares para esta increíble función.';
-      const eventDate = evento.fecha ? new Date(evento.fecha).toLocaleDateString('es-CO', {
+      // Fecha viene como AAAA-MM-DD → la tratamos como texto, no como Date real
+      const fechaString = evento.fecha; // "2024-11-20"
+
+      // Convertimos manualmente sin usar zonas horarias
+      const [y, m, d] = fechaString.split('-').map(n => parseInt(n));
+
+      // Usamos Intl.DateTimeFormat pero convirtiendo a UTC fijo
+      const eventDate = new Intl.DateTimeFormat('es-CO', {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
-      }) : '';
+        day: 'numeric',
+        timeZone: 'UTC' // ⬅️ EVITA EL +1 DÍA
+      }).format(new Date(Date.UTC(y, m - 1, d)));
+
+
 
       theatreLayout.innerHTML = `
         <div class="event-details-header text-center">
@@ -419,12 +429,30 @@
 
       // 🎟️ Lógica de selección
       const seats = document.querySelectorAll('.seat-row .seat');
+      const maxSeats = 10; // Límite máximo de asientos
+
       seats.forEach(seat => {
         seat.addEventListener('click', () => {
-          if (!seat.classList.contains('occupied')) {
-            seat.classList.toggle('selected');
-            updateSummary();
+          if (seat.classList.contains('occupied')) {
+            return; // No hacer nada si está ocupado
           }
+
+          const selectedSeats = document.querySelectorAll('.seat-row .seat.selected');
+
+          // Si el asiento no está seleccionado y ya se alcanzó el límite
+          if (!seat.classList.contains('selected') && selectedSeats.length >= maxSeats) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Límite de asientos alcanzado',
+              text: `Solo puedes seleccionar un máximo de ${maxSeats} asientos por compra.`,
+              background: 'rgba(10, 10, 10, 0.9)',
+              color: '#fff',
+              confirmButtonColor: '#ffcc33'
+            });
+            return;
+          }
+          seat.classList.toggle('selected');
+          updateSummary();
         });
       });
 

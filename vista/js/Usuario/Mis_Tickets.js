@@ -81,6 +81,11 @@ async function cargarMisTickets() {
                 .map(a => `${a.ubicacion} - Fila ${a.fila} - Silla ${a.numero}`)
                 .join("<br>");
 
+            const estado = ticket.usado
+                ? `<span class="estado-ticket usado">USADO</span>`
+                : `<span class="estado-ticket activo">ACTIVO</span>`;
+
+
 
             // QR temporal usando el ID del ticket
             const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Ticket-${ticket.ticket_id}`;
@@ -89,6 +94,9 @@ async function cargarMisTickets() {
             <div class="ticket-card">
                 <div class="ticket-main">
                     <h2 class="ticket-event-title">${ticket.titulo}</h2>
+                    <div class="estado-container">${estado}</div>
+
+
                     <ul class="ticket-details">
                         <li><i class="fas fa-calendar-alt"></i> ${ticket.fecha_evento}</li>
                         <li><i class="fas fa-clock"></i> ${ticket.hora_inicio}</li>
@@ -110,7 +118,6 @@ async function cargarMisTickets() {
                 <div class="ticket-stub">
                     <div class="ticket-qr">
                         <img src="${ticket.imagen_evento}" alt="QR Ticket">
-
                     </div>
                 </div>
             </div>
@@ -121,7 +128,7 @@ async function cargarMisTickets() {
         // Agregar botón volver
         contenedor.innerHTML += `
         <p class="mt-5 text-center small">
-            <a href="index.php?ruta=dashboard-usuario">
+            <a href="index.php?ruta=dashboard-usuario" class="text-white" style="color: #fff !important;">
                 <i class="fas fa-arrow-left me-1"></i> Volver al Dashboard
             </a>
         </p>
