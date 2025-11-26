@@ -137,7 +137,7 @@
               <div class="widget-content">
                 <span id="totalCategorías" class="widget-number">0</span>
                 <span class="widget-title">Categorías registradas</span>
-                <a href="index.php?ruta=Ver_Empresas_Admin" class="btn btn-explore btn btn-confirm btn-full-width">
+                <a href="index.php?ruta=Ver_Categorias_Admin" class="btn btn-explore btn btn-confirm btn-full-width">
                   <i class="bi bi-tag icon-inline"></i> Gestionar Categorías
                 </a>
               </div>
