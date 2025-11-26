@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     await totalVendidoEsteAño(); 
     await totalEventosRealizados();
     await totalAsientosVendidos();
-    await crecimientoMensualDeLaEmpresa();
+   
+    await cargarProximaFuncion();
 });
 
 
@@ -123,7 +124,7 @@ async function totalVendidoEsteAño() {
         // Crear número
         const span = document.createElement("span");
         span.className = "widget-number";
-        span.textContent = data.success ? data.total_vendido : 0;
+        span.textContent = data.success ?"$"+ Number(data.total_vendido).toLocaleString(): "$"+0;
 
         lugarContador.append(span);
 
@@ -268,13 +269,14 @@ async function totalAsientosVendidos() {
 
 
 
+
 // =========================================================================
-// FUNCIÓN: CRECIMIENTO MENSUAL DE LA EMPRESA
+// FUNCIÓN: PROXIMO EVENTO
 // =========================================================================
 
-async function crecimientoMensualDeLaEmpresa() {
-    
-    const userDataString = sessionStorage.getItem('userData');
+
+async function cargarProximaFuncion() {
+  const userDataString = sessionStorage.getItem('userData');
     const token = sessionStorage.getItem('userToken');
 
     if (!userDataString || !token) {
@@ -289,44 +291,27 @@ async function crecimientoMensualDeLaEmpresa() {
         console.error("No se encontró el ID de la empresa.");
         return
     }
-
-
-    // ELEMENTOS
-    const lugarContador = document.getElementById('contendorCrecimientoMensual');
-    const loader = document.getElementById('loaderCrecimientoMensual');
-
     try {
-        // 🔥 Mostrar loader
-        loader.style.display = "block";
-        lugarContador.innerHTML = ""; // limpia el contenedor
+        const res = await fetch(ApiConexion +"proxima-funcion-empresa/"+empresa_id);
+        const data = await res.json();
 
-        // Llamado al servidor
-        const response = await fetch(ApiConexion + "crecimiento-mensual/" + empresa_id, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
-            }
-        });
+        if (!data.success || !data.evento) {
+            console.warn("No hay próximo evento");
+            document.getElementById("eventoTitulo").innerText = "No hay próximos eventos";
+            return;
+        }
 
-        const data = await response.json();
+        const ev = data.evento;
 
-        // Ocultar loader
-        loader.style.display = "none";
+        // Asignar valores
+        document.getElementById("eventoTitulo").innerText = ev.titulo;
+        document.getElementById("ocupacion").innerText = `📈 ${ev.porcentaje_ocupacion}% Ocupación`;
+        document.getElementById("ingresos").innerText = `💰 $${Number(ev.total_dinero).toLocaleString()} Ingresos`;
+        document.getElementById("asistentes").innerText = `👥 ${ev.asientos_vendidos} Asistentes`;
 
-        // Crear número
-        const span = document.createElement("span");
-        span.className = "widget-number";
-        span.textContent = data.success ? data.crecimiento_mensual : 0;
-
-        lugarContador.append(span);
-
-    } catch (error) {
-        console.error("Error:", error);
-
-        // Ocultar loader en caso de error
-        loader.style.display = "none";
-
-        lugarContador.innerHTML = "<span class='widget-number'>0</span>";
+    } catch (e) {
+        console.error(e);
     }
 }
+
+
