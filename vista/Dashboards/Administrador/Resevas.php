@@ -334,7 +334,7 @@ async function cargarReservas() {
           <td>${ev.estado}</td>
           <td>
             <button class="btn btn-aprobar" onclick="cambiarEstado(${ev.id}, 'activo')">Aprobar</button>
-            <button class="btn btn-rechazar mt-2" onclick="cambiarEstado(${ev.id}, 'cancelar')">Rechazar</button>
+            <button class="btn btn-rechazar mt-2" onclick="cambiarEstado(${ev.id}, 'cancelado')">Rechazar</button>
           </td>
         </tr>
       `;

@@ -132,7 +132,7 @@ async function cargarUltimosEventos(empresaId) {
                     <h4>${e.titulo}</h4>
                     <p>${e.fecha}</p>
                 </div>
-                <p><i class="bi bi-person"></i> ${e.asientos_vendidos}</p>
+                <p><i class="bi bi-person"></i> 🪑 ${e.asientos_vendidos}</p>
                 <span>$${Number(e.dinero).toLocaleString("es-CO")}</span>  
                  </div>         
         `;

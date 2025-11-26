@@ -1,6 +1,6 @@
 
 // Inicializar la tabla con el ID correcto
-document.addEventListener("DOMContentLoaded",  async function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
     await ctrListarEmpresas();
 
@@ -22,18 +22,36 @@ document.addEventListener("DOMContentLoaded",  async function () {
 // 🏢 LISTAR EVENTOS REALIZADOS
 // ======================================================
 async function ctrListarEmpresas() {
+    const userDataString = sessionStorage.getItem('userData');
     const token = sessionStorage.getItem('userToken');
-    const tbody = document.getElementById('tablaEventos');
 
-    if (!token) {
-        mostrarAlerta('Sesión inválida. No se encontró token.');
+    if (!userDataString || !token) {
+        console.error("No se encontró la información del usuario o el token.");
+        return
+    }
+
+    const userData = JSON.parse(userDataString);
+    const empresa_id = userData.id;
+
+    if (!empresa_id) {
+        console.error("No se encontró el ID de la empresa.");
+        return
+    }
+
+    const tbody = document.getElementById("tablaEventos");
+    tbody.innerHTML = '<tr><td colspan="6" class="loading">Cargando eventos...</td></tr>';
+
+
+
+
+    if (!token || !userDataString) {
+        mostrarAlerta('error', 'Sesión inválida', 'Por favor inicia sesión nuevamente.');
         return;
     }
 
-    tbody.innerHTML = '<tr><td colspan="6" class="loading">Cargando eventos...</td></tr>';
-
+   
     try {
-        const respuesta = await fetch(`${ApiConexion}eventos-realizados-empresa/`, {
+        const respuesta = await fetch(`${ApiConexion}eventos-realizados-empresa/${empresa_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,13 +62,13 @@ async function ctrListarEmpresas() {
         const data = await respuesta.json();
 
 
-        const eventos = data.eventos;
 
-        if (eventos.length === 0) {
-            tbody.innerHTML = "<tr><td colspan='6' class='loading'>No hay eventos finalizados.</td></tr>";
+   
+        if (!data.success) {
+            tbody.innerHTML = `<tr><td colspan='6' class='loading'>${data.message}</td></tr>`;
             return;
         }
-
+        const eventos = data.eventos;
         tbody.innerHTML = "";
         eventos.forEach(ev => {
 
