@@ -121,6 +121,7 @@
       padding: 7px 12px;
       cursor: pointer;
       font-weight: bold;
+
     }
 
     .btn-aprobar { background: #008000; color: #fff; }
@@ -198,11 +199,13 @@
 
 <body>
 <button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver a Inicio</button>
-<h1>Gestión de Reservas</h1>
+
 
 <div class="dashboard-container">
   <!-- Tabla + buscador -->
   <div class="tabla-container">
+
+  <h1>Gestión de Reservas</h1>
     <!-- Buscador arriba a la derecha -->
     <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
       <div class="search-box">
@@ -331,7 +334,7 @@ async function cargarReservas() {
           <td>${ev.estado}</td>
           <td>
             <button class="btn btn-aprobar" onclick="cambiarEstado(${ev.id}, 'activo')">Aprobar</button>
-            <button class="btn btn-rechazar" onclick="cambiarEstado(${ev.id}, 'cancelar')">Rechazar</button>
+            <button class="btn btn-rechazar mt-2" onclick="cambiarEstado(${ev.id}, 'cancelar')">Rechazar</button>
           </td>
         </tr>
       `;
@@ -372,7 +375,7 @@ async function init() {
 init();
 
 function volverDashboard() {
-  window.location.href = '/taquilleria_del_sol_web/index.php?ruta=dashboard-admin';
+  window.location.href = 'index.php?ruta=dashboard-admin';
 }
 </script>
 </body>
