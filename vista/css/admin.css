@@ -1,39 +1,102 @@
-/* === Dashboard General (Usuario y Empresa) === */
+/*Dashboard General (Usuario y Empresa)*/
+
 
 /* === Variables CSS === */
 :root {
-    --primary-orange: #ff6b1f; /* Naranja vibrante */
-    --light-orange: #ff9f66;   /* Naranja más claro */
-    --text-color: #ffffff;     /* Texto blanco */
-    --secondary-text: #cccccc; /* Texto gris claro */
+    --primary-orange: #602000; /* Naranja principal más brillante para mejor contraste */
+    --light-orange: #fff1e5;   /* Fondo de los widgets (crema/naranja muy claro) */
 
-    /* Tarjetas estilo "Glassmorphism" */
-    --card-background: rgba(255, 255, 255, 0.05);
-    --card-blur: blur(12px);
+    /* Colores de texto para el fondo oscuro */
+    --text-color: #ffffff;
+    --secondary-text: #e0e0e0;
+
+    /* Estilos de tarjeta "Glassmorphism" (igual que en login) */
+    --card-background: rgba(255, 255, 255, 0.1);
+    --card-blur: blur(10px);
     --card-border: 1px solid rgba(255, 255, 255, 0.2);
-    --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    --card-hover-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --card-hover-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45); /* Sombra más pronunciada para el hover */
 
     --border-radius: 1.2rem;
 }
 
-/* === Contenedor Principal === */
+/* El ID viene del div principal en Dashboard_Usuario.php */
 #dashboard-usuario-body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
+    /* El fondo y la capa oscura ya se aplican desde main.css, no es necesario repetirlo */
     color: var(--text-color);
     min-height: 100vh;
 }
 
-/* === Header === */
+/* === Estilos Generales / Utilidades === */
+
+.orange-bg {
+    background-color: var(--primary-orange) !important;
+    color: white !important;
+}
+
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+
+
+.btn-primary {
+    background-color: var(--primary-orange);
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 107, 31, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-color) !important; /* Asegurar texto blanco */
+}
+
+.btn-confirm {
+    background-color: var(--primary-orange);
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 107, 31, 0.4);
+}
+
+.btn-white-border {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    font-size: 0.9em;
+    padding: 8px 16px;
+}
+
+.icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--light-orange);
+    font-size: 1.1em;
+}
+
+.icon-inline {
+    margin-right: 5px;
+}
+
+/* === Dashboard Layout === */
+
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 20px;
     font-size: 1.1em;
-    color: var(--text-color);
+    color: var(--text-color); /* Asegurar que el texto del header sea blanco */
 }
 
 .user-greeting {
@@ -47,130 +110,143 @@
     font-weight: bold;
 }
 
+.centrar{
+    text-align: center;
+}
+
 .header-actions {
     display: flex;
     gap: 15px;
     align-items: center;
 }
 
-/* === Botones === */
-.btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: white;
+/* --- Estilos para la Tarjeta de Reservas Recientes (new card) --- */
+
+/* Estilo para el contenedor de la tarjeta, forzando un fondo blanco si es necesario */
+.recent-reservations-card {
+    background-color: #ffffff; /* Fondo blanco */
+    color: #333; /* Texto oscuro */
+    padding: 20px;
+    /* Remover estilos de glassmorphism si se heredan */
+    backdrop-filter: none;
+    border: none; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-.btn-green {
-    background-color: #28a745;
+/* Encabezado de la tarjeta (ícono + título) */
+.widget-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.btn-white {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-.btn-white:hover,
-.btn-green:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--card-hover-shadow);
-}
-
-.btn-white-border {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-    font-size: 0.9em;
-    padding: 8px 16px;
-}
-
-.btn-full-width {
+/* Contenedor del listado de reservas */
+.reservation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre cada reserva */
+    margin-bottom: 20px;
     width: 100%;
 }
 
-/* === Iconos === */
-.icon-circle {
-    display: inline-flex;
+/* Estilo para cada elemento de la reserva */
+.reservation-item {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.15);
-    font-size: 1.2em;
-    color: white;
-}
-
-.icon-inline {
-    margin-right: 5px;
-}
-
-/* === Dashboard Layout === */
-.dashboard-main {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    gap: 25px;
-}
-
-/* === Widgets Generales === */
-.widget {
+    padding: 12px 15px;
+    /* Aplicamos el estilo de cristal */
     background: var(--card-background);
     backdrop-filter: var(--card-blur);
     border: var(--card-border);
-    box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Estilo específico para los detalles (título y fecha/hora) */
+.item-details {
     display: flex;
     flex-direction: column;
+    text-align: left;
+}
+
+.item-title {
+    font-weight: 600;
+    font-size: 1em;
     color: var(--text-color);
+    line-height: 1.2;
 }
 
-.widget:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--card-hover-shadow);
-}
-
-.widget-icon {
-    font-size: 2em;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin-bottom: 15px;
-    color: white;
-}
-
-.widget-number {
-    font-size: 2.2em;
-    font-weight: bold;
-    display: block;
-}
-
-.widget-title {
+.item-date-time {
+    font-size: 0.85em;
     color: var(--secondary-text);
-    display: block;
-    margin-top: 5px;
 }
 
-/* === Progress Bar === */
-.progress-bar-container {
-    height: 6px;
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 8px;
+/* Estilos de las insignias de estado */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-.progress-bar-fill {
-    height: 100%;
-    border-radius: 3px;
+/* Color para estado Confirmado (verde claro) */
+.status-confirmed {
+    background-color: #e6f7e9; 
+    color: #38a169; /* Verde oscuro */
 }
 
-/* === Estadísticas === */
+/* Color para estado Pendiente (amarillo claro) */
+.status-pending {
+    background-color: #fffbe6;
+    color: #d69e2e; /* Amarillo oscuro */
+}
+
+/* Color para insignias de conteo (naranja) */
+.status-count {
+    background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Estilo para el botón de ancho completo al final */
+.btn-full-width {
+    width: 100%;
+    margin-top: 0; /* Asegurarse de que no herede un margen grande */
+    padding: 12px 18px; /* Hacerlo un poco más alto */
+    font-size: 1em;
+}
+
+/* === Estilos para botones del Header === */
+/* Cuando .header-actions está en un widget, se comporta como una lista vertical */
+.widget .header-actions {
+    flex-direction: column;
+}
+
+/* Asegura que los botones dentro de las acciones rápidas del widget tengan el mismo ancho */
+.widget .header-actions .btn {
+    width: 100%;
+}
+.header-actions .btn-explore {
+    background-color: #602000; /* Naranja vibrante */
+    color: white;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+}
+
+.header-actions .btn-profile {
+    background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+
+.header-actions .btn-Reservar {
+    background-color: rgb(130, 71, 16); /* Fondo semitransparente */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* === Rejilla de Estadísticas (Fila de Widgets) === */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -178,494 +254,493 @@
     margin-bottom: 25px;
 }
 
-/* === Large Widgets Grid === */
-.large-widgets-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    margin-bottom: 25px;
+.stats-grid .widget-number {
+    font-size: 2em; /* Un poco más pequeño para que quepa bien */
 }
 
-.large-widget {
+/* Ajustes para los widgets dentro de la rejilla de estadísticas */
+.stats-grid .widget {
+    flex-direction: row; /* Icono y contenido en fila */
+    align-items: center;
+    gap: 15px;
+}
+
+.stats-grid .widget-icon {
+    margin-bottom: 0; /* Quitar margen inferior al icono */
+}
+
+
+.dashboard-main {
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* Columna izquierda estrecha, derecha ancha */
+    gap: 25px;
+}
+
+/* === Widgets de Resumen (Columna Izquierda) === */
+
+/* FIX FINAL — FORZAR DISTRIBUCIÓN HORIZONTAL */
+.summary-widgets.horizontal-widgets {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 25px !important;
+    flex-wrap: nowrap !important;
+}
+
+.summary-widgets.horizontal-widgets .widget {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+
+.widget {
+    /* Aplicamos el estilo de cristal */
     background: var(--card-background);
     backdrop-filter: var(--card-blur);
     border: var(--card-border);
     box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
-    padding: 30px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    color: var(--text-color);
-    min-height: 250px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 }
 
-.large-widget:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--card-hover-shadow);
+.widget:hover {
+    transform: translateY(-8px); /* Efecto de elevación */
+    box-shadow: var(--card-hover-shadow); /* Sombra más intensa */
 }
 
-.large-widget .widget-header {
-    margin-bottom: 20px;
-}
-
-.large-widget .widget-header h3 {
-    margin: 0;
-    font-size: 1.4em;
-    font-weight: bold;
-    color: var(--text-color);
-}
-
-.large-widget .widget-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.large-number-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+.widget-icon {
+    font-size: 2.5em;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--light-orange);
     margin-bottom: 15px;
 }
 
-.large-number {
+.widget-content {
+    width: 100%;
+}
+
+.widget-number {
     font-size: 3em;
     font-weight: bold;
-    color: var(--text-color);
+    display: block;
+    line-height: 1;
 }
 
-.large-label {
-    font-size: 1.5em;
+.widget-title {
     color: var(--secondary-text);
+    display: block;
+    margin-bottom: 10px;
 }
 
-.widget-description {
-    font-size: 0.9em;
-    color: var(--secondary-text);
-    margin: 0;
+/* Barras de Progreso */
+.progress-bar-container {
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 5px;
 }
 
-/* === Circular Progress === */
-.circular-progress-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
+.progress-bar-container.small {
+    height: 4px;
+    width: 70%;
+    margin-top: 3px;
+    display: inline-block;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.btn-confirm {
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* Widget de Asientos */
+.seat-selector-widget {
     align-items: center;
-    margin-bottom: 15px;
-}
-
-.circular-progress {
-    position: relative;
-}
-
-.progress-circle {
-    transform: rotate(-90deg);
-}
-
-.progress-bg {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.2);
-    stroke-width: 8;
-}
-
-.progress-fill {
-    fill: none;
-    stroke: var(--primary-orange);
-    stroke-width: 8;
-    stroke-linecap: round;
-    stroke-dasharray: 314; /* 2 * π * 50 */
-    stroke-dashoffset: 314;
-    transition: stroke-dashoffset 1s ease;
-}
-
-.progress-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    padding: 25px;
     text-align: center;
 }
 
-.progress-label {
-    font-size: 1.2em;
-    color: var(--secondary-text);
-    display: block;
-}
-
-/* === Ingresos Widget === */
-.ingresos-widget .large-number {
-    color: #28a745;
-}
-
-.ingresos-widget .money-icon {
-    font-size: 2em;
-}
-
-/* === Featured Function === */
-.featured-function {
-    padding: 25px;
-    border-radius: var(--border-radius);
-    background: var(--primary-orange);
+.stage-label {
+    background-color: var(--primary-orange);
     color: white;
-    box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.seat-map {
+    margin: 15px 0 20px 0;
+}
+
+.seat-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.seat-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.seat-dot.available {
+    background-color: var(--primary-orange); /* Naranja oscuro */
+}
+
+.seat-dot.booked {
+    background-color: var(--light-orange); /* Naranja claro */
+    opacity: 0.7;
+}
+
+.btn-select-seats {
+    width: 100%;
+}
+
+/* === Contenido Principal (Columna Derecha) === */
+
+/* Bloque Destacado Naranja */
+.featured-function {
+    padding: 30px;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     position: relative;
+    overflow: hidden;
+    min-height: 150px;
+    box-shadow: 0 10px 20px #ff6b1f66;
+}
+
+.featured-label {
+    font-size: 0.9em;
+    font-weight: 500;
+    opacity: 0.8;
 }
 
 .featured-title {
-    font-size: 2em;
-    margin: 10px 0;
+    font-size: 2.2em;
+    margin: 5px 0 15px 0;
+    line-height: 1.1;
 }
 
 .featured-details {
     display: flex;
     gap: 20px;
-    font-size: 0.95em;
     margin-bottom: 20px;
+    font-size: 0.95em;
+    font-weight: 500;
 }
 
-/* === Listas y Actividad === */
-.reservation-item,
-.activity-item {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: var(--border-radius);
-    padding: 12px 15px;
+.featured-details .detail-item {
+    white-space: nowrap;
+}
+
+.featured-function .btn-white-border {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
+
+/* Cartelera */
+.billboard-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    color: white;
+    align-items: flex-end;
+    margin: 30px 0 20px 0;
 }
 
-.item-title {
-    font-weight: bold;
-    color: white;
-}
-
-.item-date-time {
-    color: var(--secondary-text);
-    font-size: 0.85em;
-}
-
-/* Estado badges */
-.status-badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8em;
+.section-title {
+    font-size: 1.5em;
     font-weight: bold;
 }
 
-.status-confirmed {
-    background-color: #28a745;
-    color: white;
+.view-all-link {
+    color: var(--text-color); /* Cambiado a blanco para mejor contraste */
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-.status-pending {
-    background-color: #ffc107;
-    color: black;
-}
-
-.status-count {
-    background-color: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: white;
-}
-
-/* === Estado del Sistema - Estilos Adicionales === */
-
-.status-indicator {
+.billboard-list {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 10px 0;
-}
-
-.status-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.status-active {
-    background-color: #28a745;
-    box-shadow: 0 0 6px rgba(40, 167, 69, 0.5);
-}
-
-.status-inactive {
-    background-color: #dc3545;
-    box-shadow: 0 0 6px rgba(220, 53, 69, 0.5);
-}
-
-.status-warning {
-    background-color: #ffc107;
-    box-shadow: 0 0 6px rgba(255, 193, 7, 0.5);
-}
-
-.status-maintenance {
-    background-color: #6c757d;
-    box-shadow: 0 0 6px rgba(108, 117, 125, 0.5);
-}
-
-.status-text {
-    font-weight: bold;
-    font-size: 0.9em;
-}
-
-.metric-small {
-    font-size: 0.85em;
-    color: var(--secondary-text);
-    margin-top: 5px;
-}
-
-.green-bg {
-    background-color: rgba(40, 167, 69, 0.2) !important;
-}
-
-/* Gráficos */
-.charts-container {
-    margin-bottom: 25px;
-}
-
-.chart-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 25px;
-    margin-bottom: 25px;
+    overflow-x: auto; /* Permite scroll horizontal si hay muchas tarjetas */
+    padding-bottom: 10px;
 }
 
-.chart-widget {
-    padding: 20px;
-    min-height: 300px;
-}
-
-.chart-widget canvas {
-    max-height: 250px;
-}
-
-/* Actividad Reciente */
-.actividad-reciente-widget {
+.billboard-card {
+    flex: 0 0 320px; /* Tamaño fijo para cada tarjeta */
+    /* Aplicamos el estilo de cristal */
     background: var(--card-background);
     backdrop-filter: var(--card-blur);
     border: var(--card-border);
     box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
-    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+    overflow: hidden;
 }
 
-.actividad-list {
-    max-height: 400px;
-    overflow-y: auto;
+.billboard-card:hover {
+    transform: translateY(-8px); /* Efecto de elevación */
+    box-shadow: var(--card-hover-shadow); /* Sombra más intensa */
 }
 
-.activity-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background-color 0.2s ease;
+.card-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
 }
 
-.activity-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-.activity-item:last-child {
-    border-bottom: none;
-}
-
-.activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
-    flex-shrink: 0;
-}
-
-.activity-icon.success {
-    background-color: rgba(40, 167, 69, 0.2);
-    color: #28a745;
-}
-
-.activity-icon.info {
-    background-color: rgba(0, 123, 255, 0.2);
-    color: #007bff;
-}
-
-.activity-icon.warning {
-    background-color: rgba(255, 193, 7, 0.2);
-    color: #ffc107;
-}
-
-.activity-icon.error {
-    background-color: rgba(220, 53, 69, 0.2);
-    color: #dc3545;
-}
-
-.activity-content {
-    flex: 1;
-}
-
-.activity-title {
-    font-weight: 500;
-    margin-bottom: 5px;
-    color: var(--text-color);
-}
-
-.activity-time {
+.genre-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
     font-size: 0.8em;
-    color: var(--secondary-text);
-}
-
-.loading-activity {
-    text-align: center;
-    color: var(--secondary-text);
-    padding: 20px;
-    font-style: italic;
-}
-
-/* Servicios Externos */
-.services-status-widget .services-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.service-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-.service-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
-    color: var(--text-color);
-}
-
-.service-info {
-    flex: 1;
-}
-
-.service-name {
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.service-status {
-    font-size: 0.85em;
     font-weight: bold;
 }
 
-/* Botones adicionales */
-.btn-small {
-    padding: 8px 16px;
+.tag-drama { background-color: #6a1b9a; } 
+.tag-musical { background-color: #00897b; } 
+.tag-comedy { background-color: #ffb300; } 
+
+.favorite-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+}
+
+.popularity-badge {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 0 5px 5px 0;
     font-size: 0.9em;
+    font-weight: bold;
 }
 
-.btn-profile {
-    background-color: var(--primary-orange);
-    color: white;
+.card-content {
+    padding: 15px;
 }
 
-.btn-profile:hover {
-    background-color: var(--light-orange);
+.card-title {
+    font-size: 1.4em;
+    margin: 0 0 5px 0;
 }
 
-/* Notificaciones */
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(40, 167, 69, 0.9);
-    color: white;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
+.card-description {
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    margin-bottom: 10px;
 }
 
-.notification.show {
-    transform: translateX(0);
+.card-meta {
+    display: flex;
+    gap: 15px;
+    color: var(--secondary-text);
+    font-size: 0.85em;
+    margin-bottom: 10px;
 }
 
-.notification-success {
-    background: rgba(40, 167, 69, 0.9);
+.card-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-.notification-error {
-    background: rgba(220, 53, 69, 0.9);
+.popularity-text {
+    font-size: 0.8em;
+    color: var(--secondary-text);
+    white-space: nowrap;
 }
 
-.notification-warning {
-    background: rgba(255, 193, 7, 0.9);
+.card-booking {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
 }
 
-/* === Responsivo === */
+.price {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: var(--text-color); /* Cambiado a blanco */
+}
+
 @media (max-width: 1200px) {
     .dashboard-main {
         grid-template-columns: 1fr;
     }
 
-    .chart-row {
-        grid-template-columns: 1fr;
-    }
-
-    .services-grid {
-        grid-template-columns: 1fr;
+    .billboard-list {
+        justify-content: center;
     }
 }
 
 @media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
     }
 
-    .large-widgets-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .featured-function .btn-white-border {
+        position: static;
+        margin-top: 15px;
     }
 
-    .large-widget {
-        padding: 20px;
-        min-height: 200px;
-    }
-
-    .large-number {
-        font-size: 2.5em;
-    }
-
-    .chart-row {
-        grid-template-columns: 1fr;
+    .featured-function {
+        min-height: auto;
     }
 }
 
 @media (max-width: 576px) {
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* 1 columna en móvil */
     }
+}
 
-    .activity-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
+
+
+
+
+/* From Uiverse.io by cohencoo */ 
+.custom-loader {  
+  width: 70px;
+  height: 70px;
+  background: #ffa600;
+  border-radius: 50px;
+  -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px),#000 95%,#0000) top 4px left 50%,
+    radial-gradient(circle 31px,#000 95%,#0000) center,
+    radial-gradient(circle 31px at 50% -13px,#000 95%,#0000) bottom 4px left 50%,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  -webkit-mask-repeat: no-repeat;
+  animation: cu10 1.5s infinite;
+}
+
+.custom-loader {
+  transform: scale(0.7); /* Reduce al 60% del tamaño */
+  transform-origin: center;
+}
+
+/* From Uiverse.io by cohencoo */ 
+.custom-loader-estadistica {  
+  width: 70px;
+  height: 70px;
+  background: #ffa600;
+  border-radius: 50px;
+  -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px),#000 95%,#0000) top 4px left 50%,
+    radial-gradient(circle 31px,#000 95%,#0000) center,
+    radial-gradient(circle 31px at 50% -13px,#000 95%,#0000) bottom 4px left 50%,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  -webkit-mask-repeat: no-repeat;
+  animation: cu10 1.5s infinite;
+}
+
+.custom-loader-estadistica {
+  transform: scale(0.6); /* Reduce al 60% del tamaño */
+  transform-origin: center;
+}
+
+
+
+@keyframes cu10 {
+  0% {
+    -webkit-mask-size: 0    18px,0    18px,0    18px,auto
+  }
+
+  16.67% {
+    -webkit-mask-size: 100% 18px,0    18px,0    18px,auto
+  }
+
+  33.33% {
+    -webkit-mask-size: 100% 18px,100% 18px,0    18px,auto
+  }
+
+  50% {
+    -webkit-mask-size: 100% 18px,100% 18px,100% 18px,auto
+  }
+
+  66.67% {
+    -webkit-mask-size: 0    18px,100% 18px,100% 18px,auto
+  }
+
+  83.33% {
+    -webkit-mask-size: 0    18px,0    18px,100% 18px,auto
+  }
+
+  100% {
+    -webkit-mask-size: 0    18px,0    18px,0    18px,auto
+  }
+}
+
+
+.flatpickr-day.ocupada {
+  background: #ff0000 !important;
+  color: white !important;
+  border-radius: 8px;
+}
+
+/* === Icons color override inside cards (widgets) === */
+.stats-grid .widget .widget-icon,
+.summary-widgets.horizontal-widgets .widget .widget-icon {
+    color: #000; /* black icons for better contrast on light areas */
+}
+
+.stats-grid .widget .widget-icon i,
+.summary-widgets.horizontal-widgets .widget .widget-icon i {
+    color: #000; /* ensure Bootstrap &lt;i&gt; icons are black even if parent color changes */
+}
+
+/* === Header welcome icon in greeting: black for contrast === */
+.dashboard-header .user-greeting .icon-circle i {
+    color: #000;
 }

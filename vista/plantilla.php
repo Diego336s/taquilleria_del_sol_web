@@ -26,6 +26,7 @@ $rutasCliente = [
     "pagar_reserva" => "vista/Dashboards/Usuario/Pagar_Reserva.php",
     "pago-exitoso" => "vista/Dashboards/Usuario/pago-exitoso.php",
     "mis_tickets" => "vista/Dashboards/Usuario/Mis_Tickets.php",
+    "terminos_condiciones_cliente" => "vista/Dashboards/Usuario/Policies/Terminos_Condiciones.php",
 
 
 ];
