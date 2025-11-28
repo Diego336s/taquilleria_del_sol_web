@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>✏️ Editar Usuario</title>
+  <title>Editar Usuario</title>
 
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

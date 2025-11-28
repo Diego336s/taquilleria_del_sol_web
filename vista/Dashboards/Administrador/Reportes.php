@@ -4,7 +4,7 @@
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <meta charset="UTF-8">
-  <title>Reportes de Ventas y Eventos</title>
+  <title> Gestión de Reportes Ventas/Eventos</title>
   <link rel="stylesheet" href="../../../css/main.css?v=1.0">
   <link rel="stylesheet" href="../../../css/admin.css?v=1.0">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

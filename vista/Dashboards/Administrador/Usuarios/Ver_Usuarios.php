@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>👥 Usuarios Registrados</title>
+  <title>Gestión Usuarios</title>
   <link rel="stylesheet" href="vista/css/admin.css?v=1.0">
 
   <!-- FontAwesome -->
@@ -123,20 +123,25 @@
       cursor: pointer;
       font-weight: bold;
       transition: all .2s ease;
+      color: #fff;
       min-width: 100px;
     }
 
     .btn-editar {
-      background-color: #00872b8a;
+      background-color: #b25d2e;
+      /* café claro / naranja quemado */
+      box-shadow: 0 4px 10px rgba(178, 93, 46, 0.5);
     }
 
     .btn-editar:hover {
-      background-color: #00872b33;
+      background-color: #d87a45;
       transform: scale(1.05);
     }
 
     .btn-eliminar {
-      background-color: #be0c0cff;
+      background-color: #8b3a22;
+      /* café rojizo */
+      box-shadow: 0 4px 10px rgba(139, 58, 34, 0.4);
     }
 
     .btn-eliminar:hover {

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard Admin</title>
+  <title>¡Bienvenido!</title>
 
   <!-- Estilos principales -->
   <link rel="stylesheet" href="vista/css/admin.css?v=1.0">
@@ -62,17 +62,17 @@
           <div class="widget">
             <div class="widget-icon"><i class="bi bi-currency-dollar"></i></div>
             <div class="widget-content">
-              <span id="totalEntradas" class="widget-number">0</span>
-              <span class="widget-title">Ingresos mes</span>
+              <span id="totalIngreso" class="widget-number">0</span>
+              <span class="widget-title">Ingreso Anual</span>
             </div>
           </div>
 
           <!-- TICKETS -->
           <div class="widget">
-            <div class="widget-icon"><i class="bi bi-ticket-perforated"></i></div>
+            <div class="widget-icon"><i class="bi bi-clipboard-data"></i></div>
             <div class="widget-content">
-              <span id="totalTickets" class="widget-number">0</span>
-              <span class="widget-title">Entradas vendidas</span>
+              <span id="totalFuncionesPendientes" class="widget-number">0</span>
+              <span class="widget-title">Funciones Pendientes</span>
             </div>
           </div>
 
@@ -80,17 +80,17 @@
           <div class="widget">
             <div class="widget-icon"><i class="bi bi-calendar-event"></i></div>
             <div class="widget-content">
-              <span id="totalEventos" class="widget-number">0</span>
-              <span class="widget-title">Funciones</span>
+              <span id="totalFuncionesActivas" class="widget-number">0</span>
+              <span class="widget-title">Funciones Activas</span>
             </div>
           </div>
 
           <!-- OCUPACIÓN -->
           <div class="widget">
-            <div class="widget-icon"><i class="bi bi-pie-chart"></i></div>
+            <div class="widget-icon"><i class="bi bi-calendar-check-fill"></i></div>
             <div class="widget-content">
-              <span id="ocupacionPromedio" class="widget-number">0</span>
-              <span class="widget-title">Ocupación</span>
+              <span id="totalFuncionesFinalizadas" class="widget-number">0</span>
+              <span class="widget-title">Funciones Realizadas</span>
             </div>
           </div>
 
@@ -135,7 +135,7 @@
             <div class="widget">
               <div class="widget-icon"><i class="bi bi-tag"></i></div>
               <div class="widget-content">
-                <span id="totalCategorías" class="widget-number">0</span>
+                <span id="totalCategorias" class="widget-number">0</span>
                 <span class="widget-title">Categorías registradas</span>
                 <a href="index.php?ruta=Ver_Categorias_Admin" class="btn btn-explore btn btn-confirm btn-full-width">
                   <i class="bi bi-tag icon-inline"></i> Gestionar Categorías
@@ -155,33 +155,79 @@
 
     <script>
       async function cargarTotalesDashboard() {
+
+        const totalIngreso = document.getElementById("totalIngreso");
         const totalClientes = document.getElementById("totalClientes");
         const totalEmpresas = document.getElementById("totalEmpresas");
-        const totalTickets = document.getElementById("totalTickets");
-        const totalEventos = document.getElementById("totalEventos");
+        const totalCategorias = document.getElementById("totalCategorias");
+        const totalFuncionesPendientes = document.getElementById("totalFuncionesPendientes");
+        const totalFuncionesActivas = document.getElementById("totalFuncionesActivas");
+        const totalFuncionesFinalizadas = document.getElementById("totalFuncionesFinalizadas");
+
+
+        // Mostrar loader antes de cargar datos
+        totalIngreso.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size: 22px; opacity: .7;"></i>`;
+        totalClientes.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size: 22px; opacity: .7;"></i>`;
+        totalEmpresas.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size: 22px; opacity: .7;"></i>`;
+        totalCategorias.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size: 22px; opacity: .7;"></i>`;
+        totalFuncionesPendientes.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size: 22px; opacity: .7;"></i>`;
+        totalFuncionesFinalizadas.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size: 22px; opacity: .7;"></i>`;
+
 
         try {
-          const resClientes = await fetch(ApiConexion + "listarClientes");
-          const clientes = await resClientes.json();
-          totalClientes.textContent = (clientes.clientes?.length ?? 0).toLocaleString();
 
-          const resEmp = await fetch(ApiConexion + "listarEmpresas");
-          const empresas = await resEmp.json();
-          totalEmpresas.textContent = (empresas.data?.length ?? 0).toLocaleString();
+          // === INGRESO ANUAL ===
+          const resIngresos = await fetch(ApiConexion + "total-recaudado-teatro-año");
+          const ingresos = await resIngresos.json();
 
-          const resTickets = await fetch(ApiConexion + "listarTickets");
-          const tickets = await resTickets.json();
-          totalTickets.textContent = (Array.isArray(tickets) ? tickets.length : 0).toLocaleString();
+          const totalAnual = ingresos.total_teatro ?? 0;
+          totalIngreso.textContent = `$${Number(totalAnual).toLocaleString('es-CO', { 
+          maximumFractionDigits: 0 
+          })}`;
 
+          // === EVENTOS ===
           const resEventos = await fetch(ApiConexion + "listarEventos");
           const eventos = await resEventos.json();
-          totalEventos.textContent = (eventos.eventos?.length ?? 0).toLocaleString();
+
+          const lista = eventos.eventos ?? eventos.data ?? [];
+
+          let pendientes = 0;
+          let activas = 0;
+          let finalizadas = 0;
+
+          const hoy = new Date();
+          const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+
+          lista.forEach(ev => {
+            const fecha = new Date(ev.fecha);
+
+            if (ev.estado === "pendiente") pendientes++;
+            if (ev.estado === "activo") activas++;
+            if (ev.estado === "finalizado") finalizadas++;
+          });
+
+          totalFuncionesPendientes.textContent = pendientes;
+          totalFuncionesActivas.textContent = activas;
+          totalFuncionesFinalizadas.textContent = finalizadas;
+
+
+          // === CLIENTES ===
+          const resClientes = await fetch(ApiConexion + "listarClientes");
+          const clientes = await resClientes.json();
+          totalClientes.textContent = (clientes.data?.length ?? clientes.clientes?.length ?? 0);
+
+          // === EMPRESAS ===
+          const resEmp = await fetch(ApiConexion + "listarEmpresas");
+          const empresas = await resEmp.json();
+          totalEmpresas.textContent = (empresas.data?.length ?? empresas.empresas?.length ?? 0);
+
+          // === CATEGORÍAS ===
+          const resCategorias = await fetch(ApiConexion + "listarCategorias");
+          const categorias = await resCategorias.json();
+          totalCategorias.textContent = (categorias.data?.length ?? categorias.categorias?.length ?? 0);
 
         } catch (err) {
-          totalClientes.textContent =
-            totalEmpresas.textContent =
-            totalTickets.textContent =
-            totalEventos.textContent = "—";
+          console.error("Error al cargar dashboard:", err);
         }
       }
 

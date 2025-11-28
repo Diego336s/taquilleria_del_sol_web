@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Categorías Registradas</title>
+  <title>Gestión Categorías</title>
   <link rel="stylesheet" href="vista/css/admin.css?v=1.0">
   <style>
     /* === CORTINA OSCURA DE FONDO === */
