@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <meta charset="UTF-8">
   <title>Reportes de Ventas y Eventos</title>
   <link rel="stylesheet" href="../../../css/main.css?v=1.0">
@@ -10,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-        /* === CORTINA OSCURA GLOBAL === */
+    /* === CORTINA OSCURA GLOBAL === */
     body {
       position: relative;
     }
@@ -54,7 +55,6 @@
       background: rgba(255, 255, 255, 0.15);
       border-radius: 10px;
       overflow: hidden;
-      margin-bottom: 40px;
     }
 
     th,
@@ -89,7 +89,6 @@
     .btn-edit {
       background-color: #28a745;
       color: #fff;
-      box-shadow: 0 10px 20px rgba(0, 255, 100, 0.5);
       margin-right: 5px;
     }
 
@@ -99,13 +98,20 @@
     }
 
     .btn-back {
-      position: fixed;
       top: 25px;
       left: 25px;
       background-color: #9c4012e6;
       color: #fff;
       box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
       z-index: 999;
+      
+    }
+
+    .controles-tabla {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
     }
 
     .btn-back:hover {
@@ -197,66 +203,87 @@
       margin-right: auto;
       font-size: 0.9em;
     }
+
+    /* Contenedor para tablas responsivas */
+    .table-responsive {
+      overflow-x: auto;
+      margin-bottom: 40px;
+      border-radius: 10px; /* Para que el scroll no oculte los bordes redondeados de la tabla */
+    }
+
+    /* Ocultar scrollbar en webkit pero mantener funcionalidad */
+    .table-responsive::-webkit-scrollbar {
+      height: 8px;
+    }
   </style>
 </head>
 
 <body>
 
-  <button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver a Inicio</button>
 
   <div class="dashboard-container">
     <h1>💰 Reportes de Ventas (Tickets)</h1>
-
-    <!-- Buscador tickets -->
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" id="buscador-tickets" placeholder="Buscar tickets...">
+    <div class="controles-tabla">
+      <button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver a Inicio</button>
+      <!-- Buscador tickets -->
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="buscador-tickets" placeholder="Buscar tickets...">
+      </div>
     </div>
-
-    <table id="tabla-reportes">
-      <thead>
-        <tr>
-          <th>Evento</th>
-          <th>Cliente</th>
-          <th>Precio</th>
-          <th>Estado</th>
-          <th>Fecha de Compra</th>
-        </tr>
-      </thead>
-      <tbody id="tbody-reportes">
-        <tr>
-          <td colspan="6" class="loading">Cargando reportes...</td>
-        </tr>
-      </tbody>
-    </table>
+    
+    <div class="table-responsive">
+      <table id="tabla-reportes">
+        <thead>
+          <tr>
+            <th>Evento</th>
+            <th>Cliente</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Fecha de Compra</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-reportes">
+          <tr>
+            <td colspan="6" class="loading">Cargando reportes...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div id="paginacion-tickets" class="pagination"></div>
 
     <h1>🎭 Reporte de Eventos</h1>
 
-    <!-- Buscador eventos -->
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" id="buscador-eventos" placeholder="Buscar eventos...">
+    <!-- Controles de la tabla de eventos -->
+    <div class="controles-tabla">
+      <button class="btn btn-back" onclick="volverDashboard()">⬅️ Volver a Inicio</button>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="buscador-eventos" placeholder="Buscar eventos...">
+      </div>
     </div>
 
-    <table id="tabla-eventos">
-      <thead>
-        <tr>
-          <th>Título</th>
-          <th>Fecha</th>
-          <th>Hora Inicio</th>
-          <th>Hora Fin</th>
-          <th>Estado</th>
-          <th>Empresa</th>
-          <th>Categoría</th>
-        </tr>
-      </thead>
-      <tbody id="tbody-eventos">
-        <tr>
-          <td colspan="9" class="loading">Cargando eventos...</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table id="tabla-eventos">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Fecha</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fin</th>
+            <th>Estado</th>
+            <th>Empresa</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-eventos">
+          <tr>
+            <td colspan="9" class="loading">Cargando eventos...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
@@ -492,6 +519,19 @@
           eventos.forEach(evento => {
             const empresaNombre = empresasMap[evento.empresa_id] || "—";
             const categoriaNombre = categoriasMap[evento.categoria_id] || "—";
+            let accionesHtml = '';
+
+            // Mostrar el botón solo si el evento está finalizado
+            if (evento.estado && evento.estado.toLowerCase() === 'finalizado') {
+              accionesHtml = `<button class="btn btn-edit" style="background-color: #1d6f42;" onclick="exportarEvento(${evento.id})">
+                                <i class="fas fa-file-excel"></i> Exportar Reporte
+                              </button>`;
+            } else {
+              accionesHtml = `<button class="btn btn-edit" style="background-color: #1d6f42;" disabled>
+                                <i class="fas fa-file-excel"></i> Sin Finalizar
+                              </button>`;
+            }
+
             tbody.innerHTML += `
           <tr>
             <td>${evento.titulo ?? '—'}</td>
@@ -501,6 +541,7 @@
             <td>${evento.estado ?? '—'}</td>
             <td>${empresaNombre}</td>
             <td>${categoriaNombre}</td>
+            <td>${accionesHtml}</td>
           </tr>`;
           });
         } else {
@@ -511,6 +552,65 @@
         tbody.innerHTML = '<tr><td colspan="9" class="loading">Error cargando eventos</td></tr>';
       }
     }
+
+    async function exportarEvento(eventoId) {
+
+      Swal.fire({
+        title: "Generando reporte...",
+        html: "Por favor espera unos segundos",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      try {
+        const response = await fetch(`${ApiConexion}exportar/evento/${eventoId}`, {
+          method: "GET",
+          headers: {
+            "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          }
+        });
+
+        if (!response.ok) {
+          Swal.close();
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo generar el reporte. Verifica que existan tickets para este evento."
+          });
+          return;
+        }
+
+        // Obtener el Blob del Excel
+        const blob = await response.blob();
+
+        // Crear enlace de descarga
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Reporte_Evento_${eventoId}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        Swal.close();
+        Swal.fire({
+          icon: "success",
+          title: "Reporte generado",
+          text: "El archivo Excel ha sido descargado correctamente."
+        });
+
+      } catch (error) {
+        Swal.close();
+        console.error("Error exportando evento:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error inesperado",
+          text: "Hubo un problema al exportar el reporte."
+        });
+      }
+    }
+
 
     function volverDashboard() {
       window.location.href = 'index.php?ruta=dashboard-admin';
