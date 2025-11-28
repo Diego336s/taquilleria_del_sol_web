@@ -11,21 +11,29 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         transition: background-color 0.2s ease-in-out;
     }
+
     .config-option:first-child {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     .config-option:hover {
         background-color: rgba(255, 255, 255, 0.05);
         color: #fff;
     }
-    .config-option .option-text { flex-grow: 1; }
-    .config-option .option-icon { width: 30px; }
+
+    .config-option .option-text {
+        flex-grow: 1;
+    }
+
+    .config-option .option-icon {
+        width: 30px;
+    }
 </style>
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; padding-top: 2rem; padding-bottom: 2rem;">
     <div class="card p-4 shadow login-card" style="max-width: 700px; width: 100%;">
         <div class="card-body">
-            
+
             <div class="text-center mb-4">
                 <img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" alt="Icono de Configuración" class="login-logo mb-3">
                 <h1 class="h3 text-white">Configuración de la Cuenta</h1>
@@ -76,8 +84,16 @@
                     </form>
                 </div>
             </div>
+            <div class="mb-4">
+                <a href="index.php?ruta=TerminosYCondiciones" class="btn btn-outline-light w-100 mb-3"   aria-controls="collapseEmail">
+                    <i class="fas fa-book"></i>
 
-       
+                    Terminos y Condiciones
+                </a>
+
+            </div>
+
+
 
             <!-- Volver al Dashboard -->
             <p class="mt-4 text-center small">
