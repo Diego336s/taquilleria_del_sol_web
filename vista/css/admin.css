@@ -1,10 +1,33 @@
 /*Dashboard General (Usuario y Empresa)*/
 
+/* ESTILO DE ASIENTOS */
+#detalleAsientos {
+    margin: 10px 0 0 0;
+    padding: 0;
+    list-style: none;
+
+    /* Asientos en cuadrícula */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+}
+
+/* Cada asiento */
+#detalleAsientos li {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
 
 /* === Variables CSS === */
 :root {
-    --primary-orange: #602000; /* Naranja principal más brillante para mejor contraste */
-    --light-orange: #fff1e5;   /* Fondo de los widgets (crema/naranja muy claro) */
+    --primary-orange: #602000;
+    /* Naranja principal más brillante para mejor contraste */
+    --light-orange: #fff1e5;
+    /* Fondo de los widgets (crema/naranja muy claro) */
 
     /* Colores de texto para el fondo oscuro */
     --text-color: #ffffff;
@@ -15,7 +38,8 @@
     --card-blur: blur(10px);
     --card-border: 1px solid rgba(255, 255, 255, 0.2);
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    --card-hover-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45); /* Sombra más pronunciada para el hover */
+    --card-hover-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+    /* Sombra más pronunciada para el hover */
 
     --border-radius: 1.2rem;
 }
@@ -56,7 +80,8 @@
 
 .btn-secondary {
     background: transparent;
-    color: var(--text-color) !important; /* Asegurar texto blanco */
+    color: var(--text-color) !important;
+    /* Asegurar texto blanco */
 }
 
 .btn-confirm {
@@ -96,7 +121,8 @@
     align-items: center;
     padding-bottom: 20px;
     font-size: 1.1em;
-    color: var(--text-color); /* Asegurar que el texto del header sea blanco */
+    color: var(--text-color);
+    /* Asegurar que el texto del header sea blanco */
 }
 
 .user-greeting {
@@ -110,7 +136,7 @@
     font-weight: bold;
 }
 
-.centrar{
+.centrar {
     text-align: center;
 }
 
@@ -124,12 +150,14 @@
 
 /* Estilo para el contenedor de la tarjeta, forzando un fondo blanco si es necesario */
 .recent-reservations-card {
-    background-color: #ffffff; /* Fondo blanco */
-    color: #333; /* Texto oscuro */
+    background-color: #ffffff;
+    /* Fondo blanco */
+    color: #333;
+    /* Texto oscuro */
     padding: 20px;
     /* Remover estilos de glassmorphism si se heredan */
     backdrop-filter: none;
-    border: none; 
+    border: none;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -144,7 +172,8 @@
 .reservation-list {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espacio entre cada reserva */
+    gap: 15px;
+    /* Espacio entre cada reserva */
     margin-bottom: 20px;
     width: 100%;
 }
@@ -192,19 +221,22 @@
 
 /* Color para estado Confirmado (verde claro) */
 .status-confirmed {
-    background-color: #e6f7e9; 
-    color: #38a169; /* Verde oscuro */
+    background-color: #e6f7e9;
+    color: #38a169;
+    /* Verde oscuro */
 }
 
 /* Color para estado Pendiente (amarillo claro) */
 .status-pending {
     background-color: #fffbe6;
-    color: #d69e2e; /* Amarillo oscuro */
+    color: #d69e2e;
+    /* Amarillo oscuro */
 }
 
 /* Color para insignias de conteo (naranja) */
 .status-count {
-    background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+    background-color: rgba(255, 255, 255, 0.15);
+    /* Fondo semitransparente */
     color: var(--text-color);
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
@@ -212,8 +244,10 @@
 /* Estilo para el botón de ancho completo al final */
 .btn-full-width {
     width: 100%;
-    margin-top: 0; /* Asegurarse de que no herede un margen grande */
-    padding: 12px 18px; /* Hacerlo un poco más alto */
+    margin-top: 0;
+    /* Asegurarse de que no herede un margen grande */
+    padding: 12px 18px;
+    /* Hacerlo un poco más alto */
     font-size: 1em;
 }
 
@@ -227,21 +261,25 @@
 .widget .header-actions .btn {
     width: 100%;
 }
+
 .header-actions .btn-explore {
-    background-color: #602000; /* Naranja vibrante */
+    background-color: #602000;
+    /* Naranja vibrante */
     color: white;
     box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 }
 
 .header-actions .btn-profile {
-    background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+    background-color: rgba(255, 255, 255, 0.15);
+    /* Fondo semitransparente */
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 
 .header-actions .btn-Reservar {
-    background-color: rgb(130, 71, 16); /* Fondo semitransparente */
+    background-color: rgb(130, 71, 16);
+    /* Fondo semitransparente */
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
@@ -255,24 +293,28 @@
 }
 
 .stats-grid .widget-number {
-    font-size: 2em; /* Un poco más pequeño para que quepa bien */
+    font-size: 2em;
+    /* Un poco más pequeño para que quepa bien */
 }
 
 /* Ajustes para los widgets dentro de la rejilla de estadísticas */
 .stats-grid .widget {
-    flex-direction: row; /* Icono y contenido en fila */
+    flex-direction: row;
+    /* Icono y contenido en fila */
     align-items: center;
     gap: 15px;
 }
 
 .stats-grid .widget-icon {
-    margin-bottom: 0; /* Quitar margen inferior al icono */
+    margin-bottom: 0;
+    /* Quitar margen inferior al icono */
 }
 
 
 .dashboard-main {
     display: grid;
-    grid-template-columns: 1fr 3fr; /* Columna izquierda estrecha, derecha ancha */
+    grid-template-columns: 1fr 3fr;
+    /* Columna izquierda estrecha, derecha ancha */
     gap: 25px;
 }
 
@@ -301,15 +343,18 @@
     box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
     padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Animación suave */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
 .widget:hover {
-    transform: translateY(-8px); /* Efecto de elevación */
-    box-shadow: var(--card-hover-shadow); /* Sombra más intensa */
+    transform: translateY(-8px);
+    /* Efecto de elevación */
+    box-shadow: var(--card-hover-shadow);
+    /* Sombra más intensa */
 }
 
 .widget-icon {
@@ -398,11 +443,13 @@
 }
 
 .seat-dot.available {
-    background-color: var(--primary-orange); /* Naranja oscuro */
+    background-color: var(--primary-orange);
+    /* Naranja oscuro */
 }
 
 .seat-dot.booked {
-    background-color: var(--light-orange); /* Naranja claro */
+    background-color: var(--light-orange);
+    /* Naranja claro */
     opacity: 0.7;
 }
 
@@ -469,7 +516,8 @@
 }
 
 .view-all-link {
-    color: var(--text-color); /* Cambiado a blanco para mejor contraste */
+    color: var(--text-color);
+    /* Cambiado a blanco para mejor contraste */
     text-decoration: none;
     font-weight: 500;
     white-space: nowrap;
@@ -478,25 +526,30 @@
 .billboard-list {
     display: flex;
     gap: 25px;
-    overflow-x: auto; /* Permite scroll horizontal si hay muchas tarjetas */
+    overflow-x: auto;
+    /* Permite scroll horizontal si hay muchas tarjetas */
     padding-bottom: 10px;
 }
 
 .billboard-card {
-    flex: 0 0 320px; /* Tamaño fijo para cada tarjeta */
+    flex: 0 0 320px;
+    /* Tamaño fijo para cada tarjeta */
     /* Aplicamos el estilo de cristal */
     background: var(--card-background);
     backdrop-filter: var(--card-blur);
     border: var(--card-border);
     box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Animación suave */
     overflow: hidden;
 }
 
 .billboard-card:hover {
-    transform: translateY(-8px); /* Efecto de elevación */
-    box-shadow: var(--card-hover-shadow); /* Sombra más intensa */
+    transform: translateY(-8px);
+    /* Efecto de elevación */
+    box-shadow: var(--card-hover-shadow);
+    /* Sombra más intensa */
 }
 
 .card-image-container {
@@ -523,9 +576,17 @@
     font-weight: bold;
 }
 
-.tag-drama { background-color: #6a1b9a; } 
-.tag-musical { background-color: #00897b; } 
-.tag-comedy { background-color: #ffb300; } 
+.tag-drama {
+    background-color: #6a1b9a;
+}
+
+.tag-musical {
+    background-color: #00897b;
+}
+
+.tag-comedy {
+    background-color: #ffb300;
+}
 
 .favorite-icon {
     position: absolute;
@@ -599,7 +660,8 @@
 .price {
     font-size: 1.4em;
     font-weight: bold;
-    color: var(--text-color); /* Cambiado a blanco */
+    color: var(--text-color);
+    /* Cambiado a blanco */
 }
 
 @media (max-width: 1200px) {
@@ -625,7 +687,8 @@
     }
 
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columnas en tablet */
     }
 
     .featured-function .btn-white-border {
@@ -640,7 +703,8 @@
 
 @media (max-width: 576px) {
     .stats-grid {
-        grid-template-columns: 1fr; /* 1 columna en móvil */
+        grid-template-columns: 1fr;
+        /* 1 columna en móvil */
     }
 }
 
@@ -648,96 +712,100 @@
 
 
 
-/* From Uiverse.io by cohencoo */ 
-.custom-loader {  
-  width: 70px;
-  height: 70px;
-  background: #ffa600;
-  border-radius: 50px;
-  -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px),#000 95%,#0000) top 4px left 50%,
-    radial-gradient(circle 31px,#000 95%,#0000) center,
-    radial-gradient(circle 31px at 50% -13px,#000 95%,#0000) bottom 4px left 50%,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  -webkit-mask-repeat: no-repeat;
-  animation: cu10 1.5s infinite;
+/* From Uiverse.io by cohencoo */
+.custom-loader {
+    width: 70px;
+    height: 70px;
+    background: #ffa600;
+    border-radius: 50px;
+    -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px), #000 95%, #0000) top 4px left 50%,
+        radial-gradient(circle 31px, #000 95%, #0000) center,
+        radial-gradient(circle 31px at 50% -13px, #000 95%, #0000) bottom 4px left 50%,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    -webkit-mask-repeat: no-repeat;
+    animation: cu10 1.5s infinite;
 }
 
 .custom-loader {
-  transform: scale(0.7); /* Reduce al 60% del tamaño */
-  transform-origin: center;
+    transform: scale(0.7);
+    /* Reduce al 60% del tamaño */
+    transform-origin: center;
 }
 
-/* From Uiverse.io by cohencoo */ 
-.custom-loader-estadistica {  
-  width: 70px;
-  height: 70px;
-  background: #ffa600;
-  border-radius: 50px;
-  -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px),#000 95%,#0000) top 4px left 50%,
-    radial-gradient(circle 31px,#000 95%,#0000) center,
-    radial-gradient(circle 31px at 50% -13px,#000 95%,#0000) bottom 4px left 50%,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  -webkit-mask-repeat: no-repeat;
-  animation: cu10 1.5s infinite;
+/* From Uiverse.io by cohencoo */
+.custom-loader-estadistica {
+    width: 70px;
+    height: 70px;
+    background: #ffa600;
+    border-radius: 50px;
+    -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px), #000 95%, #0000) top 4px left 50%,
+        radial-gradient(circle 31px, #000 95%, #0000) center,
+        radial-gradient(circle 31px at 50% -13px, #000 95%, #0000) bottom 4px left 50%,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    -webkit-mask-repeat: no-repeat;
+    animation: cu10 1.5s infinite;
 }
 
 .custom-loader-estadistica {
-  transform: scale(0.6); /* Reduce al 60% del tamaño */
-  transform-origin: center;
+    transform: scale(0.6);
+    /* Reduce al 60% del tamaño */
+    transform-origin: center;
 }
 
 
 
 @keyframes cu10 {
-  0% {
-    -webkit-mask-size: 0    18px,0    18px,0    18px,auto
-  }
+    0% {
+        -webkit-mask-size: 0 18px, 0 18px, 0 18px, auto
+    }
 
-  16.67% {
-    -webkit-mask-size: 100% 18px,0    18px,0    18px,auto
-  }
+    16.67% {
+        -webkit-mask-size: 100% 18px, 0 18px, 0 18px, auto
+    }
 
-  33.33% {
-    -webkit-mask-size: 100% 18px,100% 18px,0    18px,auto
-  }
+    33.33% {
+        -webkit-mask-size: 100% 18px, 100% 18px, 0 18px, auto
+    }
 
-  50% {
-    -webkit-mask-size: 100% 18px,100% 18px,100% 18px,auto
-  }
+    50% {
+        -webkit-mask-size: 100% 18px, 100% 18px, 100% 18px, auto
+    }
 
-  66.67% {
-    -webkit-mask-size: 0    18px,100% 18px,100% 18px,auto
-  }
+    66.67% {
+        -webkit-mask-size: 0 18px, 100% 18px, 100% 18px, auto
+    }
 
-  83.33% {
-    -webkit-mask-size: 0    18px,0    18px,100% 18px,auto
-  }
+    83.33% {
+        -webkit-mask-size: 0 18px, 0 18px, 100% 18px, auto
+    }
 
-  100% {
-    -webkit-mask-size: 0    18px,0    18px,0    18px,auto
-  }
+    100% {
+        -webkit-mask-size: 0 18px, 0 18px, 0 18px, auto
+    }
 }
 
 
 .flatpickr-day.ocupada {
-  background: #ff0000 !important;
-  color: white !important;
-  border-radius: 8px;
+    background: #ff0000 !important;
+    color: white !important;
+    border-radius: 8px;
 }
 
 /* === Icons color override inside cards (widgets) === */
 .stats-grid .widget .widget-icon,
 .summary-widgets.horizontal-widgets .widget .widget-icon {
-    color: #000; /* black icons for better contrast on light areas */
+    color: #000;
+    /* black icons for better contrast on light areas */
 }
 
 .stats-grid .widget .widget-icon i,
 .summary-widgets.horizontal-widgets .widget .widget-icon i {
-    color: #000; /* ensure Bootstrap &lt;i&gt; icons are black even if parent color changes */
+    color: #000;
+    /* ensure Bootstrap &lt;i&gt; icons are black even if parent color changes */
 }
 
 /* === Header welcome icon in greeting: black for contrast === */

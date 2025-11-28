@@ -146,48 +146,47 @@
         </aside>
       </section>
     </main>
-  </div>
 
-  <!-- ===================================== -->
-  <!--                SCRIPTS                -->
-  <!-- ===================================== -->
-  <script src="../../../js/ApiConexion.js"></script>
-  <script src="../../../js/Admin/Dashboard_Admin.js"></script>
+    <!-- ===================================== -->
+    <!--                SCRIPTS                -->
+    <!-- ===================================== -->
+    <script src="../../../js/ApiConexion.js"></script>
+    <script src="../../../js/Admin/Dashboard_Admin.js"></script>
 
-  <script>
-    async function cargarTotalesDashboard() {
-      const totalClientes = document.getElementById("totalClientes");
-      const totalEmpresas = document.getElementById("totalEmpresas");
-      const totalTickets = document.getElementById("totalTickets");
-      const totalEventos = document.getElementById("totalEventos");
+    <script>
+      async function cargarTotalesDashboard() {
+        const totalClientes = document.getElementById("totalClientes");
+        const totalEmpresas = document.getElementById("totalEmpresas");
+        const totalTickets = document.getElementById("totalTickets");
+        const totalEventos = document.getElementById("totalEventos");
 
-      try {
-        const resClientes = await fetch(ApiConexion + "listarClientes");
-        const clientes = await resClientes.json();
-        totalClientes.textContent = (clientes.clientes?.length ?? 0).toLocaleString();
+        try {
+          const resClientes = await fetch(ApiConexion + "listarClientes");
+          const clientes = await resClientes.json();
+          totalClientes.textContent = (clientes.clientes?.length ?? 0).toLocaleString();
 
-        const resEmp = await fetch(ApiConexion + "listarEmpresas");
-        const empresas = await resEmp.json();
-        totalEmpresas.textContent = (empresas.data?.length ?? 0).toLocaleString();
+          const resEmp = await fetch(ApiConexion + "listarEmpresas");
+          const empresas = await resEmp.json();
+          totalEmpresas.textContent = (empresas.data?.length ?? 0).toLocaleString();
 
-        const resTickets = await fetch(ApiConexion + "listarTickets");
-        const tickets = await resTickets.json();
-        totalTickets.textContent = (Array.isArray(tickets) ? tickets.length : 0).toLocaleString();
+          const resTickets = await fetch(ApiConexion + "listarTickets");
+          const tickets = await resTickets.json();
+          totalTickets.textContent = (Array.isArray(tickets) ? tickets.length : 0).toLocaleString();
 
-        const resEventos = await fetch(ApiConexion + "listarEventos");
-        const eventos = await resEventos.json();
-        totalEventos.textContent = (eventos.eventos?.length ?? 0).toLocaleString();
+          const resEventos = await fetch(ApiConexion + "listarEventos");
+          const eventos = await resEventos.json();
+          totalEventos.textContent = (eventos.eventos?.length ?? 0).toLocaleString();
 
-      } catch (err) {
-        totalClientes.textContent =
-          totalEmpresas.textContent =
-          totalTickets.textContent =
-          totalEventos.textContent = "—";
+        } catch (err) {
+          totalClientes.textContent =
+            totalEmpresas.textContent =
+            totalTickets.textContent =
+            totalEventos.textContent = "—";
+        }
       }
-    }
 
-    document.addEventListener("DOMContentLoaded", cargarTotalesDashboard);
-  </script>
+      document.addEventListener("DOMContentLoaded", cargarTotalesDashboard);
+    </script>
 
 </body>
 

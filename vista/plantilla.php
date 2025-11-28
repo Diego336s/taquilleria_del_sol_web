@@ -55,7 +55,10 @@ $rutasAdmin = [
     //Perfil
     "mi_perfil_admin" => "vista\Dashboards\Administrador\Mi_Perfil.php",
     //Configuracion
-    "Configuracion_admin" => "vista\Dashboards\Administrador\Configuracion.php",
+    "Configuracion_admin" => "vista\Dashboards\Administrador\Settings\Configuracion.php",
+    "cambiar_contrasena_admin" => "vista/Dashboards/Administrador/Settings/Cambiar_Contrasena_Admin.php",
+    "cambiar_correo_admin" => "vista/Dashboards/Administrador/Settings/Cambiar_Correo_Admin.php",
+
     //Gestion Usuarios/Clientes
     "Crear_Usuario" => "vista/Dashboards/Administrador/Usuarios/Crear_Usuario.php",
     "Editar_Usuario" => "vista/Dashboards/Administrador/Usuarios/Editar_Usuario.php",

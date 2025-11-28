@@ -37,12 +37,12 @@
                     <i class="fas fa-shield-alt me-2"></i>Seguridad
                 </h5>
                 <div class="config-options-container">
-                    <a href="index.php?ruta=cambiar_contrasena_cliente" class="config-option">
+                    <a href="index.php?ruta=cambiar_contrasena_admin" class="config-option">
                         <i class="fas fa-key option-icon me-3"></i>
                         <span class="option-text">Cambiar Contraseña</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="index.php?ruta=cambiar_correo_cliente" class="config-option">
+                    <a href="index.php?ruta=cambiar_correo_admin" class="config-option">
                         <i class="fas fa-envelope option-icon me-3"></i>
                         <span class="option-text">Cambiar Correo</span>
                         <i class="fas fa-chevron-right"></i>
@@ -65,3 +65,5 @@
         </div>
     </div>
 </div>
+
+

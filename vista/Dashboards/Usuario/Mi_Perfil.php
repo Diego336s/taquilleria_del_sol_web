@@ -25,8 +25,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="profile_documento" class="form-label">Documento</label>
-                            <input type="text" class="form-control" id="profile_documento" name="documento" placeholder="Tu documento" required readonly>
-                            <small class="text-white-50">El documento no se puede modificar.</small>
+                            <input type="text" class="form-control" id="profile_documento" name="documento" placeholder="Tu documento" required>
                         </div>
                     </div>
 

@@ -17,13 +17,15 @@
     .page-header .page-title {
         font-size: 2.5rem;
         font-weight: bold;
-        color: #ffd966;
-        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        color: #ffffffff;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
     .page-header .page-subtitle {
         font-size: 1.1rem;
         color: #e0e0e0;
+        text-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+
     }
 
     .ticket-card {
@@ -100,7 +102,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 180px;
+        width: 230px;
         position: relative;
         border-left: 2px dashed rgba(255, 215, 0, 0.3);
     }
@@ -111,7 +113,7 @@
         position: absolute;
         left: -11px;
         width: 20px;
-        height: 20px;
+        height: 10px;
         background: #121212;
         /* Debe coincidir con el fondo del contenedor principal */
         border-radius: 50%;
@@ -126,11 +128,11 @@
     }
 
     .ticket-qr {
-        width: 120px;
-        height: 120px;
-        background-color: white;
-        padding: 5px;
-        border-radius: 5px;
+        width: 220px;
+        height: 250px;
+        background-color: whte;
+        padding: 4px;
+        border-radius: 7px;
     }
 
     .ticket-qr img {
@@ -198,6 +200,44 @@
         font-size: 26px;
         cursor: pointer;
         color: #fbbf24;
+    }
+
+    /* Contenedor elegante */
+    .estado-container {
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    /* Estilo general del badge */
+    .estado-ticket {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        display: inline-block;
+        color: white;
+        border: 1px solid transparent;
+    }
+
+    /* ACTIVO - Verde */
+    .estado-ticket.activo {
+        background-color: #28a745;
+        border-color: #1f8a39;
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+    }
+
+    /* USADO - Rojo */
+    .estado-ticket.usado {
+        background-color: #dc3545;
+        border-color: #b52a36;
+        box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+    }
+
+    /* Modo impresión */
+    @media print {
+        .estado-ticket {
+            box-shadow: none;
+        }
     }
 </style>
 

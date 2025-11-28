@@ -37,6 +37,12 @@
                 <input type="date" class="form-control" id="id_fecha_Nacimiento" name="reg_fecha_Nacimiento" required>
             </div>
         </div>
+
+        <script>
+            const hoy = new Date().toISOString().split("T")[0];
+            document.getElementById("id_fecha_Nacimiento").setAttribute("max", hoy);
+        </script>
+
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="id_Telefono" class="form-label">Teléfono</label>
