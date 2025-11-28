@@ -240,6 +240,12 @@
 }
 
 
+.header-actions .btn-eventos_realizados {
+    background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
 .header-actions .btn-Reservar {
     background-color: #602000; /* Fondo semitransparente */
     color: white;

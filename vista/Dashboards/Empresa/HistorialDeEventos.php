@@ -1,4 +1,4 @@
-<title>Eventos realizados</title>
+<title>Historial de eventos</title>
 <link rel="stylesheet" href="vista\css\Empresa\Eventos_Realizados.css">
 
 
@@ -39,7 +39,7 @@
   
 
     <div class="header-section">
-        <h1><i class="fa-solid fa-building"></i> Eventos Finalizados</h1>
+        <h1><i class="fa-solid fa-building"></i> Historial de eventos</h1>
 
         <!-- 🔍 Buscador -->
         <div class="search-box">

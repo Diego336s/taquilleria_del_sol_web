@@ -1,3 +1,4 @@
+<title>Configuraciones</title>
 <!-- Enlazamos la hoja de estilos principal para mantener la coherencia -->
 <link rel="stylesheet" href="vista/css/main.css?v=1.1">
 <style>
@@ -76,16 +77,7 @@
                 </div>
             </div>
 
-            <!-- Eliminar Cuenta -->
-            <div class="mb-4">
-                <button class="btn btn-outline-danger w-100 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDelete" aria-expanded="false" aria-controls="collapseDelete">
-                    <i class="fas fa-trash-alt me-2"></i>Eliminar Cuenta
-                </button>
-                <div class="collapse" id="collapseDelete">
-                    <p class="text-white-50 mb-3">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
-                    <button type="button" class="btn btn-danger w-100" id="btn_eliminar_cuenta_empresa">Eliminar Cuenta</button>
-                </div>
-            </div>
+       
 
             <!-- Volver al Dashboard -->
             <p class="mt-4 text-center small">

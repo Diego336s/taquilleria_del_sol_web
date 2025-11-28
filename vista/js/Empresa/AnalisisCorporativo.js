@@ -37,15 +37,31 @@ async function cargarTotalVendido(empresaId) {
     console.log("TOTAL AÑO:", data);
 
 
-    document.getElementById("contenedorIngresosTotales").innerHTML = `     
-            <div class="progress-group">
-                <p>Total vendido en el año:</p>
-                <div class="bar">
-                    <div class="fill" style="width:100%"></div>
-                </div>
-                
-            </div>
-            <h4>Total <span class="total">$${Number(data.total_vendido).toLocaleString("es-CO")}</span></h4>`;
+   document.getElementById("contenedorIngresosTotales").innerHTML = `     
+
+    <div class="progress-group">
+        <p>Total vendido en el año:</p>
+        <div class="bar">
+            <div class="fill" style="width:${data.porcentaje_meses_transcurridos}%;  background:#ff9800"></div>
+        </div>
+    </div>   
+
+    <h4>Recaudo empresa: 
+        <span class="total" style="color:#28a745">$${Number(data.recaudo_empresa).toLocaleString("es-CO")}</span>
+    </h4>
+
+    <h4>Recaudo teatro: 
+        <span class="total" style="color:#ff6b1f">$${Number(data.recaudo_teatro).toLocaleString("es-CO")}</span>
+    </h4>
+     <h4>Total vendido: 
+        <span class="total">$${Number(data.total_vendido).toLocaleString("es-CO")}</span>
+    </h4>
+
+    <p style="font-size:12px; color:#888; margin-top:5px;">
+        (${data.porcentaje_meses_transcurridos}% del año transcurrido)
+    </p>
+`;
+
 
 }
 
@@ -58,7 +74,7 @@ async function cargarEntradasMensuales(empresaId) {
 
     contenedor.innerHTML = ""; // limpiar primero
 
-    data.estradasMensuales.forEach(m => {
+    data.entradasMensuales.forEach(m => {
         let mesTexto = "";
 
         switch (m.mes) {
@@ -76,13 +92,28 @@ async function cargarEntradasMensuales(empresaId) {
             case 12: mesTexto = "Diciembre"; break;
             default: mesTexto = "Mes no reconocido";
         }
+        // Convertir valores a número
+        const totalEmpresa = Number(m.total_empresa).toLocaleString("es-CO");
+        const totalTeatro = Number(m.total_teatro).toLocaleString("es-CO");
+
+
+
 
         contenedor.innerHTML += `
-            <p>${mesTexto} <span>$${Number(m.total).toLocaleString("es-CO")}</span></p>
-            <div class="bar">
-                <div class="fill" style="width:100%"></div>
-            </div>
-        `;
+        <p>${mesTexto} 
+            <span>
+                Empresa: $${totalEmpresa.toLocaleString("es-CO")} 
+                — Teatro: $${totalTeatro.toLocaleString("es-CO")}
+            </span>
+        </p>
+
+        <div class="bar">
+            <div class="fill" style="width:${m.porcentaje_mes}%; background:#ff9800"></div>
+        </div>
+      
+
+        <br>
+    `;
     });
 }
 

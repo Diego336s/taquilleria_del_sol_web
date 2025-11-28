@@ -1,3 +1,7 @@
+
+<title>¡Bienvenido!</title>
+
+
 <!-- Enlazamos la hoja de estilos específica para este dashboard -->
 <link rel="stylesheet" href="vista/css/empresa.css?v=1.0">
 <link rel="stylesheet" href="vista/css/main.css?v=1.0">
@@ -20,7 +24,7 @@
 
 
       <a href="index.php?ruta=Configuracion_empresa" class="btn btn-explore">
-        <i class="fas fa-cog me-2"></i> Mi Equipo
+        <i class="fas fa-cog me-2"></i> Configuraciones
       </a>
 
 
@@ -63,7 +67,8 @@
           <span class="widget-title h3 centrar">Acciones Rápidas</span>
           <div class="header-actions">
             <a href="index.php?ruta=Reservar_funciones" class="btn btn-Reservar"><span class="icon-inline">📋</span> Reservar función</a>
-            <a href="index.php?ruta=Eventos_realizados" class="btn btn-profile"><span class="icon-inline">📆</span>Eventos realizados</a>
+            <a href="index.php?ruta=Eventos_realizados" class="btn btn-eventos_realizados"><span class="icon-inline">📆</span>Eventos realizados</a>
+             <a href="index.php?ruta=HistorialDeEventos" class="btn btn-profile"><span class="icon-inline">🗂️</span>Historial de eventos</a>
          
           </div>
         </div>

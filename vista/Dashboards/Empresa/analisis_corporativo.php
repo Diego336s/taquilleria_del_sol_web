@@ -1,3 +1,4 @@
+<title>Analisis corporativo</title>
 <link rel="stylesheet" href="vista/css/Empresa/AnalisisCorporativo.css">
  <!-- From Uiverse.io by karthik092726122003 -->
     <div class="styled-wrapper">

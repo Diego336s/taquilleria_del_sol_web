@@ -1,3 +1,4 @@
+<title>Reservar evento</title>
 <link rel="stylesheet" href="vista/css/Empresa/ReservaFunciones.css?v=1.1">
 <div class="styled-wrapper">
         <a href="index.php?ruta=dashboard-empresa" class="button">

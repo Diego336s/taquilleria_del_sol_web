@@ -39,6 +39,7 @@ $rutasEmpresa = [
     "analisis_corporativo" => "vista/Dashboards/Empresa/analisis_corporativo.php",
     "Reservar_funciones" => "vista/Dashboards/Empresa/Reservar_Funciones.php",
     "Eventos_realizados" => "vista\Dashboards\Empresa\Eventos_realizados.php",
+     "HistorialDeEventos" => "vista\Dashboards\Empresa\HistorialDeEventos.php",
 ];
 
 // Rutas específicas para el rol de Administrador
