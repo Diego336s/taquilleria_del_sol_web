@@ -1,3 +1,6 @@
+<title>Cambiar Contraseña</title>
+
+
 <!-- Enlazamos la hoja de estilos principal para mantener la coherencia -->
 <link rel="stylesheet" href="vista/css/main.css?v=1.1">
 

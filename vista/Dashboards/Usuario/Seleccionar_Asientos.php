@@ -1,3 +1,6 @@
+<title>Seleccionar Asientos</title>
+
+
 <!-- 🎭 DISEÑO TEATRAL PREMIUM -->
 <link rel="stylesheet" href="vista/css/main.css?v=1.3">
 

@@ -1196,3 +1196,34 @@
     align-items: center;
 
 }
+
+/* === Icons color override inside cards (widgets) === */
+.stats-grid .widget .widget-icon,
+.summary-widgets.horizontal-widgets .widget .widget-icon {
+    color: #000;
+    /* black icons for better contrast on light areas */
+}
+
+.stats-grid .widget .widget-icon i,
+.summary-widgets.horizontal-widgets .widget .widget-icon i {
+    color: #000;
+    /* ensure Bootstrap &lt;i&gt; icons are black even if parent color changes */
+}
+
+/* === Header welcome icon in greeting: black for contrast === */
+.dashboard-header .user-greeting .icon-circle i {
+    color: #000;
+}
+
+
+.widget-icon {
+    font-size: 2.5em;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--light-orange);
+    margin-bottom: 15px;
+}
+.stats-grid .widget-icon {
+    margin-bottom: 0;
+    /* Quitar margen inferior al icono */
+}

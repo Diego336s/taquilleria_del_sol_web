@@ -1,3 +1,6 @@
+<title>Configuración</title>
+
+
 <!-- Enlazamos la hoja de estilos principal para mantener la coherencia -->
 <link rel="stylesheet" href="vista/css/main.css?v=1.1">
 <style>
@@ -99,11 +102,6 @@
                     <a href="index.php?ruta=terminos_condiciones_cliente" class="config-option">
                         <i class="fas fa-file-contract option-icon me-3"></i>
                         <span class="option-text">Términos y Condiciones</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="#" id="btn-eliminar-cuenta" class="config-option text-danger">
-                        <i class="fas fa-trash-alt option-icon me-3"></i>
-                        <span class="option-text">Eliminar Cuenta</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>

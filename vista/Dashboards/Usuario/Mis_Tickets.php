@@ -1,3 +1,6 @@
+<title>Mis Tickets</title>
+
+
 <!-- Enlazamos la hoja de estilos principal -->
 <link rel="stylesheet" href="vista/css/main.css?v=1.3">
 

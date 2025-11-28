@@ -1,3 +1,8 @@
+<title>¡Bienvenido!</title>
+
+<!-- Enlace a la hoja de estilos de Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <!-- Enlazamos la hoja de estilos específica para este dashboard -->
 <link rel="stylesheet" href="vista/css/usuario.css?v=1.0">
 
@@ -29,7 +34,7 @@
     <!-- ======= Columna Izquierda ======= -->
     <aside class="summary-widgets">
       <div class="widget">
-        <div class="widget-icon">🗓️</div>
+        <div class="widget-icon"><i class="bi bi-calendar-check-fill"></i></div>
         <div class="widget-content">
           <span id="obras_vistas" class="widget-number"></span>
           <span class="widget-title">Obras Vistas</span>
@@ -37,7 +42,7 @@
       </div>
 
       <div class="widget">
-        <div class="widget-icon">🕒</div>
+        <div class="widget-icon"><i class="bi bi-calendar-event"></i></div>
         <div class="widget-content">
           <span id="proxima_funcion" class="widget-number"></span>
           <span class="widget-title">Próxima Función</span>

@@ -1,3 +1,6 @@
+<title>Pagar Reserva</title>
+
+
 <link rel="stylesheet" href="vista/css/main.css?v=1.3">
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
