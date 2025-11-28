@@ -51,7 +51,7 @@ async function cargarEventos(empresaId) {
                 <i class="fas fa-edit"></i> Editar
             </button>
 
-            <button class="btn-eliminar" onclick="eliminarEvento(${ev.id})">
+            <button class="btn-eliminar" onclick="eliminarEvento(${ev.id}, ${ev.empresa_id})">
                 <i class="fas fa-trash"></i> Eliminar
             </button>
         </div>
@@ -85,7 +85,7 @@ async function cargarEventos(empresaId) {
 
 
 
-async function eliminarEvento(id) {
+async function eliminarEvento(id, empresa_id) {
 
     Swal.fire({
         title: "¿Eliminar evento?",
@@ -99,20 +99,31 @@ async function eliminarEvento(id) {
 
         if (result.isConfirmed) {
 
+            Swal.fire({
+                title: "Eliminando evento",
+                text: "Por favor espera",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             try {
-                const res = await fetch(ApiConexion + `eliminar-evento/${id}`, {
+                const res = await fetch(ApiConexion + `eliminarEventos/${id}`, {
                     method: "DELETE",
-                    headers: { "Content-Type": "application/json" }
+                   
                 });
 
                 const data = await res.json();
-
+                console.log(data);
+                Swal.close();
                 if (data.success) {
-                    Swal.fire("Eliminado", "El evento fue eliminado correctamente", "success");
+                    Swal.fire("Eliminado", data.message, "success");
 
-                    // CORREGIDO (antes estaba mal)
-                    const empresa = JSON.parse(sessionStorage.getItem("userData"));
-                    cargarEventos(empresa.id);
+                 cargarEventos(empresa_id);
 
                 } else {
                     Swal.fire("Error", data.message ?? "No se pudo eliminar", "error");

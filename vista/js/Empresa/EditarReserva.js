@@ -24,6 +24,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     await cargarEvento(eventoId);
 
     Swal.close();
+
+    const form = document.getElementById("form_registrar_evento");
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        await ctrEditarEvento(eventoId);
+    });
 });
 
 
@@ -101,5 +107,117 @@ async function cargarEvento(id) {
 
     } catch (error) {
         console.error("Error cargando evento", error);
+    }
+}
+
+function mostrarAlerta(icon, title, text) {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        confirmButtonColor: '#3085d6'
+    });
+}
+
+async function ctrEditarEvento(eventoId) {
+
+    const token = sessionStorage.getItem('userToken');
+    const userDataString = sessionStorage.getItem('userData');
+
+    if (!token || !userDataString) {
+        mostrarAlerta('error', 'Sesión inválida', 'Por favor inicia sesión nuevamente.');
+        return;
+    }
+
+    const titulo = document.getElementById("titulo").value.trim();
+    const descripcion = document.getElementById("descripcion").value.trim();
+    const fecha = document.getElementById("fecha").value;
+
+    const hora_inicio = document.getElementById("hora_inicio").value;
+    const hora_final = document.getElementById("hora_fin").value;
+
+    const precioPrimerPiso = document.getElementById("precio_primer_piso").value;
+    const precioSegundoPiso = document.getElementById("precio_segundo_piso").value;
+    const precioGeneral = document.getElementById("precio_general").value;
+
+    const imagen = document.getElementById("imagen").files[0];
+     const categoria_id = document.getElementById("select_categoria").value;
+    const estado = "pendiente";
+
+    const userData = JSON.parse(userDataString);
+    const empresa_id = userData.id;
+
+
+     if (!titulo || !descripcion || !fecha || !hora_inicio || !hora_final ||
+        !precioPrimerPiso || !precioSegundoPiso || !precioGeneral ||
+        !estado || !categoria_id || !imagen) {
+
+        mostrarAlerta('error', 'Campos incompletos', 'Por favor, rellena todos los campos.');
+        return;
+    }
+   
+
+    Swal.fire({
+        title: 'Editando evento...',
+        text: 'Por favor espera un momento.',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    const formData = new FormData();
+
+    formData.append("titulo", titulo);
+    formData.append("descripcion", descripcion);
+    formData.append("fecha", fecha);
+    formData.append("hora_inicio", hora_inicio);
+    formData.append("hora_final", hora_final);
+    formData.append("estado", estado);
+    formData.append("empresa_id", empresa_id);
+    formData.append("categoria_id", categoria_id);
+
+    if (imagen) {
+        formData.append("imagen", imagen);
+    }
+
+    formData.append("precioPrimerPiso", precioPrimerPiso);
+    formData.append("precioSegundoPiso", precioSegundoPiso);
+    formData.append("precioGeneral", precioGeneral);
+
+    // 🔥 Clave para que funcione correctamente con Laravel
+    formData.append("_method", "PUT");
+
+    try {
+        const response = await fetch(`${ApiConexion}actualizarEventos/${eventoId}`, {
+            method: "POST",       // 🔥 IMPORTANTE
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            body: formData
+        });
+
+        const data = await response.json();
+        Swal.close();
+
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Evento actualizado!',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            setTimeout(() => {
+                window.location.href = "index.php?ruta=HistorialDeEventos";
+            }, 2000);
+
+        } else {
+            mostrarAlerta('error', 'Error al actualizar evento', data.message);
+            console.log(data.error);
+        }
+
+    } catch (error) {
+        Swal.close();
+        mostrarAlerta('error', 'Error de conexión', 'No se pudo comunicar con el servidor.');
     }
 }
