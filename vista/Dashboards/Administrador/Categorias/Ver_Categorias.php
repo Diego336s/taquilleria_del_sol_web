@@ -214,7 +214,7 @@
       <div class="centrar" style="width: 100%; margin-bottom: 15px;">
         <h1 style="margin: 0;">Gestión de Categorías</h1>
         <button class="btn-add" onclick="window.location.href='index.php?ruta=Crear_Categorias'">
-          <i class="fa-solid fa-plus"></i> Nueva Categoría
+          <i class="fa-solid fa-plus"></i> Nuevas Categorías
         </button>
       </div>
 
