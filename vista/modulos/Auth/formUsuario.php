@@ -1,7 +1,7 @@
 <form id="form_login_usuario">
 
     <div class="mb-3">
-        <label for="id_correo" class="form-label">Usuario o correo</label>
+        <label for="id_correo" class="form-label">Correo Electrónico</label>
         <input type="text" class="form-control" id="id_correo" name="login_User_correo" required>
     </div>
 
