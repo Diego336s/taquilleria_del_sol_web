@@ -55,8 +55,8 @@
     /* === BOTONES FIJOS: VOLVER Y NUEVA EMPRESA === */
     .btn-back,
     .btn-add {
-      position: fixed;
-      top: 25px;
+      position: relative;
+      top: 15px;
       background-color: #9c4012e6;
       /* Café quemado */
       color: white;
@@ -77,12 +77,24 @@
     }
 
     .btn-back {
-      left: 25px;
+      background: #ff6b1f;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 20px;
+      box-shadow: 0 4px 12px rgba(255, 107, 31, 0.4);
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
     }
 
     .btn-back:hover,
     .btn-add:hover {
-      transform: scale(1.05);
+      background: #ff853f;
+      box-shadow: 0 6px 16px rgba(255, 107, 31, 0.6);
+      transform: translateY(-2px);
     }
 
     .search-box {
@@ -94,6 +106,7 @@
       padding: 8px 14px;
       box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
       transition: 0.3s;
+      margin-bottom: -35px;
     }
 
     .search-box input {
@@ -158,7 +171,8 @@
       margin: 2px;
       padding: 6px 12px;
       color: white;
-      min-width: 100px; /* Asegura que ambos botones tengan el mismo ancho mínimo */
+      min-width: 100px;
+      /* Asegura que ambos botones tengan el mismo ancho mínimo */
       transition: all 0.3s ease;
     }
 
@@ -212,6 +226,16 @@
         font-size: 0.8rem;
       }
     }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+      /* espacio entre controles y la tabla */
+      gap: 15px;
+    }
   </style>
 
 
@@ -219,25 +243,30 @@
 </head>
 
 <body>
-  <!-- 🔙 Botón volver -->
-  <button class="btn-back" onclick="volverDashboard()"><i class="fa-solid fa-arrow-left"></i> Volver al Dashboard</button>
-
-  <!-- ➕ Botón crear nueva empresa -->
-  <button class="btn-add" onclick="window.location.href='index.php?ruta=Crear_Empresa'"><i class="fa-solid fa-plus"></i> Nueva Empresa</button>
 
   <!-- 📦 Contenedor principal -->
   <div class="dashboard-container">
-    <div class="header-section">
-      <h1><i class="fa-solid fa-building"></i> Empresas Registradas</h1>
-
-      <!-- 🔍 Buscador -->
-      <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="buscador" placeholder="Buscar empresa...">
-      </div>
-    </div>
-
     <div class="table-container">
+
+      <div class="centrar" style="width: 100%; margin-bottom: 15px;">
+        <h1 style="margin: 0;">Gestión de Empresas</h1>
+        <button class="btn-add" onclick="window.location.href='index.php?ruta=Crear_Empresa'"><i class="fa-solid fa-plus"></i> Nueva Empresa</button>
+
+      </div>
+
+      <div class="controls">
+        <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
+
+        <!-- Buscador arriba a la derecha -->
+        <div style="display: flex; justify-content: flex-end; ">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="buscador" placeholder="Buscar empresa...">
+          </div>
+        </div>
+
+      </div>
+
       <table>
         <thead>
           <tr>

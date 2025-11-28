@@ -47,15 +47,16 @@
       color: #fff;
       text-transform: uppercase;
       margin: 0;
-      
+
     }
 
     /* === BOTONES FIJOS === */
     .btn-back,
     .btn-add {
-      position: fixed;
-      top: 25px;
+      position: relative;
+      top: 15px;
       background-color: #9c4012e6;
+      /* Café quemado */
       color: white;
       border: none;
       border-radius: 8px;
@@ -73,7 +74,17 @@
     }
 
     .btn-back {
-      left: 25px;
+      background: #ff6b1f;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 20px;
+      box-shadow: 0 4px 12px rgba(255, 107, 31, 0.4);
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
     }
 
     .btn-back:hover,
@@ -89,6 +100,12 @@
       border-radius: 30px;
       padding: 8px 14px;
       box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+      color: #fff;
+
+    }
+
+    .search-box input::placeholder {
+      color: #ddd;
     }
 
     .search-box input {
@@ -105,6 +122,8 @@
       color: #ffcc00;
       font-size: 18px;
       margin-right: 6px;
+      color: #fff;
+
     }
 
     /* === TABLA === */
@@ -129,7 +148,8 @@
       text-transform: uppercase;
     }
 
-    th, td {
+    th,
+    td {
       padding: 12px 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
@@ -168,6 +188,17 @@
       background-color: #a1482b;
       transform: scale(1.05);
     }
+
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+      /* espacio entre controles y la tabla */
+      gap: 15px;
+    }
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -175,29 +206,31 @@
 
 <body>
 
-  <!-- 🔙 VOLVER -->
-  <button class="btn-back" onclick="volverDashboard()">
-    <i class="fa-solid fa-arrow-left"></i> Volver al Dashboard
-  </button>
-
-  <!-- ➕ NUEVA CATEGORÍA -->
-  <button class="btn-add" onclick="window.location.href='index.php?ruta=Crear_Categorias'">
-    <i class="fa-solid fa-plus"></i> Nueva Categoría
-  </button>
-
   <!-- 📦 CONTENEDOR PRINCIPAL -->
   <div class="dashboard-container">
-
-    <div class="header-section">
-      <h1><i class="fa-solid fa-tags"></i> Categorías Registradas</h1>
-
-      <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="buscador" placeholder="Buscar categoría...">
-      </div>
-    </div>
-
     <div class="table-container">
+
+
+      <div class="centrar" style="width: 100%; margin-bottom: 15px;">
+        <h1 style="margin: 0;">Gestión de Categorías</h1>
+        <button class="btn-add" onclick="window.location.href='index.php?ruta=Crear_Categorias'">
+          <i class="fa-solid fa-plus"></i> Nueva Categoría
+        </button>
+      </div>
+
+      <div class="controls">
+        <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
+
+        <!-- Buscador arriba a la derecha -->
+        <div style="display: flex; justify-content: flex-end; ">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="buscador" placeholder="Buscar categoría...">
+          </div>
+        </div>
+
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -207,7 +240,9 @@
         </thead>
 
         <tbody id="tablaCategorias">
-          <tr><td colspan="3">Cargando categorías...</td></tr>
+          <tr>
+            <td colspan="3">Cargando categorías...</td>
+          </tr>
         </tbody>
 
       </table>
@@ -244,4 +279,5 @@
   </script>
 
 </body>
+
 </html>

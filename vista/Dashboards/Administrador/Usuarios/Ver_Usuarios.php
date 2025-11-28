@@ -44,7 +44,7 @@
     }
 
     .search-container {
-      position: absolute;
+      position: relative;
       top: 30px;
       right: 40px;
       display: flex;
@@ -54,6 +54,7 @@
       border-radius: 30px;
       padding: 6px 14px;
       box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+      margin-bottom: 50px;
     }
 
     .search-input {
@@ -102,19 +103,26 @@
     }
 
     .btn-back {
-      position: fixed;
-      top: 25px;
-      left: 25px;
-      background-color: #9c4012e6;
+      background: #ff6b1f;
       color: #fff;
+      font-weight: bold;
+      padding: 10px 18px;
       border: none;
       border-radius: 8px;
-      padding: 10px 16px;
       cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 10px 20px rgba(255, 107, 31, 0.5);
-      z-index: 999;
+      margin: 20px;
+      box-shadow: 0 4px 12px rgba(255, 107, 31, 0.4);
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
     }
+
+    .btn-back:hover {
+      background: #ff853f;
+      box-shadow: 0 6px 16px rgba(255, 107, 31, 0.6);
+      transform: translateY(-2px);
+    }
+    
+
 
     .btn {
       border: none;
@@ -148,22 +156,40 @@
       background-color: #a1482b;
       transform: scale(1.05);
     }
+
+    .controles-tabla {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: -15px;
+    }
   </style>
 </head>
 
 <body>
 
-  <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
 
   <div class="dashboard-container">
-    <h1>Usuarios Registrados</h1>
-
-    <div class="search-container">
-      <input type="text" id="buscador" class="search-input" placeholder="Buscar usuario...">
-      <i class="fas fa-search"></i>
-    </div>
-
     <div class="table-container">
+      <div class="centrar" style="width: 100%; margin-bottom: 15px;">
+        <h1 style="margin: 0;">Gestión de Usuarios</h1>
+      </div>
+
+      <div class="controles-tabla">
+        <button class="btn-back" onclick="volverDashboard()">⬅ Volver al Dashboard</button>
+
+        <!-- Buscador arriba a la derecha -->
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+          <div class="search-container">
+            <input type="text" id="buscador" class="search-input" placeholder="Buscar usuario...">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+
+
+
       <table>
         <thead>
           <tr>
