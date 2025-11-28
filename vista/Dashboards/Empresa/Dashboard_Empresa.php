@@ -1,6 +1,7 @@
 <!-- Enlazamos la hoja de estilos específica para este dashboard -->
 <link rel="stylesheet" href="vista/css/empresa.css?v=1.0">
 <link rel="stylesheet" href="vista/css/main.css?v=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
 
 
 <!-- Usamos el mismo ID para heredar el fondo y estilos base -->
@@ -12,8 +13,8 @@
     </div>
     <div class="header-actions">
 
-      <a href="index.php?ruta=Reportes_empresa" class="btn btn-explore">
-        <span class="icon-inline">📈</span> Reportes
+      <a href="index.php?ruta=analisis_corporativo" class="btn btn-explore">
+        <span class="icon-inline">📈</span> Analisis corporativo
       </a>
 
 
@@ -62,8 +63,8 @@
           <span class="widget-title h3 centrar">Acciones Rápidas</span>
           <div class="header-actions">
             <a href="index.php?ruta=Reservar_funciones" class="btn btn-Reservar"><span class="icon-inline">📋</span> Reservar función</a>
-            <a href="index.php?ruta=Calendario"class="btn btn-profile"><span class="icon-inline">📆</span> Ver Calendario</a>
-            <button class="btn btn-profile"><span class="icon-inline">⚙️</span> Facturación</button>
+            <a href="index.php?ruta=Eventos_realizados" class="btn btn-profile"><span class="icon-inline">📆</span>Eventos realizados</a>
+         
           </div>
         </div>
       </div>
@@ -75,8 +76,10 @@
         <div class="widget">
           <div class="widget-icon">💸</div>
           <div class="widget-content">
-            <div id="loaderTotalVendido" >
-              <div class="custom-loader-estadistica"></div>
+            <div id="loaderTotalVendido">
+              <!-- From Uiverse.io by carlosepcc -->
+              <div class="loader border-t-2 rounded-full border-yellow-500 bg-yellow-300 animate-spin
+aspect-square w-8 flex justify-center items-center text-yellow-700">$</div>
             </div>
             <div id="contendorTotalVendido"></div>
             <span class="widget-title">Total vendido este año</span>
@@ -85,7 +88,7 @@
         <div class="widget">
           <div class="widget-icon">🗓️</div>
           <div class="widget-content">
-             <div id="loaderEventosRealizados" >
+            <div id="loaderEventosRealizados" >
               <div class="custom-loader-estadistica"></div>
             </div>
             <div id="contendorEventosRealizados"></div>
@@ -95,63 +98,33 @@
         <div class="widget">
           <div class="widget-icon">🪑</div>
           <div class="widget-content">
-           <div id="loaderAsientosVendidos" >
+            <div id="loaderAsientosVendidos">
               <div class="custom-loader-estadistica"></div>
             </div>
             <div id="contendorAsientosVendidos"></div>
-            <span class="widget-title">Asientos Totales</span>
+            <span class="widget-title">Asientos vendidos</span>
           </div>
         </div>
-       
+
       </div>
 
       <div class="featured-function orange-bg">
-        <span class="featured-label">Proximo Evento</span>
-        <h2 class="featured-title">El Fantasma de la Ópera</h2>
+        <span class="featured-label">Próximo Evento</span>
+        <h2 id="eventoTitulo" class="featured-title">---</h2>
         <div class="featured-details">
-          <span class="detail-item">📈 95% Ocupación</span>
-          <span class="detail-item">💰 $45M Ingresos</span>
-          <span class="detail-item">👥 1.2k Asistentes</span>
+          <span id="ocupacion" class="detail-item">📈 -- % Ocupación</span>
+          <span id="ingresos" class="detail-item">💰 $ -- Ingresos</span>
+          <span id="asistentes" class="detail-item">👥 -- Asistentes</span>
         </div>
-        <button class="btn btn-white-border">Ver Reporte Detallado</button>
+
+       
       </div>
+
 
       <div class="billboard-header">
       </div>
 
-      <div class="billboard-list br">
 
-        <div class="widget recent-reservations-card">
-          <div class="widget-header">
-            <h3 class="section-title" style="margin: 0; color: #fff;">Reservas Recientes</h3>
-          </div>
-
-          <div class="reservation-list">
-            <div class="reservation-item">
-              <div class="item-details">
-                <span class="item-title">Romeo y Julieta</span>
-                <span class="item-date-time">15 Enero - 8:00 PM</span>
-              </div>
-              <span class="status-badge status-confirmed">Confirmada</span>
-            </div>
-
-            <div class="reservation-item">
-              <div class="item-details">
-                <span class="item-title">El Fantasma de la Ópera</span>
-                <span class="item-date-time">20 Enero - 7:30 PM</span>
-              </div>
-              <span class="status-badge status-pending">Pendiente</span>
-            </div>
-          </div>
-
-          <button class="btn btn-confirm btn-full-width orange-bg">
-            <span class="icon-inline"></span> Ver Todas las Reservas
-          </button>
-
-
-        </div>
-
-        
 
       </div>
     </section>

@@ -241,7 +241,7 @@
 
 
 .header-actions .btn-Reservar {
-    background-color: rgb(130, 71, 16); /* Fondo semitransparente */
+    background-color: #602000; /* Fondo semitransparente */
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
@@ -643,7 +643,7 @@
 .custom-loader {  
   width: 70px;
   height: 70px;
-  background: #ffa600;
+  background: #8e671f;
   border-radius: 50px;
   -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px),#000 95%,#0000) top 4px left 50%,
     radial-gradient(circle 31px,#000 95%,#0000) center,
@@ -664,7 +664,7 @@
 .custom-loader-estadistica {  
   width: 70px;
   height: 70px;
-  background: #ffa600;
+  background: #8d6825;
   border-radius: 50px;
   -webkit-mask: radial-gradient(circle 31px at 50% calc(100% + 13px),#000 95%,#0000) top 4px left 50%,
     radial-gradient(circle 31px,#000 95%,#0000) center,
@@ -713,9 +713,3 @@
   }
 }
 
-
-.flatpickr-day.ocupada {
-  background: #ff0000 !important;
-  color: white !important;
-  border-radius: 8px;
-}

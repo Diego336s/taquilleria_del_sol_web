@@ -105,7 +105,7 @@ async function ctrRegistrarEvento() {
 
     const userData = JSON.parse(userDataString);
     const empresa_id = userData.id;
-    console.log("Categoria", categoria_id)
+   
 
     Swal.fire({
         title: 'Registrando evento...',
