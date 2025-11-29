@@ -275,9 +275,6 @@
               <i class="fas fa-pencil-alt"></i> Editar
             </button>
 
-            <button class="btn btn-eliminar mt-2" onclick="eliminarUsuario(${u.id})">
-              <i class="fas fa-trash"></i> Eliminar
-            </button>
           </td>
         </tr>
       `).join('');

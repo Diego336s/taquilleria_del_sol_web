@@ -141,21 +141,32 @@ async function ctrEditarEvento(eventoId) {
     const precioGeneral = document.getElementById("precio_general").value;
 
     const imagen = document.getElementById("imagen").files[0];
-     const categoria_id = document.getElementById("select_categoria").value;
+    const categoria_id = document.getElementById("select_categoria").value;
     const estado = "pendiente";
+
 
     const userData = JSON.parse(userDataString);
     const empresa_id = userData.id;
 
 
-     if (!titulo || !descripcion || !fecha || !hora_inicio || !hora_final ||
+    if (!titulo || !descripcion || !fecha || !hora_inicio || !hora_final ||
         !precioPrimerPiso || !precioSegundoPiso || !precioGeneral ||
         !estado || !categoria_id || !imagen) {
 
         mostrarAlerta('error', 'Campos incompletos', 'Por favor, rellena todos los campos.');
         return;
     }
-   
+
+
+    const inicio = new Date(`1970-01-01T${hora_inicio}`);
+    const fin = new Date(`1970-01-01T${hora_final}`);
+
+    if (inicio >= fin) {
+       mostrarAlerta('error', 'Error hora', "La hora final debe ser mayor a la de inicio");
+        return;
+    }
+
+
 
     Swal.fire({
         title: 'Editando evento...',

@@ -76,7 +76,7 @@ async function ctrListarEmpresas() {
                         <td>${emp.correo}</td>
                         <td>
                             <button class="btn-action btn-edit" onclick="ctrEditarEmpresa(${emp.id})"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                            <button class="btn-action btn-delete" onclick="ctrEliminarEmpresa(${emp.id})"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                            
                         </td>
                     </tr>
                 `;

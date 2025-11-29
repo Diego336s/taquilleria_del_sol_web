@@ -396,9 +396,15 @@ async function ctrListarEventos() {
                         : ''}
                         </div>
                         <div class="card-meta">
-                            <span>🗓️ ${new Date(evento.fecha).toLocaleDateString('es-ES', {
-                            day: 'numeric', month: 'long'
-                        })}</span>
+                           <span>🗓️ ${(() => {
+                        const [anio, mes, dia] = evento.fecha.split("-");
+                        const fechaCorregida = new Date(anio, mes - 1, dia); // sin zona horaria
+                        return fechaCorregida.toLocaleDateString('es-ES', {
+                            day: 'numeric',
+                            month: 'long'
+                        });
+                    })()}</span>
+
                             <span>🕒 ${new Date('1970-01-01T' + evento.hora_inicio)
                         .toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true })}
                             </span>

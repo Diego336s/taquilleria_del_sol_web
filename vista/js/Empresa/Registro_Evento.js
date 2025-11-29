@@ -103,9 +103,17 @@ async function ctrRegistrarEvento() {
         return;
     }
 
+    const inicio = new Date(`1970-01-01T${hora_inicio}`);
+    const fin = new Date(`1970-01-01T${hora_final}`);
+
+    if (inicio >= fin) {
+        mostrarAlerta('error', 'Hora', 'La hora de fin debe ser mayor a la de inicio');
+        return;
+    }
+
     const userData = JSON.parse(userDataString);
     const empresa_id = userData.id;
-   
+
 
     Swal.fire({
         title: 'Registrando evento...',
@@ -136,7 +144,7 @@ async function ctrRegistrarEvento() {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + token
-               
+
             },
             body: formData
         });
@@ -154,13 +162,13 @@ async function ctrRegistrarEvento() {
             });
 
             document.getElementById("form_registrar_evento").reset();
-           setTimeout(() => {
+            setTimeout(() => {
                 window.location.href = "index.php?ruta=dashboard-empresa";
             }, 2000);
         } else {
             mostrarAlerta('error', 'Error al registrar evento', data.message);
-            if(data.error){
-            console.log("Error", data.error);
+            if (data.error) {
+                console.log("Error", data.error);
             }
         }
 
